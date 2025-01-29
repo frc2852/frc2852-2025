@@ -16,4 +16,14 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+
+  public static class CanbusId{
+    public static final int EXAMPLE = 100;
+    //...
+  }
+
+  public static class MotorSetPoint{
+    public static final int INTAKE_VELOCITY = 0;
+    //...
+  }
 }
