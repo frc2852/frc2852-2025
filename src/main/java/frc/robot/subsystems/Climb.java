@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 /* Channel: 0,1
 climberUp
 climberDown  */
-public class climbSubsystem extends SubsystemBase {
+public class Climb extends SubsystemBase {
 
     private DoubleSolenoid mClimDoubleSolenoid;
 
-    public climbSubsystem() {
+    public Climb() {
 
         mClimDoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
     }

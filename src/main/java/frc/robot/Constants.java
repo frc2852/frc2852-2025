@@ -24,7 +24,7 @@ public final class Constants {
   public static class CanbusId {
     public static final int INTAKE_MOTOR = 10;
     public static final int WRIST_MOTOR = 11;
-    // ...
+    public static final int ELEVATOR_MOTOR = 12;
   }
 
   public static class MotorSetPoint {
@@ -55,6 +55,23 @@ public final class Constants {
     public static final int WRIST_ALGEA_LEVEL_3 = 8;
     public static final int WRIST_HP_STATION = 9;
     public static final int WRIST_BARGE = 10;
+
+    //Elevator values
+    public static final int ELEVATATOR_POSITION= 0;
+    public static final int ELEVATATOR_POSITION_CONVERSION_FACTOR= 0;
+    public static final int ELEVATATOR_VELOCITY_CONVERSION_FACTOR= 0;
+    public static final int ELEVATATOR_CLOSED_LOOP = 0;
+    public static final int ELETAOR_MAX_ACCELERATION = 0;
+    public static final int ELEVATATOR_MAX_VELOCITY= 0;
+    public static final int ELEVATATOR_REEF_LEVEL_1 = 0;
+    public static final int ELEVATATOR_REEF_LEVEL_2 = 0;
+    public static final int ELEVATATOR_REEF_LEVEL_3 = 0;
+    public static final int ELEVATATOR_REEF_LEVEL_4 = 0;
+    public static final int ELEVATATOR_ALGEA_LEVEL_1 = 0;
+    public static final int ELEVATATOR_ALGEA_LEVEL_2 = 0;
+    public static final int ELEVATATOR_ALGEA_LEVEL_3 = 0;
+    public static final int ELEVATATOR_HP = 0;
+    public static final int ELEVATATOR_BARGE = 0;
   }
 
 }
