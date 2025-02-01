@@ -1,20 +1,24 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CanbusId;
 import frc.robot.Constants.MotorSetPoint;
 
-public class elevatorSubsystem extends SubsystemBase {
+public class Elevator extends SubsystemBase {
 
     private final SparkFlex motor;
     private final SparkClosedLoopController controller;
@@ -22,8 +26,12 @@ public class elevatorSubsystem extends SubsystemBase {
     private final SparkFlexConfig config;
 
     private double targetPosition;
+    private double p;
+    private double i;
+    private double d;
+    private double manualPosition;
 
-    public elevatorSubsystem() {
+    public Elevator() {
         // configure motor
         motor = new SparkFlex(CanbusId.ELEVATOR_MOTOR, MotorType.kBrushless);
         controller = motor.getClosedLoopController();
@@ -48,11 +56,11 @@ public class elevatorSubsystem extends SubsystemBase {
                 .allowedClosedLoopError(MotorSetPoint.ELEVATATOR_CLOSED_LOOP);
 
         motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    }
 
-    @Override
-    public void periodic() {
-
+        SmartDashboard.putNumber("Elevator/P", p);
+        SmartDashboard.putNumber("Elevator/I", i);
+        SmartDashboard.putNumber("Elevator/D", d);
+        SmartDashboard.putNumber("Elevator/ManualPosition", manualPosition);
     }
 
     public void goToBottom() {
@@ -107,5 +115,47 @@ public class elevatorSubsystem extends SubsystemBase {
 
     public boolean isAtPosition() {
         return Math.abs(encoder.getPosition() - targetPosition) <= 2; // MARGIN OF ERROR
+    }
+
+    @Override
+    public void periodic() {
+        // This method will be called once per scheduler run
+
+        if (DriverStation.isTest()) {
+            // Read PID coefficients from SmartDashboard
+            double newP = SmartDashboard.getNumber("Elevator/P", p);
+            double newI = SmartDashboard.getNumber("Elevator/I", i);
+            double newD = SmartDashboard.getNumber("Elevator/D", d);
+
+            // Update PID values if they have changed
+            if (newP != p || newI != i || newD != d) {
+                p = newP;
+                i = newI;
+                d = newD;
+
+                // Update closed loop PID settings
+                config.closedLoop
+                        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                        .p(p)
+                        .i(i)
+                        .d(d)
+                        .outputRange(-1, 1);
+
+                // Reapply the updated configuration
+                motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+            }
+
+            // Read manual position from SmartDashboard
+            double newManualPosition = SmartDashboard.getNumber("Elevator/ManualPosition", manualPosition);
+            // If the manual position has been changed, update the setpoint
+            if (newManualPosition != manualPosition) {
+                manualPosition = newManualPosition;
+                targetPosition = manualPosition;
+                controller.setReference(
+                        targetPosition,
+                        ControlType.kMAXMotionPositionControl,
+                        ClosedLoopSlot.kSlot0);
+            }
+        }
     }
 }
