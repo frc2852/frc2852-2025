@@ -5,15 +5,21 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkClosedLoopController;
+
 import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.config.ClosedLoopConfig;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CanbusId;
 import frc.robot.Constants.MotorSetPoint;
@@ -26,6 +32,10 @@ public class WristSubsystem extends SubsystemBase {
   private final SparkFlexConfig config;
 
   private double targetPosition;
+  private double p;
+  private double i;
+  private double d;
+  private double manualPosition;
 
   /** Creates a new WristSubsystem. */
   public WristSubsystem() {
@@ -52,6 +62,11 @@ public class WristSubsystem extends SubsystemBase {
         .allowedClosedLoopError(MotorSetPoint.WRIST_ALLOWED_CLOSED_LOOP_ERROR);
 
     motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    SmartDashboard.putNumber("Wrist/P", p);
+    SmartDashboard.putNumber("Wrist/I", i);
+    SmartDashboard.putNumber("Wrist/D", d);
+    SmartDashboard.putNumber("Wrist/ManualPosition", manualPosition);
   }
 
   public void goToBottom() {
@@ -110,7 +125,43 @@ public class WristSubsystem extends SubsystemBase {
     return Math.abs(encoderPosition - targetPosition) <= 2; // MARGIN OF ERROR
   }
 
-  @Override
+  @OverRide
   public void periodic() {
+    if (DriverStation.isTest()) {
+      // Read PID coefficients from SmartDashboard
+      double newP = SmartDashboard.getNumber("Wrist/P", p);
+      double newI = SmartDashboard.getNumber("Wrist/I", i);
+      double newD = SmartDashboard.getNumber("Wrist/D", d);
+
+      // Update PID values if they have changed
+      if (newP != p || newI != i || newD != d) {
+        p = newP;
+        i = newI;
+        d = newD;
+
+        // Update closed loop PID settings
+        config.closedLoop
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+            .p(p)
+            .i(i)
+            .d(d)
+            .outputRange(-1, 1);
+
+        // Reapply the updated configuration
+        motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+      }
+
+      // Read manual position from SmartDashboard
+      double newManualPosition = SmartDashboard.getNumber("Wrist/ManualPosition", manualPosition);
+      // If the manual position has been changed, update the setpoint
+      if (newManualPosition != manualPosition) {
+        manualPosition = newManualPosition;
+        targetPosition = manualPosition;
+        controller.setReference(
+            targetPosition,
+            ControlType.kMAXMotionPositionControl,
+            ClosedLoopSlot.kSlot0);
+      }
+    }
   }
 }
