@@ -5,6 +5,10 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Wrist;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 /**
@@ -21,6 +25,11 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController = new CommandXboxController(
       OperatorConstants.kDriverControllerPort);
+
+  private final Climb climb = new Climb();
+  private final Wrist wrist = new Wrist();
+  private final Elevator elevator = new Elevator();
+  private final Intake intake = new Intake();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
