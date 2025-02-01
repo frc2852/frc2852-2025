@@ -4,8 +4,10 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.servohub.ServoHub.ResetMode;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -15,12 +17,13 @@ import com.revrobotics.spark.config.SparkFlexConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CanbusId;
+import frc.robot.Constants.MotorSetPoint;
 
 public class WristSubsystem extends SubsystemBase {
 
       private final SparkFlex motor;
     private final SparkClosedLoopController controller;
-    private final RelativeEncoder encoder;
+    private final AbsoluteEncoder encoder;
     private final SparkFlexConfig config;
   
     private double targetPosition;
@@ -31,7 +34,7 @@ public class WristSubsystem extends SubsystemBase {
     controller = motor.getClosedLoopController();
 
     // Configure encoder
-  encoder = motor.getEncoder();
+  encoder = motor.getAbsoluteEncoder();
   encoder.setPosition(0);
 
   // Configure motor properties
@@ -50,11 +53,8 @@ public class WristSubsystem extends SubsystemBase {
    .allowedClosedLoopError(2);
 
   motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-  @Override
-  public void periodic() {
-     
   }
+
 
   public void goToBottom(){
       targetPosition = 0;
@@ -62,32 +62,32 @@ public class WristSubsystem extends SubsystemBase {
   }
   
   public void gotToReefLevel1(){
-      targetPosition = 1;
+      targetPosition = MotorSetPoint.REEF_LEVEL_1;
       controller.setReference(targetPosition, ControlType.kMAXMotionVelocityControl);
   }
 
   public void gotToReefLevel2(){
-      targetPosition = 2;
+      targetPosition = MotorSetPoint.REEF_LEVEL_2;
       controller.setReference(targetPosition, ControlType.kMAXMotionVelocityControl);
   }
 
   public void gotToReefLevel3(){
-      targetPosition = 3;
+      targetPosition = MotorSetPoint.REEF_LEVEL_3;
       controller.setReference(targetPosition, ControlType.kMAXMotionVelocityControl);
   }
 
   public void gotToReefLevel4(){
-      targetPosition = 4;
+      targetPosition = MotorSetPoint.REEF_LEVEL_4;
       controller.setReference(targetPosition, ControlType.kMAXMotionVelocityControl);
   }
 
   public void goToBarge(){
-      targetPosition = 6;
+      targetPosition = MotorSetPoint.BARGE;
       controller.setReference(targetPosition, ControlType.kMAXMotionVelocityControl);
   }
 
   public void gotToHPStation(){
-      targetPosition = 7;
+      targetPosition = MotorSetPoint.HP_STATION;
       controller.setReference(targetPosition, ControlType.kMAXMotionVelocityControl);
   }
 
@@ -97,18 +97,22 @@ public class WristSubsystem extends SubsystemBase {
   }
 
   public void goToAlgae2(){
-      targetPosition = 8;
+      targetPosition = MotorSetPoint.ALGEA_LEVEL_2;
       controller.setReference(targetPosition, ControlType.kMAXMotionVelocityControl);
   }
 
   public void goToAlgae3(){
-      targetPosition = 9;
+      targetPosition = MotorSetPoint.ALGEA_LEVEL_3;
       controller.setReference(targetPosition, ControlType.kMAXMotionVelocityControl);
   
   }
   
   public boolean isAtPosition(){
       return Math.abs(encoder.getPosition() - targetPosition) <= 2; //MARGIN OF ERROR
+  }
+
+      
+  @Override
+  public void periodic() {
     }
-}
 }
