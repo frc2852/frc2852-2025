@@ -41,20 +41,20 @@ public class IntakeSubsystem extends SubsystemBase {
 
     // Configure encoder conversion factors
     config.encoder
-        .positionConversionFactor(0)
-        .velocityConversionFactor(0);
+        .positionConversionFactor(MotorSetPoint.INTAKE_POSITION_CONVERTION_FACTOR)
+        .velocityConversionFactor(MotorSetPoint.INTAKE_VELOCITY_CONVERTION_FACTOR);
 
     config.closedLoop.maxMotion
-        .maxVelocity(0)
-        .maxAcceleration(0)
-        .allowedClosedLoopError(2);
+        .maxVelocity(MotorSetPoint.INTAKE_MAX_VELOCITY)
+        .maxAcceleration(MotorSetPoint.INTAKE_MAX_ACCELERATION)
+        .allowedClosedLoopError(MotorSetPoint.INTAKE_ALLOWED_CLOSED_LOOP_ERROR);
 
     motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   public void runIntake() {
     targetSpeed = MotorSetPoint.INTAKE_VELOCITY;
-     controller.setReference(targetSpeed, ControlType.kMAXMotionVelocityControl);
+    controller.setReference(targetSpeed, ControlType.kMAXMotionVelocityControl);
   }
 
   public void reverseIntake() {
@@ -62,7 +62,7 @@ public class IntakeSubsystem extends SubsystemBase {
     controller.setReference(targetSpeed, ControlType.kMAXMotionVelocityControl);
   }
 
-  public void stopIntake(){
+  public void stopIntake() {
     targetSpeed = MotorSetPoint.STOP_INTAKE;
     controller.setReference(targetSpeed, ControlType.kMAXMotionVelocityControl);
   }

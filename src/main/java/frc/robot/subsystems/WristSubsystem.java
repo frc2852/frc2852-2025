@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -44,13 +43,13 @@ public class WristSubsystem extends SubsystemBase {
 
     // Configure encoder conversion factors
     config.encoder
-        .positionConversionFactor(0)
-        .velocityConversionFactor(0);
+        .positionConversionFactor(MotorSetPoint.WRIST_POSITION_CONVERTION_FACTOR)
+        .velocityConversionFactor(MotorSetPoint.WRIST_VELOCITY_CONVERTION_FACTOR);
 
     config.closedLoop.maxMotion
-        .maxVelocity(0)
-        .maxAcceleration(0)
-        .allowedClosedLoopError(2);
+        .maxVelocity(MotorSetPoint.WRIST_MAX_VELOCITY)
+        .maxAcceleration(MotorSetPoint.WRIST_MAX_ACCELERATION)
+        .allowedClosedLoopError(MotorSetPoint.WRIST_ALLOWED_CLOSED_LOOP_ERROR);
 
     motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
@@ -61,47 +60,47 @@ public class WristSubsystem extends SubsystemBase {
   }
 
   public void gotToReefLevel1() {
-    targetPosition = MotorSetPoint.REEF_LEVEL_1;
+    targetPosition = MotorSetPoint.WRIST_REEF_LEVEL_1;
     controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
   }
 
   public void gotToReefLevel2() {
-    targetPosition = MotorSetPoint.REEF_LEVEL_2;
+    targetPosition = MotorSetPoint.WRIST_REEF_LEVEL_2;
     controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
   }
 
   public void gotToReefLevel3() {
-    targetPosition = MotorSetPoint.REEF_LEVEL_3;
+    targetPosition = MotorSetPoint.WRIST_REEF_LEVEL_3;
     controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
   }
 
   public void gotToReefLevel4() {
-    targetPosition = MotorSetPoint.REEF_LEVEL_4;
+    targetPosition = MotorSetPoint.WRIST_REEF_LEVEL_4;
     controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
   }
 
   public void goToBarge() {
-    targetPosition = MotorSetPoint.BARGE;
+    targetPosition = MotorSetPoint.WRIST_BARGE;
     controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
   }
 
   public void gotToHPStation() {
-    targetPosition = MotorSetPoint.HP_STATION;
+    targetPosition = MotorSetPoint.WRIST_HP_STATION;
     controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
   }
 
   public void goToAlgae1() {
-    targetPosition = MotorSetPoint.ALGEA_LEVEL_1;
+    targetPosition = MotorSetPoint.WRIST_ALGEA_LEVEL_1;
     controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
   }
 
   public void goToAlgae2() {
-    targetPosition = MotorSetPoint.ALGEA_LEVEL_2;
+    targetPosition = MotorSetPoint.WRIST_ALGEA_LEVEL_2;
     controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
   }
 
   public void goToAlgae3() {
-    targetPosition = MotorSetPoint.ALGEA_LEVEL_3;
+    targetPosition = MotorSetPoint.WRIST_ALGEA_LEVEL_3;
     controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
 
   }
