@@ -11,6 +11,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.CanbusId;
 import frc.robot.Constants.MotorSetPoint;
 
 public class elevatorSubsystem extends SubsystemBase {
@@ -24,12 +25,12 @@ public class elevatorSubsystem extends SubsystemBase {
 
     public elevatorSubsystem() {
         // configure motor
-        motor = new SparkFlex(12, MotorType.kBrushless);
+        motor = new SparkFlex(CanbusId.ELEVATOR_MOTOR, MotorType.kBrushless);
         controller = motor.getClosedLoopController();
 
         // Configure encoder
         encoder = motor.getEncoder();
-        encoder.setPosition(0);
+        encoder.setPosition(MotorSetPoint.ELEVATATOR_POSITION);
 
         // Configure motor properties
         config = new SparkFlexConfig();
@@ -38,13 +39,13 @@ public class elevatorSubsystem extends SubsystemBase {
 
         // Configure encoder conversion factors
         config.encoder
-                .positionConversionFactor(0)
-                .velocityConversionFactor(0);
+                .positionConversionFactor(MotorSetPoint.ELEVATATOR_POSITION_CONVERSION_FACTOR)
+                .velocityConversionFactor(MotorSetPoint.ELEVATATOR_VELOCITY_CONVERSION_FACTOR);
 
         config.closedLoop.maxMotion
-                .maxVelocity(0)
-                .maxAcceleration(0)
-                .allowedClosedLoopError(2);
+                .maxVelocity(MotorSetPoint.ELEVATATOR_MAX_VELOCITY)
+                .maxAcceleration(MotorSetPoint.ELETAOR_MAX_ACCELERATION)
+                .allowedClosedLoopError(MotorSetPoint.ELEVATATOR_CLOSED_LOOP);
 
         motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
