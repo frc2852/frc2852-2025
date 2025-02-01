@@ -13,12 +13,11 @@ import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CanbusId;
 import frc.robot.Constants.MotorSetPoint;
 
-public class IntakeSubsystem extends SubsystemBase {
+public class Intake extends SubsystemBase {
 
   private final SparkFlex motor;
   private final SparkClosedLoopController controller;
@@ -27,7 +26,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private double targetSpeed;
 
-  public IntakeSubsystem() {
+  public Intake() {
     motor = new SparkFlex(CanbusId.INTAKE_MOTOR, MotorType.kBrushless);
     controller = motor.getClosedLoopController();
 

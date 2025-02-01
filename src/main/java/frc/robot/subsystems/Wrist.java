@@ -13,7 +13,6 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkClosedLoopController;
 
 import com.revrobotics.spark.SparkFlex;
-import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
@@ -24,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CanbusId;
 import frc.robot.Constants.MotorSetPoint;
 
-public class WristSubsystem extends SubsystemBase {
+public class Wrist extends SubsystemBase {
 
   private final SparkFlex motor;
   private final SparkClosedLoopController controller;
@@ -38,7 +37,7 @@ public class WristSubsystem extends SubsystemBase {
   private double manualPosition;
 
   /** Creates a new WristSubsystem. */
-  public WristSubsystem() {
+  public Wrist() {
     motor = new SparkFlex(CanbusId.WRIST_MOTOR, MotorType.kBrushless);
     controller = motor.getClosedLoopController();
 
@@ -125,7 +124,7 @@ public class WristSubsystem extends SubsystemBase {
     return Math.abs(encoderPosition - targetPosition) <= 2; // MARGIN OF ERROR
   }
 
-  @OverRide
+  @Override
   public void periodic() {
     if (DriverStation.isTest()) {
       // Read PID coefficients from SmartDashboard
