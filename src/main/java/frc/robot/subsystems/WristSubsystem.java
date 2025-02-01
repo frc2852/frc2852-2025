@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class WristSubsystem extends SubsystemBase {
   /** Creates a new WristSubsystem. */
   public WristSubsystem() {}
-   motor= new SparkFlex(11, MotorType.kBrushless);
+   motor= new SparkFlex(MotorSetPoint.WRIST_MOTOR, MotorType.kBrushless);
     controller = motor.getClosedLoopController();
 
     // Configure encoder

@@ -18,14 +18,13 @@ public final class Constants {
   }
 
   public static class CanbusId{
-    public static final int INTAKE_MOTOR=10;
+    public static final int IC=10;
     public static final int WRIST_MOTOR=11;
     //...
   }
 
   public static class MotorSetPoint{
     public static final int INTAKE_VELOCITY = 500;
-    public static final int REVERSE_INTAKE=-500;
     public static final int BOTTOM_POSITION = 0;
     public static final int REEF_LEVEL_1 = 1;
     public static final int REEF_LEVEL_2 = 2;
