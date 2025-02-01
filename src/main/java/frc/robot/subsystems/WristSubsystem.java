@@ -4,12 +4,30 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.servohub.ServoHub.ResetMode;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkFlexConfig;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.CanbusId;
 
 public class WristSubsystem extends SubsystemBase {
+
+      private final SparkFlex motor;
+    private final SparkClosedLoopController controller;
+    private final RelativeEncoder encoder;
+    private final SparkFlexConfig config;
+  
+    private double targetPosition;
+
   /** Creates a new WristSubsystem. */
-  public WristSubsystem() {}
-   motor= new SparkFlex(MotorSetPoint.WRIST_MOTOR, MotorType.kBrushless);
+  public WristSubsystem() {
+   motor= new SparkFlex(CanbusId.WRIST_MOTOR,MotorType.kBrushless);
     controller = motor.getClosedLoopController();
 
     // Configure encoder
@@ -92,4 +110,5 @@ public class WristSubsystem extends SubsystemBase {
   public boolean isAtPosition(){
       return Math.abs(encoder.getPosition() - targetPosition) <= 2; //MARGIN OF ERROR
     }
+}
 }
