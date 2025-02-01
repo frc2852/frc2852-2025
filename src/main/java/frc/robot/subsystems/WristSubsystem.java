@@ -33,7 +33,7 @@ public class WristSubsystem extends SubsystemBase {
     controller = motor.getClosedLoopController();
 
     // Configure encoder
-    encoder = motor.getEncoder();
+    encoder = motor.getExternalEncoder();
     encoder.setPosition(0);
 
     // Configure motor properties
