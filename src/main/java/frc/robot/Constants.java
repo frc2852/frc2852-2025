@@ -18,22 +18,23 @@ public final class Constants {
   }
 
   public static class CanbusId{
-    public static final int IC=10;
+    public static final int INTAKE_MOTOR=10;
     public static final int WRIST_MOTOR=11;
     //...
   }
 
   public static class MotorSetPoint{
     public static final int INTAKE_VELOCITY = 500;
-    public static final int BOTTOM_POSITION = 0;
-    public static final int REEF_LEVEL_1 = 1;
-    public static final int REEF_LEVEL_2 = 2;
-    public static final int REEF_LEVEL_3 = 3;
-    public static final int REEF_LEVEL_4 = 4;
-    public static final int ALGEA_LEVEL_1 = 5;
-    public static final int ALGEA_LEVEL_2 = 6;
-    public static final int ALGEA_LEVEL_3 = 7;
-    public static final int HP_STATION= 8;
-    public static final int BARGE = 9;
+    public static final int STOP_INTAKE = 0;
+    public static final int BOTTOM_POSITION = 1;
+    public static final int REEF_LEVEL_1 = 2;
+    public static final int REEF_LEVEL_2 = 3;
+    public static final int REEF_LEVEL_3 = 4;
+    public static final int REEF_LEVEL_4 = 5;
+    public static final int ALGEA_LEVEL_1 = 6;
+    public static final int ALGEA_LEVEL_2 = 7;
+    public static final int ALGEA_LEVEL_3 = 8;
+    public static final int HP_STATION= 9;
+    public static final int BARGE = 10;
   }
 }
