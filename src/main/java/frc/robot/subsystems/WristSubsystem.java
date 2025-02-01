@@ -57,52 +57,52 @@ public class WristSubsystem extends SubsystemBase {
 
   public void goToBottom() {
     targetPosition = MotorSetPoint.BOTTOM_POSITION;
-    controller.setReference(targetPosition, ControlType.kPosition);
+    controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
   }
 
   public void gotToReefLevel1() {
     targetPosition = MotorSetPoint.REEF_LEVEL_1;
-    controller.setReference(targetPosition, ControlType.kPosition);
+    controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
   }
 
   public void gotToReefLevel2() {
     targetPosition = MotorSetPoint.REEF_LEVEL_2;
-    controller.setReference(targetPosition, ControlType.kPosition);
+    controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
   }
 
   public void gotToReefLevel3() {
     targetPosition = MotorSetPoint.REEF_LEVEL_3;
-    controller.setReference(targetPosition, ControlType.kPosition);
+    controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
   }
 
   public void gotToReefLevel4() {
     targetPosition = MotorSetPoint.REEF_LEVEL_4;
-    controller.setReference(targetPosition, ControlType.kPosition);
+    controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
   }
 
   public void goToBarge() {
     targetPosition = MotorSetPoint.BARGE;
-    controller.setReference(targetPosition, ControlType.kPosition);
+    controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
   }
 
   public void gotToHPStation() {
     targetPosition = MotorSetPoint.HP_STATION;
-    controller.setReference(targetPosition, ControlType.kPosition);
+    controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
   }
 
   public void goToAlgae1() {
     targetPosition = MotorSetPoint.ALGEA_LEVEL_1;
-    controller.setReference(targetPosition, ControlType.kPosition);
+    controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
   }
 
   public void goToAlgae2() {
     targetPosition = MotorSetPoint.ALGEA_LEVEL_2;
-    controller.setReference(targetPosition, ControlType.kPosition);
+    controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
   }
 
   public void goToAlgae3() {
     targetPosition = MotorSetPoint.ALGEA_LEVEL_3;
-    controller.setReference(targetPosition, ControlType.kPosition);
+    controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
 
   }
 

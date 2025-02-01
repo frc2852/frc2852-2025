@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -24,13 +25,14 @@ public class IntakeSubsystem extends SubsystemBase {
   private final RelativeEncoder encoder;
   private final SparkFlexConfig config;
 
+  private double targetSpeed;
+
   public IntakeSubsystem() {
     motor = new SparkFlex(CanbusId.INTAKE_MOTOR, MotorType.kBrushless);
     controller = motor.getClosedLoopController();
 
     // Configure encoder
     encoder = motor.getEncoder();
-    encoder.setPosition(0);
 
     // Configure motor properties
     config = new SparkFlexConfig();
@@ -51,17 +53,19 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void runIntake() {
-    motor.set(MotorSetPoint.INTAKE_VELOCITY);
+    targetSpeed = MotorSetPoint.INTAKE_VELOCITY;
+     controller.setReference(targetSpeed, ControlType.kMAXMotionVelocityControl);
   }
 
   public void reverseIntake() {
-    motor.set(-MotorSetPoint.INTAKE_VELOCITY);
+    targetSpeed = MotorSetPoint.REVERSE_INTAKE_VELOCITY;
+    controller.setReference(targetSpeed, ControlType.kMAXMotionVelocityControl);
   }
 
   public void stopIntake(){
-    motor.set(MotorSetPoint.STOP_INTAKE);
+    targetSpeed = MotorSetPoint.STOP_INTAKE;
+    controller.setReference(targetSpeed, ControlType.kMAXMotionVelocityControl);
   }
-
 
   @Override
   public void periodic() {

@@ -24,6 +24,7 @@ public final class Constants {
   }
 
   public static class MotorSetPoint{
+    public static final int REVERSE_INTAKE_VELOCITY = -500;
     public static final int INTAKE_VELOCITY = 500;
     public static final int STOP_INTAKE = 0;
     public static final int BOTTOM_POSITION = 1;
