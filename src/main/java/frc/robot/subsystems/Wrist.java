@@ -127,7 +127,6 @@ public class Wrist extends SubsystemBase {
 
   }
 
-
   public boolean isAtPosition() {
     double encoderPosition = encoder.getPosition();
     return Math.abs(encoderPosition - targetPosition) <= 2; // MARGIN OF ERROR
