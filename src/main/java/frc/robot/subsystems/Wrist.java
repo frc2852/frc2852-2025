@@ -75,22 +75,22 @@ public class Wrist extends SubsystemBase {
     controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
   }
 
-  public void gotToReefLevel1() {
+  public void goToReefLevel1() {
     targetPosition = MotorSetPoint.WRIST_REEF_LEVEL_1;
     controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
   }
 
-  public void gotToReefLevel2() {
+  public void goToReefLevel2() {
     targetPosition = MotorSetPoint.WRIST_REEF_LEVEL_2;
     controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
   }
 
-  public void gotToReefLevel3() {
+  public void goToReefLevel3() {
     targetPosition = MotorSetPoint.WRIST_REEF_LEVEL_3;
     controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
   }
 
-  public void gotToReefLevel4() {
+  public void goToReefLevel4() {
     targetPosition = MotorSetPoint.WRIST_REEF_LEVEL_4;
     controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
   }
