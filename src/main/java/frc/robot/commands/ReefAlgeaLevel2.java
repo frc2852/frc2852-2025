@@ -27,3 +27,4 @@ public class ReefAlgeaLevel2 extends SequentialCommandGroup {
             new InstantCommand(() -> elevator.goToBottom(), elevator),
             new InstantCommand(() -> wrist.goToBottom(), wrist)));
   }
+}
