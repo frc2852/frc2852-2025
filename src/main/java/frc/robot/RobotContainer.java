@@ -26,6 +26,7 @@ public class RobotContainer {
   private final CommandXboxController m_driverController = new CommandXboxController(
       OperatorConstants.kDriverControllerPort);
 
+      // how to import the other class -_-
   private final Climb climb = new Climb();
   private final Wrist wrist = new Wrist();
   private final Elevator elevator = new Elevator();
