@@ -113,6 +113,13 @@ public class Elevator extends SubsystemBase {
 
     }
 
+
+    public void goToAlgae4() {
+        targetPosition = MotorSetPoint.ELEVATATOR_ALGEA_LEVEL_4;
+        controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
+
+    }
+
     public boolean isAtPosition() {
         return Math.abs(encoder.getPosition() - targetPosition) <= 2; // MARGIN OF ERROR
     }

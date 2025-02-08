@@ -56,6 +56,7 @@ public final class Constants {
     public static final int WRIST_ALGEA_LEVEL_4 = 9;
     public static final int WRIST_HP_STATION = 10;
     public static final int WRIST_BARGE = 11;
+    public static final int WRIST_PROCESSOR = 11;
 
     //Elevator values
     public static final int ELEVATATOR_POSITION= 0;
@@ -71,6 +72,7 @@ public final class Constants {
     public static final int ELEVATATOR_ALGEA_LEVEL_1 = 0;
     public static final int ELEVATATOR_ALGEA_LEVEL_2 = 0;
     public static final int ELEVATATOR_ALGEA_LEVEL_3 = 0;
+    public static final int ELEVATATOR_ALGEA_LEVEL_4= 0;
     public static final int ELEVATATOR_HP = 0;
     public static final int ELEVATATOR_BARGE = 0;
   }

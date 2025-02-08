@@ -18,7 +18,7 @@ public class ReefScoreLevel1 extends SequentialCommandGroup {
     public ReefScoreLevel1( Elevator elevator, Wrist wrist, Intake intake){
       addCommands(new ParallelCommandGroup(
       new InstantCommand(()-> elevator.gotToReefLevel1(),elevator),
-      new InstantCommand(()-> wrist.gotToReefLevel1(),wrist)),
+      new InstantCommand(()-> wrist.goToReefLevel1(),wrist)),
       new WaitUntilCommand(()-> elevator.isAtPosition()&& wrist.isAtPosition()),
       new InstantCommand(()->intake.reverseIntake()),
       new WaitCommand(2),

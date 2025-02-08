@@ -14,11 +14,11 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Wrist;
 
 public class ReefAlgeaLevel4 extends SequentialCommandGroup {
-  public ReefScoreLevel1(Elevator elevator, Wrist wrist, Intake intake) {
+  public ReefAlgeaLevel4(Elevator elevator, Wrist wrist, Intake intake) {
     addCommands(
         new ParallelCommandGroup(
-            new InstantCommand(() -> elevator.gotToAlgeaLevel4(), elevator),
-            new InstantCommand(() -> wrist.gotToAlgeaLevel4(), wrist)),
+            new InstantCommand(() -> elevator.goToAlgae4(), elevator),
+            new InstantCommand(() -> wrist.goToAlgae4(), wrist)),
         new WaitUntilCommand(() -> elevator.isAtPosition() && wrist.isAtPosition()),
         new InstantCommand(() -> intake.reverseIntake()),
         new WaitCommand(2),

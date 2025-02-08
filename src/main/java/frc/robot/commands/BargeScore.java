@@ -4,10 +4,18 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Wrist;
 
 public class BargeScore extends SequentialCommandGroup {
-  public ReefScoreLevel1(Elevator elevator, Wrist wrist, Intake intake) {
+  //change the reefscore 1 to barge 
+  public BargeScore(Elevator elevator, Wrist wrist, Intake intake) {
     addCommands(
         new ParallelCommandGroup(
             new InstantCommand(() -> elevator.goToBarge(), elevator),
