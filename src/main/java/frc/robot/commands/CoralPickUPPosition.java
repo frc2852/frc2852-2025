@@ -13,28 +13,28 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Wrist;
 
-/** CoralPickupPosition
-Workflow:
-  
-Move Elevator
-Set wrist position
-Validate we are correct position
-Intake the Coral (intake)
-Set elevator and wrist back to drive position */
-public class CoralPickUPPosition extends SequentialCommandGroup{
-    public CoralPickUPPosition (Elevator elevator, Wrist wrist, Intake intake){
+/**
+ * CoralPickupPosition
+ * Workflow:
+ * 
+ * Move Elevator
+ * Set wrist position
+ * Validate we are correct position
+ * Intake the Coral (intake)
+ * Set elevator and wrist back to drive position
+ */
+public class CoralPickUPPosition extends SequentialCommandGroup {
+    public CoralPickUPPosition(Elevator elevator, Wrist wrist, Intake intake) {
         addCommands(
-            new ParallelCommandGroup(
-                new InstantCommand(()-> elevator.gotToHPStation(), elevator),
-                new InstantCommand(()-> wrist.gotToHPStation(), wrist)), 
-            new WaitUntilCommand(()-> elevator.isAtPosition()&& wrist.isAtPosition()),
-            new InstantCommand(()-> intake.reverseIntake()),
-            new WaitCommand(2),
-            new InstantCommand(()-> intake. stopIntake()),
-            new ParallelCommandGroup(
-                new InstantCommand(()-> elevator.goToBottom(), elevator),
-                new InstantCommand(()-> wrist.goToBottom(),wrist)
-            )
-        );
+                new ParallelCommandGroup(
+                        new InstantCommand(() -> elevator.gotToHPStation(), elevator),
+                        new InstantCommand(() -> wrist.gotToHPStation(), wrist)),
+                new WaitUntilCommand(() -> elevator.isAtPosition() && wrist.isAtPosition()),
+                new InstantCommand(() -> intake.reverseIntake()),
+                new WaitCommand(2),
+                new InstantCommand(() -> intake.stopIntake()),
+                new ParallelCommandGroup(
+                        new InstantCommand(() -> elevator.goToBottom(), elevator),
+                        new InstantCommand(() -> wrist.goToBottom(), wrist)));
     }
 }

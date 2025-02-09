@@ -15,18 +15,16 @@ import frc.robot.subsystems.Wrist;
 
 /** Add your docs here. */
 public class ReefScoreLevel1 extends SequentialCommandGroup {
-    public ReefScoreLevel1( Elevator elevator, Wrist wrist, Intake intake){
-      addCommands(new ParallelCommandGroup(
-      new InstantCommand(()-> elevator.gotToReefLevel1(),elevator),
-      new InstantCommand(()-> wrist.goToReefLevel1(),wrist)),
-      new WaitUntilCommand(()-> elevator.isAtPosition()&& wrist.isAtPosition()),
-      new InstantCommand(()->intake.reverseIntake()),
-      new WaitCommand(2),
-      new ParallelCommandGroup(
-        new InstantCommand(()-> elevator.goToBottom(),elevator),
-        new InstantCommand(()-> wrist.goToBottom(),wrist)) 
-      );
-    
+  public ReefScoreLevel1(Elevator elevator, Wrist wrist, Intake intake) {
+    addCommands(new ParallelCommandGroup(
+        new InstantCommand(() -> elevator.gotToReefLevel1(), elevator),
+        new InstantCommand(() -> wrist.goToReefLevel1(), wrist)),
+        new WaitUntilCommand(() -> elevator.isAtPosition() && wrist.isAtPosition()),
+        new InstantCommand(() -> intake.reverseIntake()),
+        new WaitCommand(2),
+        new ParallelCommandGroup(
+            new InstantCommand(() -> elevator.goToBottom(), elevator),
+            new InstantCommand(() -> wrist.goToBottom(), wrist)));
+
   }
 }
-    

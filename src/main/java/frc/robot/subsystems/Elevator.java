@@ -38,7 +38,7 @@ public class Elevator extends SubsystemBase {
 
         // Configure encoder
         encoder = motor.getEncoder();
-        encoder.setPosition(MotorSetPoint.ELEVATATOR_POSITION);
+        encoder.setPosition(MotorSetPoint.ELEVATOR_POSITION);
 
         // Configure motor properties
         config = new SparkFlexConfig();
@@ -47,13 +47,13 @@ public class Elevator extends SubsystemBase {
 
         // Configure encoder conversion factors
         config.encoder
-                .positionConversionFactor(MotorSetPoint.ELEVATATOR_POSITION_CONVERSION_FACTOR)
-                .velocityConversionFactor(MotorSetPoint.ELEVATATOR_VELOCITY_CONVERSION_FACTOR);
+                .positionConversionFactor(MotorSetPoint.ELEVATOR_POSITION_CONVERSION_FACTOR)
+                .velocityConversionFactor(MotorSetPoint.ELEVATOR_VELOCITY_CONVERSION_FACTOR);
 
         config.closedLoop.maxMotion
-                .maxVelocity(MotorSetPoint.ELEVATATOR_MAX_VELOCITY)
-                .maxAcceleration(MotorSetPoint.ELETAOR_MAX_ACCELERATION)
-                .allowedClosedLoopError(MotorSetPoint.ELEVATATOR_CLOSED_LOOP);
+                .maxVelocity(MotorSetPoint.ELEVATOR_MAX_VELOCITY)
+                .maxAcceleration(MotorSetPoint.ELEVATOR_MAX_ACCELERATION)
+                .allowedClosedLoopError(MotorSetPoint.ELEVATOR_CLOSED_LOOP);
 
         motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -68,54 +68,54 @@ public class Elevator extends SubsystemBase {
     }
 
     public void gotToReefLevel1() {
-        targetPosition = MotorSetPoint.ELEVATATOR_REEF_LEVEL_1;
+        targetPosition = MotorSetPoint.ELEVATOR_REEF_LEVEL_1;
         controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
     }
 
     public void gotToReefLevel2() {
-        targetPosition = MotorSetPoint.ELEVATATOR_REEF_LEVEL_2;
+        targetPosition = MotorSetPoint.ELEVATOR_REEF_LEVEL_2;
         controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
     }
 
     public void gotToReefLevel3() {
-        targetPosition = MotorSetPoint.ELEVATATOR_REEF_LEVEL_3;
+        targetPosition = MotorSetPoint.ELEVATOR_REEF_LEVEL_3;
         controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
     }
 
     public void gotToReefLevel4() {
-        targetPosition = MotorSetPoint.ELEVATATOR_REEF_LEVEL_4;
+        targetPosition = MotorSetPoint.ELEVATOR_REEF_LEVEL_4;
         controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
     }
 
     public void goToAlgae1() {
-        targetPosition = MotorSetPoint.ELEVATATOR_ALGEA_LEVEL_1;
+        targetPosition = MotorSetPoint.ELEVATOR_ALGEA_LEVEL_1;
         controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
     }
 
     public void goToBarge() {
-        targetPosition = MotorSetPoint.ELEVATATOR_BARGE;
+        targetPosition = MotorSetPoint.ELEVATOR_BARGE;
         controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
     }
 
     public void gotToHPStation() {
-        targetPosition = MotorSetPoint.ELEVATATOR_HP;
+        targetPosition = MotorSetPoint.ELEVATOR_HP;
         controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
     }
 
     public void goToAlgae2() {
-        targetPosition = MotorSetPoint.ELEVATATOR_REEF_LEVEL_2;
+        targetPosition = MotorSetPoint.ELEVATOR_REEF_LEVEL_2;
         controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
     }
 
     public void goToAlgae3() {
-        targetPosition = MotorSetPoint.ELEVATATOR_ALGEA_LEVEL_3;
+        targetPosition = MotorSetPoint.ELEVATOR_ALGEA_LEVEL_3;
         controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
 
     }
 
 
     public void goToAlgae4() {
-        targetPosition = MotorSetPoint.ELEVATATOR_ALGEA_LEVEL_4;
+        targetPosition = MotorSetPoint.ELEVATOR_ALGEA_LEVEL_4;
         controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
 
     }

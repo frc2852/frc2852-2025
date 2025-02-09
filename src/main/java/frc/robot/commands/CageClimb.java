@@ -11,7 +11,6 @@ import frc.robot.subsystems.Climb;
 public class CageClimb extends SequentialCommandGroup {
   public CageClimb(Climb climb) {
     addCommands(
-      new InstantCommand(()->climb.climberDown(),climb)
-    );
+        new InstantCommand(() -> climb.climberDown(), climb));
   }
 }

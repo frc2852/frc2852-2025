@@ -59,22 +59,22 @@ public final class Constants {
     public static final int WRIST_PROCESSOR = 11;
 
     //Elevator values
-    public static final int ELEVATATOR_POSITION= 0;
-    public static final int ELEVATATOR_POSITION_CONVERSION_FACTOR= 0;
-    public static final int ELEVATATOR_VELOCITY_CONVERSION_FACTOR= 0;
-    public static final int ELEVATATOR_CLOSED_LOOP = 0;
-    public static final int ELETAOR_MAX_ACCELERATION = 0;
-    public static final int ELEVATATOR_MAX_VELOCITY= 0;
-    public static final int ELEVATATOR_REEF_LEVEL_1 = 0;
-    public static final int ELEVATATOR_REEF_LEVEL_2 = 0;
-    public static final int ELEVATATOR_REEF_LEVEL_3 = 0;
-    public static final int ELEVATATOR_REEF_LEVEL_4 = 0;
-    public static final int ELEVATATOR_ALGEA_LEVEL_1 = 0;
-    public static final int ELEVATATOR_ALGEA_LEVEL_2 = 0;
-    public static final int ELEVATATOR_ALGEA_LEVEL_3 = 0;
-    public static final int ELEVATATOR_ALGEA_LEVEL_4= 0;
-    public static final int ELEVATATOR_HP = 0;
-    public static final int ELEVATATOR_BARGE = 0;
+    public static final int ELEVATOR_POSITION= 0;
+    public static final int ELEVATOR_POSITION_CONVERSION_FACTOR= 0;
+    public static final int ELEVATOR_VELOCITY_CONVERSION_FACTOR= 0;
+    public static final int ELEVATOR_CLOSED_LOOP = 0;
+    public static final int ELEVATOR_MAX_ACCELERATION = 0;
+    public static final int ELEVATOR_MAX_VELOCITY= 0;
+    public static final int ELEVATOR_REEF_LEVEL_1 = 0;
+    public static final int ELEVATOR_REEF_LEVEL_2 = 0;
+    public static final int ELEVATOR_REEF_LEVEL_3 = 0;
+    public static final int ELEVATOR_REEF_LEVEL_4 = 0;
+    public static final int ELEVATOR_ALGEA_LEVEL_1 = 0;
+    public static final int ELEVATOR_ALGEA_LEVEL_2 = 0;
+    public static final int ELEVATOR_ALGEA_LEVEL_3 = 0;
+    public static final int ELEVATOR_ALGEA_LEVEL_4= 0;
+    public static final int ELEVATOR_HP = 0;
+    public static final int ELEVATOR_BARGE = 0;
   }
 
 }
