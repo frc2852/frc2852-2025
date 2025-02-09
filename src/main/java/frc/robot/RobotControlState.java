@@ -10,15 +10,15 @@ import frc.robot.Constants.Side;
 /** Add your docs here. */
 public class RobotControlState {
 
- public  String Side;
- private String ScoringLevel;
+ public  enum Side;
+ private enum ScoringLevel;
 
   public void getSide(){
-    Enum.getSide();
+    Side.getside();
   }
   
   public void getScoringLevel(){
-    Enum.getScoringLevel();
+    ScoringLevel.getscoringLevel();
   }
 
  public void  setSide(){
