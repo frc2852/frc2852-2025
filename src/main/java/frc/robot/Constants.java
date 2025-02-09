@@ -77,4 +77,18 @@ public final class Constants {
     public static final int ELEVATOR_BARGE = 0;
   }
 
+  public enum Side {
+    // @formatter:off
+    LEFT, 
+    RIGHT
+  }
+
+  public enum ScoringLevel {
+    // @formatter:off
+    LEVEL_1,
+    LEVEL_2, 
+    LEVEL_3, 
+    LEVEL_4
+  }
+
 }

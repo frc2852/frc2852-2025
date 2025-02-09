@@ -4,19 +4,29 @@
 
 package frc.robot;
 
+import frc.robot.Constants.ScoringLevel;
+import frc.robot.Constants.Side;
+
 /** Add your docs here. */
 public class RobotControlState {
-    public enum Side {
-        // @formatter:off
-        LEFT, 
-        RIGHT
-      }
-    
-      public enum ScoringLevel {
-        // @formatter:off
-        LEVEL_1,
-        LEVEL_2, 
-        LEVEL_3, 
-        LEVEL_4
-      }
+
+ public  String Side;
+ private String ScoringLevel;
+
+  public void getSide(){
+    Enum.getSide();
+  }
+  
+  public void getScoringLevel(){
+    Enum.getScoringLevel();
+  }
+
+ public void  setSide(){
+
+ }
+
+ public void setScoringLevel(){
+
+ }
+  
 }
