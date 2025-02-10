@@ -20,7 +20,6 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
-  
 
   public static class CanbusId {
     public static final int INTAKE_MOTOR = 10;
@@ -59,13 +58,13 @@ public final class Constants {
     public static final int WRIST_BARGE = 11;
     public static final int WRIST_PROCESSOR = 11;
 
-    //Elevator values
-    public static final int ELEVATOR_POSITION= 0;
-    public static final int ELEVATOR_POSITION_CONVERSION_FACTOR= 0;
-    public static final int ELEVATOR_VELOCITY_CONVERSION_FACTOR= 0;
+    // Elevator values
+    public static final int ELEVATOR_POSITION = 0;
+    public static final int ELEVATOR_POSITION_CONVERSION_FACTOR = 0;
+    public static final int ELEVATOR_VELOCITY_CONVERSION_FACTOR = 0;
     public static final int ELEVATOR_CLOSED_LOOP = 0;
     public static final int ELEVATOR_MAX_ACCELERATION = 0;
-    public static final int ELEVATOR_MAX_VELOCITY= 0;
+    public static final int ELEVATOR_MAX_VELOCITY = 0;
     public static final int ELEVATOR_REEF_LEVEL_1 = 0;
     public static final int ELEVATOR_REEF_LEVEL_2 = 0;
     public static final int ELEVATOR_REEF_LEVEL_3 = 0;
@@ -73,20 +72,22 @@ public final class Constants {
     public static final int ELEVATOR_ALGEA_LEVEL_1 = 0;
     public static final int ELEVATOR_ALGEA_LEVEL_2 = 0;
     public static final int ELEVATOR_ALGEA_LEVEL_3 = 0;
-    public static final int ELEVATOR_ALGEA_LEVEL_4= 0;
+    public static final int ELEVATOR_ALGEA_LEVEL_4 = 0;
     public static final int ELEVATOR_HP = 0;
     public static final int ELEVATOR_BARGE = 0;
   }
-  public static class Colors{
-    public static int  HOT_PINK = (int) 0.57; // coral in 
-    public static int  DARK_GREEN = (int) 0.75; // algea in 
-    public static int  VIOLET= (int)0.91; // coral rollers running
-    public static int  TWINKLES_PARTY= (int)-0.53;// algea rollers runng 
-    }
-    public enum Side {
-      // @formatter:off
+
+  public static class Colors {
+    public static int HOT_PINK = (int) 0.57; // coral in
+    public static int DARK_GREEN = (int) 0.75; // algea in
+    public static int VIOLET = (int) 0.91; // coral rollers running
+    public static int TWINKLES_PARTY = (int) -0.53;// algea rollers runng
+  }
+
+  public enum Side {
+    // @formatter:off
       LEFT, 
-      RIGHT
+      RIGHT;
     }
 
     public enum ScoringLevel {

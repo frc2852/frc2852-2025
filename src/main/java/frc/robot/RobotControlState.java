@@ -10,23 +10,23 @@ import frc.robot.Constants.Side;
 /** Add your docs here. */
 public class RobotControlState {
 
- public  enum Side;
- private enum ScoringLevel;
-
-  public void getSide(){
-    Side.getside();
-  }
+  private static Side side;
+    private static ScoringLevel scoringLevel;
+    
+      public Side getSide() {
+        return side;
+      }
+    
+      public ScoringLevel getScoringLevel() {
+        return scoringLevel;
+      }
+    
+      public static void setSide(Side newSide) {
+        side = newSide;
+    }
   
-  public void getScoringLevel(){
-    ScoringLevel.getscoringLevel();
+    public static void setScoringLevel(ScoringLevel newScoringLevel) {
+      scoringLevel = newScoringLevel;
   }
 
- public void  setSide(){
-
- }
-
- public void setScoringLevel(){
-
- }
-  
 }
