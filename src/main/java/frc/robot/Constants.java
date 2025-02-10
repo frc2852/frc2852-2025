@@ -20,6 +20,7 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+  
 
   public static class CanbusId {
     public static final int INTAKE_MOTOR = 10;
@@ -76,19 +77,23 @@ public final class Constants {
     public static final int ELEVATOR_HP = 0;
     public static final int ELEVATOR_BARGE = 0;
   }
+  public static class Colors{
+    public static int  HOT_PINK = (int) 0.57; // coral in 
+    public static int  DARK_GREEN = (int) 0.75; // algea in 
+    public static int  VIOLET= (int)0.91; // coral rollers running
+    public static int  TWINKLES_PARTY= (int)-0.53;// algea rollers runng 
+    }
+    public enum Side {
+      // @formatter:off
+      LEFT, 
+      RIGHT
+    }
 
-  public enum Side {
-    // @formatter:off
-    LEFT, 
-    RIGHT
-  }
-
-  public enum ScoringLevel {
-    // @formatter:off
-    LEVEL_1,
-    LEVEL_2, 
-    LEVEL_3, 
-    LEVEL_4
-  }
-
+    public enum ScoringLevel {
+      // @formatter:off
+      LEVEL_1,
+      LEVEL_2, 
+      LEVEL_3, 
+      LEVEL_4
+    }
 }
