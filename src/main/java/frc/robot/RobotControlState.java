@@ -12,12 +12,30 @@ public class RobotControlState {
 
   private static Side side;
     private static ScoringLevel scoringLevel;
+
+      private static boolean hasAlgea= false;
+      private static boolean hasCoral=false;
+
+      public static boolean hasAlgea(){
+        return hasAlgea;
+      }
+
+      public static void setHasAlgea(boolean value){
+        hasAlgea= value; 
+      }
+
+      public static boolean hasCoral(){
+        return hasCoral;
+      }
+      public static void setHasCoral(boolean value){
+        hasCoral= value; 
+      }
     
-      public Side getSide() {
+      public static Side getSide() {
         return side;
       }
     
-      public ScoringLevel getScoringLevel() {
+      public static ScoringLevel getScoringLevel() {
         return scoringLevel;
       }
     
@@ -27,6 +45,6 @@ public class RobotControlState {
   
     public static void setScoringLevel(ScoringLevel newScoringLevel) {
       scoringLevel = newScoringLevel;
-  }
+    }
 
 }

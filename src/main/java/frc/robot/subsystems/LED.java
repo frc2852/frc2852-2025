@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotControlState;
 import frc.robot.Constants.Colors;
 import frc.robot.Constants.DIO;
 
@@ -39,4 +40,16 @@ TWINKLES_PARTY
   public void turnoff(){
     setColor(0);
   }
-}
+  @Override
+  public void periodic() {
+    if( RobotControlState.hasAlgea()){
+      setGreen();
+    }else if( RobotControlState.hasCoral()){
+      setPink();
+    }else{
+      turnoff();
+    }
+  
+    }
+ }
+

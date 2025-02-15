@@ -16,7 +16,9 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotControlState;
 import frc.robot.Constants.CanbusId;
 import frc.robot.Constants.MotorSetPoint;
 
@@ -26,8 +28,11 @@ public class Intake extends SubsystemBase {
   private final SparkClosedLoopController controller;
   private final RelativeEncoder encoder;
   private final SparkFlexConfig config;
-
   private double targetSpeed;
+
+
+  private DigitalInput coralBeamBreak = new DigitalInput(1);
+  private DigitalInput AlgeaBeamBreak = new DigitalInput(2);
 
   public Intake() {
     motor = new SparkFlex(CanbusId.INTAKE_MOTOR, MotorType.kBrushless);
@@ -71,5 +76,7 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
+    RobotControlState.setHasAlgea(AlgeaBeamBreak.get());
+    RobotControlState.setHasCoral(coralBeamBreak.get());
   }
 }
