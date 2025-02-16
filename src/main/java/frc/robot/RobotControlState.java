@@ -11,22 +11,22 @@ import frc.robot.Constants.Side;
 public class RobotControlState {
 
   private static Side side;
-    private static ScoringLevel scoringLevel;
-    
-      public Side getSide() {
-        return side;
-      }
-    
-      public ScoringLevel getScoringLevel() {
-        return scoringLevel;
-      }
-    
-      public static void setSide(Side newSide) {
-        side = newSide;
-    }
-  
-    public static void setScoringLevel(ScoringLevel newScoringLevel) {
-      scoringLevel = newScoringLevel;
+  private static ScoringLevel scoringLevel;
+
+  public Side getSide() {
+    return side;
+  }
+
+  public ScoringLevel getScoringLevel() {
+    return scoringLevel;
+  }
+
+  public static void setSide(Side newSide) {
+    side = newSide;
+  }
+
+  public static void setScoringLevel(ScoringLevel newScoringLevel) {
+    scoringLevel = newScoringLevel;
   }
 
 }
