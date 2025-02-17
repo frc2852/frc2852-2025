@@ -11,22 +11,39 @@ import frc.robot.Constants.Side;
 public class RobotControlState {
 
   private static Side side;
-  private static ScoringLevel scoringLevel;
+    private static ScoringLevel scoringLevel;
 
-  public Side getSide() {
-    return side;
-  }
+      private static boolean hasAlgea= false;
+      private static boolean hasCoral=false;
 
-  public ScoringLevel getScoringLevel() {
-    return scoringLevel;
-  }
+      public static boolean hasAlgea(){
+        return hasAlgea;
+      }
 
-  public static void setSide(Side newSide) {
-    side = newSide;
-  }
+      public static void setHasAlgea(boolean value){
+        hasAlgea= value; 
+      }
 
-  public static void setScoringLevel(ScoringLevel newScoringLevel) {
-    scoringLevel = newScoringLevel;
-  }
-
+      public static boolean hasCoral(){
+        return hasCoral;
+      }
+      public static void setHasCoral(boolean value){
+        hasCoral= value; 
+      }
+    
+      public static Side getSide() {
+        return side;
+      }
+    
+      public static ScoringLevel getScoringLevel() {
+        return scoringLevel;
+      }
+    
+      public static void setSide(Side newSide) {
+        side = newSide;
+    }
+  
+    public static void setScoringLevel(ScoringLevel newScoringLevel) {
+      scoringLevel = newScoringLevel;
+    }
 }
