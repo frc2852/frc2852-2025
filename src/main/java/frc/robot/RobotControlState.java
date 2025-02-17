@@ -46,5 +46,4 @@ public class RobotControlState {
     public static void setScoringLevel(ScoringLevel newScoringLevel) {
       scoringLevel = newScoringLevel;
     }
-
 }
