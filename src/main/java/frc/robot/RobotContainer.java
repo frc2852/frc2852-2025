@@ -5,11 +5,15 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.BargeScore;
+import frc.robot.commands.CageClimb;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Wrist;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -23,8 +27,11 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController = new CommandXboxController(
-      OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController driverController = new CommandXboxController(
+      OperatorConstants.DRIVER_CONTROLLER_PORT);
+
+  private final CommandXboxController operatorController = new CommandXboxController(
+        OperatorConstants.OPERATOR_CONTROLLER_PORT);
 
   // how to import the other class -_-
   private final Climb climb = new Climb();
@@ -32,12 +39,15 @@ public class RobotContainer {
   private final Elevator elevator = new Elevator();
   private final Intake intake = new Intake();
 
+  // Commands
+  private final BargeScore bargeScore = new BargeScore(elevator, wrist, intake);
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the trigger bindings
-    // configureBindings();
+    configureBindings();
   }
 
   /**
@@ -54,19 +64,12 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
+    private void configureBindings() {
 
-  /*
-   * private void configureBindings() {
-   * // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-   * new Trigger(m_exampleSubsystem::exampleCondition)
-   * .onTrue(new ExampleCommand(m_exampleSubsystem));
-   * 
-   * // Schedule `exampleMethodCommand` when the Xbox controller's B button is
-   * pressed,
-   * // cancelling on release.
-   * m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-   * }
-   */
+      if(DriverStation.isTest()){
+        driverController.a().onTrue(bargeScore);
+      }
+    }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
