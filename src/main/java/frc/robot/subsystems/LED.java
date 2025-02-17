@@ -14,42 +14,49 @@ public class LED extends SubsystemBase {
   private final PWM blinkin;
 
   public LED() {
-      blinkin = new PWM(DIO.BLINKIN);
+    blinkin = new PWM(DIO.BLINKIN);
   }
-  //blinkin.setSpeed(pattern.getValue())
-  public void setColor(int color){
+
+  // blinkin.setSpeed(pattern.getValue())
+  public void setColor(int color) {
     blinkin.setSpeed(color);
   }
-/*HOT_PINK
-DARK_GREEN
-VIOLET
-TWINKLES_PARTY
-*/
-  public void setPink(){
+
+  /*
+   * HOT_PINK
+   * DARK_GREEN
+   * VIOLET
+   * TWINKLES_PARTY
+   */
+  public void setPink() {
     setColor(Colors.HOT_PINK); // coral in
   }
-  public void setGreen(){
+
+  public void setGreen() {
     setColor(Colors.DARK_GREEN); // algea in
   }
-  public void setViolet(){
+
+  public void setViolet() {
     setColor(Colors.VIOLET); // coral rollers running
   }
-  public void setParty(){
+
+  public void setParty() {
     setColor(Colors.TWINKLES_PARTY);// algea rollers runng
   }
-  public void turnoff(){
+
+  public void turnoff() {
     setColor(0);
   }
+
   @Override
   public void periodic() {
-    if( RobotControlState.hasAlgea()){
+    if (RobotControlState.hasAlgea()) {
       setGreen();
-    }else if( RobotControlState.hasCoral()){
+    } else if (RobotControlState.hasCoral()) {
       setPink();
-    }else{
+    } else {
       turnoff();
     }
-  
-    }
- }
 
+  }
+}

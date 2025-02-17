@@ -31,6 +31,5 @@ public class ReefScoreLevel4 extends SequentialCommandGroup {
         new ParallelCommandGroup(
             new InstantCommand(() -> elevator.goToBottom(), elevator),
             new InstantCommand(() -> wrist.goToBottom(), wrist)));
-
   }
 }
