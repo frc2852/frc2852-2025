@@ -113,7 +113,6 @@ public class Elevator extends SubsystemBase {
 
     }
 
-
     public void goToAlgae4() {
         targetPosition = MotorSetPoint.ELEVATOR_ALGEA_LEVEL_4;
         controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);

@@ -30,7 +30,6 @@ public class Intake extends SubsystemBase {
   private final SparkFlexConfig config;
   private double targetSpeed;
 
-
   private DigitalInput coralBeamBreak = new DigitalInput(1);
   private DigitalInput AlgeaBeamBreak = new DigitalInput(2);
 
