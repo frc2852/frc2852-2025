@@ -16,7 +16,7 @@ import frc.robot.commands.ReefAlgeaLevel3;
 import frc.robot.commands.ReefAlgeaLevel4;
 
 import frc.robot.commands.BargeScore;
-import frc.robot.commands.CoralPickUpPosition;
+import frc.robot.commands.CoralPickUPPosition;
 import frc.robot.commands.HSPickUp;
 import frc.robot.commands.CageClimb;
 import frc.robot.commands.ProcessorScore;
@@ -58,7 +58,7 @@ public class RobotContainer {
   private final ProcessorScore processorScore = new ProcessorScore(wrist, intake, elevator);
   private final CageClimb cageClimb = new CageClimb(climb);
   private final HSPickUp hsPickUp = new HSPickUp(elevator, wrist, intake);
-  private final CoralPickUpPosition coralPickUpPosition = new CoralPickUpPosition(elevator, wrist, intake);
+  private final CoralPickUPPosition coralPickUpPosition = new CoralPickUPPosition(elevator, wrist, intake);
 
   private final ReefScoreLevel1 reefScoreLevel1 = new ReefScoreLevel1(elevator, wrist, intake);
   private final ReefScoreLevel2 reefScoreLevel2 = new ReefScoreLevel2(elevator, wrist, intake);

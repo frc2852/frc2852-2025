@@ -23,8 +23,8 @@ import frc.robot.subsystems.Wrist;
  * Intake the Coral (intake)
  * Set elevator and wrist back to drive position
  */
-public class CoralPickUpPosition extends SequentialCommandGroup {
-    public CoralPickUpPosition(Elevator elevator, Wrist wrist, Intake intake) {
+public class CoralPickUPPosition extends SequentialCommandGroup {
+    public CoralPickUPPosition(Elevator elevator, Wrist wrist, Intake intake) {
         addCommands(
                 new ParallelCommandGroup(
                         new InstantCommand(() -> elevator.gotToHPStation(), elevator),
