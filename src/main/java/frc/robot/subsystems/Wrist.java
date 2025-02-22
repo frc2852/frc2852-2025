@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -27,8 +28,8 @@ public class Wrist extends SubsystemBase {
   private final SparkFlex motor;
   private final SparkClosedLoopController controller;
   private final RelativeEncoder encoder;
-  private final SparkFlexConfig config;
-
+  private final SparkFlexConfig motorConfig;
+  
   private double targetPosition;
   private double p;
   private double i;
@@ -45,21 +46,29 @@ public class Wrist extends SubsystemBase {
     encoder.setPosition(0);
 
     // Configure motor properties
-    config = new SparkFlexConfig();
-    config.idleMode(IdleMode.kBrake);
-    config.inverted(false);
+    motorConfig = new SparkFlexConfig();
+    motorConfig.idleMode(IdleMode.kBrake);
+    motorConfig.inverted(false);
 
     // Configure encoder conversion factors
-    config.encoder
+    motorConfig.encoder
         .positionConversionFactor(MotorSetPoint.WRIST_POSITION_CONVERTION_FACTOR)
         .velocityConversionFactor(MotorSetPoint.WRIST_VELOCITY_CONVERTION_FACTOR);
 
-    config.closedLoop.maxMotion
+    // Configure PID
+    motorConfig.closedLoop
+        .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+        .p(p)
+        .i(i)
+        .d(d)
+        .outputRange(-1, 1);
+
+    motorConfig.closedLoop.maxMotion
         .maxVelocity(MotorSetPoint.WRIST_MAX_VELOCITY)
         .maxAcceleration(MotorSetPoint.WRIST_MAX_ACCELERATION)
         .allowedClosedLoopError(MotorSetPoint.WRIST_ALLOWED_CLOSED_LOOP_ERROR);
 
-    motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     SmartDashboard.putNumber("Wrist/P", p);
     SmartDashboard.putNumber("Wrist/I", i);
@@ -68,7 +77,7 @@ public class Wrist extends SubsystemBase {
   }
 
   public void goToBottom() {
-    targetPosition = MotorSetPoint.BOTTOM_POSITION;
+    targetPosition = MotorSetPoint.WRIST_BOTTOM_POSITION;
     controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
   }
 
@@ -150,7 +159,7 @@ public class Wrist extends SubsystemBase {
         d = newD;
 
         // Update closed loop PID settings
-        config.closedLoop
+        motorConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             .p(p)
             .i(i)
@@ -158,7 +167,7 @@ public class Wrist extends SubsystemBase {
             .outputRange(-1, 1);
 
         // Reapply the updated configuration
-        motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
       }
 
       // Read manual position from SmartDashboard

@@ -110,7 +110,6 @@ public class RobotContainer {
       operatorController.leftBumper().onTrue(coralPickUpPosition);
       operatorController.rightBumper().onTrue(hsPickUp);
       operatorController.leftTrigger().onTrue(cageClimb);
-
     }
   }
 

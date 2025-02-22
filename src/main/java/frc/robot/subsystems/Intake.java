@@ -49,6 +49,7 @@ public class Intake extends SubsystemBase {
     config.encoder
         .positionConversionFactor(MotorSetPoint.INTAKE_POSITION_CONVERTION_FACTOR)
         .velocityConversionFactor(MotorSetPoint.INTAKE_VELOCITY_CONVERTION_FACTOR);
+        
 
     config.closedLoop.maxMotion
         .maxVelocity(MotorSetPoint.INTAKE_MAX_VELOCITY)
