@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
@@ -106,6 +107,10 @@ public final class Constants {
       LEVEL_3, 
       LEVEL_4
     }
+
+      // Translatiod2d
+      public static final Translation2d kZero = new Translation2d();
+  
 
     //Swerve Values
     public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
