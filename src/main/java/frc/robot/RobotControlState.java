@@ -51,14 +51,16 @@ public class RobotControlState {
     scoringLevel = newScoringLevel;
   }
 
-  public static void areaCalculation(Translation2d p1) {
+  public static void calculateArea(Translation2d p1, Translation2d p2, Translation2d p3) {
     double x1 = p1.getX();
-    double x2 = p1.getX();
-    double x3 = p1.getX();
     double y1 = p1.getY();
-    double y2 = p1.getY();
-    double y3 = p1.getY();
+    double x2 = p2.getX();
+    double y2 = p2.getY();
+    double x3 = p3.getX();
+    double y3 = p3.getY();
 
-    double area = Math.abs(x1 * (y1 - y2) + x2 * (y3 - y2) + x3 * (y1 - y3)) / 2;
+    area = Math.abs((x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2.0);
+    return;
   }
+
 }
