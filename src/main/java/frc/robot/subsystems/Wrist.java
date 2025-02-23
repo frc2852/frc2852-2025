@@ -1,14 +1,7 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
-
-import java.security.spec.EncodedKeySpec;
 
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -19,10 +12,10 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CanbusId;
-import frc.robot.Constants.MotorSetPoint;
 
 public class Wrist extends SubsystemBase {
 
@@ -33,109 +26,89 @@ public class Wrist extends SubsystemBase {
   private final AbsoluteEncoder absEncoder;
   private final RelativeEncoder encoder;
 
+  private final double P = 0.1;
+  private final double I = 0;
+  private final double D = 0;
+  private final double OUTPUT_RANGE = 0.7;
+
+  private final double GEAR_REDUCTION = 267.86;
+  private final double RELATIVE_ENCODER_CONVERSION = 360.0 / GEAR_REDUCTION;
+
   private double targetPosition;
-  private double manualPosition;
+  private double manualPosition = 90;
 
-  private double p = 0.4;
-  private double i = 0;
-  private double d = 0;
-
-  /** Creates a new WristSubsystem. */
   public Wrist() {
     motor = new SparkFlex(CanbusId.WRIST_MOTOR, MotorType.kBrushless);
     controller = motor.getClosedLoopController();
 
-    // Configure encoder
+    // Configure encoders
     absEncoder = motor.getAbsoluteEncoder();
-
     encoder = motor.getEncoder();
 
-    // Configure motor properties
+    // Set conversion factor for the relative encoder so that getPosition() returns
+    // degrees.
+    // (This conversion factor converts motor rotations to wrist degrees.)
     motorConfig = new SparkFlexConfig();
-    motorConfig.idleMode(IdleMode.kCoast);
-    motorConfig.inverted(false);
+    motorConfig.encoder.positionConversionFactor(RELATIVE_ENCODER_CONVERSION);
 
-    // Configure encoder conversion factors
+    // Configure motor properties
+    motorConfig.idleMode(IdleMode.kBrake);
+    motorConfig.inverted(false);
+    motorConfig.smartCurrentLimit(40);
+
+    // Configure absolute encoder conversion factor.
+    // The absolute encoder returns degrees already (2 rotations = 360° with factor
+    // 170.2).
     motorConfig.absoluteEncoder
-        .positionConversionFactor(180)
+        .positionConversionFactor(170.2)
         .velocityConversionFactor(1)
         .inverted(true);
 
-    // Configure PID
+    // Configure closed loop PID using the relative encoder (now in degrees).
     motorConfig.closedLoop
         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-        .p(p)
-        .i(i)
-        .d(d)
-        .outputRange(-1, 1);
+        .p(P)
+        .i(I)
+        .d(D)
+        .outputRange(-OUTPUT_RANGE, OUTPUT_RANGE);
 
+    // Initialize the relative encoder using the absolute encoder value.
     encoder.setPosition(absEncoder.getPosition());
-
-    motorConfig.closedLoop.maxMotion
-        .maxVelocity(MotorSetPoint.WRIST_MAX_VELOCITY)
-        .maxAcceleration(MotorSetPoint.WRIST_MAX_ACCELERATION)
-        .allowedClosedLoopError(MotorSetPoint.WRIST_ALLOWED_CLOSED_LOOP_ERROR);
 
     motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    SmartDashboard.putNumber("WristManualPosition", 90);
-    SmartDashboard.putNumber("WristP", p);
-    SmartDashboard.putNumber("WristI", i);
-    SmartDashboard.putNumber("WristD", d);
+    if (DriverStation.isTest()) {
+      SmartDashboard.putNumber("WristManualPosition", manualPosition);
+    }
   }
 
+  /**
+   * Command the wrist to go to a specific position.
+   *
+   * @param position The target wrist angle in degrees.
+   */
   public void goToPosition(double position) {
-    double arbFeedForward = 0;
     targetPosition = position;
-    controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, arbFeedForward);
+    controller.setReference(targetPosition, ControlType.kPosition);
   }
 
   public boolean isAtPosition() {
     double encoderPosition = encoder.getPosition();
-    return Math.abs(encoderPosition - targetPosition) <= 1; // MARGIN OF ERROR
+    return Math.abs(encoderPosition - targetPosition) <= 2;
   }
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("WristAbsPosition", absEncoder.getPosition());
-    SmartDashboard.putNumber("WristPosition", encoder.getPosition());
+    if (DriverStation.isTest()) {
+      SmartDashboard.putNumber("WristAbsPosition", absEncoder.getPosition());
+      SmartDashboard.putNumber("WristPosition", encoder.getPosition());
 
-    manualPosition = SmartDashboard.getNumber("WristManualPosition", 90);
-    goToPosition(manualPosition);
+      SmartDashboard.putNumber("WristCurrent", motor.getOutputCurrent());
+      SmartDashboard.putNumber("WristTemperature", motor.getMotorTemperature());
+      SmartDashboard.putBoolean("WristAtPosition", isAtPosition());
 
-    // Read PID coefficients from SmartDashboard
-    double newP = SmartDashboard.getNumber("WristP", p);
-    double newI = SmartDashboard.getNumber("WristI", i);
-    double newD = SmartDashboard.getNumber("WristD", d);
-
-    // Update PID values if they have changed
-    if (newP != p || newI != i || newD != d) {
-      p = newP;
-      i = newI;
-      d = newD;
-
-      // Update closed loop PID settings
-      motorConfig.closedLoop
-          .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-          .p(p)
-          .i(i)
-          .d(d)
-          .outputRange(-1, 1);
-
-      // Reapply the updated configuration
-      motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    }
-
-    // Read manual position from SmartDashboard
-    double newManualPosition = SmartDashboard.getNumber("WristManualPosition", manualPosition);
-    // If the manual position has been changed, update the setpoint
-    if (newManualPosition != manualPosition) {
-      manualPosition = newManualPosition;
-      targetPosition = manualPosition;
-      controller.setReference(
-          targetPosition,
-          ControlType.kMAXMotionPositionControl,
-          ClosedLoopSlot.kSlot0);
+      manualPosition = SmartDashboard.getNumber("WristManualPosition", manualPosition);
+      goToPosition(manualPosition);
     }
   }
 }
