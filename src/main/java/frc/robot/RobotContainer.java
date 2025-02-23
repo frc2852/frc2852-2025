@@ -9,8 +9,10 @@ import frc.robot.commands.intake.IntakeAlgae;
 import frc.robot.commands.intake.IntakeCoral;
 import frc.robot.commands.intake.IntakeScoreAlgae;
 import frc.robot.commands.intake.IntakeScoreCoral;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Wrist;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -30,11 +32,13 @@ public class RobotContainer {
 
   private final Intake intake = new Intake();
   private final Wrist wrist = new Wrist();
+  private final Elevator elevator = new Elevator();
   
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    DriverStation.silenceJoystickConnectionWarning(true);
     // Configure the trigger bindings
     configureBindings();
   }
