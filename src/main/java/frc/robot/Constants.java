@@ -40,21 +40,26 @@ public final class Constants {
 
   public static class MotorSetPoint {
     // Intake Values
-    public static final int INTAKE_POSITION_CONVERTION_FACTOR = 0;
-    public static final int INTAKE_VELOCITY_CONVERTION_FACTOR = 0;
-    public static final int INTAKE_MAX_VELOCITY = 0;
-    public static final int INTAKE_MAX_ACCELERATION = 0;
-    public static final int INTAKE_ALLOWED_CLOSED_LOOP_ERROR = 2;
-    public static final int REVERSE_INTAKE_VELOCITY = -500;
-    public static final int INTAKE_VELOCITY = 500;
+    public static final int INTAKE_POSITION_CONVERTION_FACTOR = 1;
+    public static final int INTAKE_VELOCITY_CONVERTION_FACTOR = 1;
+    public static final int INTAKE_MAX_VELOCITY = 6000;
+    public static final int INTAKE_MAX_ACCELERATION = 6000;
+    public static final int INTAKE_ALLOWED_CLOSED_LOOP_ERROR = 1;
+
+
+    public static final int INTAKE_VELOCITY_ALGAE = 4500;
+    public static final int INTAKE_VELOCITY_CORAL = 4500;
+    public static final int INTAKE_VELOCITY_REVERSE_CORAL = -6000;
+    public static final int INTAKE_VELOCITY_REVERSE_ALGAE = -6000;
+    
     public static final int STOP_INTAKE = 0;
 
     // Wrist Values
-    public static final int WRIST_POSITION_CONVERTION_FACTOR = 0;
-    public static final int WRIST_VELOCITY_CONVERTION_FACTOR = 0;
-    public static final int WRIST_MAX_VELOCITY = 0;
-    public static final int WRIST_MAX_ACCELERATION = 0;
-    public static final int WRIST_ALLOWED_CLOSED_LOOP_ERROR = 2;
+    public static final int WRIST_POSITION_CONVERTION_FACTOR = 1;
+    public static final int WRIST_VELOCITY_CONVERTION_FACTOR = 1;
+    public static final int WRIST_MAX_VELOCITY = 6000;
+    public static final int WRIST_MAX_ACCELERATION = 6000;
+    public static final int WRIST_ALLOWED_CLOSED_LOOP_ERROR = 1;
     public static final int BOTTOM_POSITION = 1;
     public static final int WRIST_REEF_LEVEL_1 = 2;
     public static final int WRIST_REEF_LEVEL_2 = 3;

@@ -7,75 +7,119 @@ package frc.robot.subsystems;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
-
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
-
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
-
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotControlState;
 import frc.robot.Constants.CanbusId;
 import frc.robot.Constants.MotorSetPoint;
 
 public class Intake extends SubsystemBase {
 
   private final SparkFlex motor;
+  private final SparkFlexConfig motorConfig;
   private final SparkClosedLoopController controller;
   private final RelativeEncoder encoder;
-  private final SparkFlexConfig config;
-  private double targetSpeed;
 
   private DigitalInput coralBeamBreak = new DigitalInput(1);
-  private DigitalInput AlgeaBeamBreak = new DigitalInput(2);
+  private DigitalInput algeaBeamBreak = new DigitalInput(0);
+
+  private double targetSpeed;
+
+  private double p = 0.0001;
+  private double i = 0;
+  private double d = 0;
 
   public Intake() {
     motor = new SparkFlex(CanbusId.INTAKE_MOTOR, MotorType.kBrushless);
     controller = motor.getClosedLoopController();
-
-    // Configure encoder
     encoder = motor.getEncoder();
 
     // Configure motor properties
-    config = new SparkFlexConfig();
-    config.idleMode(IdleMode.kBrake);
-    config.inverted(false);
+    motorConfig = new SparkFlexConfig();
+    motorConfig.idleMode(IdleMode.kBrake);
+    motorConfig.inverted(true);
 
     // Configure encoder conversion factors
-    config.encoder
+    motorConfig.encoder
         .positionConversionFactor(MotorSetPoint.INTAKE_POSITION_CONVERTION_FACTOR)
         .velocityConversionFactor(MotorSetPoint.INTAKE_VELOCITY_CONVERTION_FACTOR);
 
-    config.closedLoop.maxMotion
+    // Configure PID
+    motorConfig.closedLoop
+        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+        .p(p)
+        .i(i)
+        .d(d)
+        .velocityFF(1.0 / 5767)
+        .outputRange(-1, 1);
+
+    motorConfig.closedLoop.maxMotion
         .maxVelocity(MotorSetPoint.INTAKE_MAX_VELOCITY)
         .maxAcceleration(MotorSetPoint.INTAKE_MAX_ACCELERATION)
         .allowedClosedLoopError(MotorSetPoint.INTAKE_ALLOWED_CLOSED_LOOP_ERROR);
 
-    motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
-  public void runIntake() {
-    targetSpeed = MotorSetPoint.INTAKE_VELOCITY;
+  /**
+   * Runs the intake to collect coral.
+   */
+  public void intakeCoral() {
+    targetSpeed = MotorSetPoint.INTAKE_VELOCITY_CORAL;
     controller.setReference(targetSpeed, ControlType.kMAXMotionVelocityControl);
   }
 
-  public void reverseIntake() {
-    targetSpeed = MotorSetPoint.REVERSE_INTAKE_VELOCITY;
+  /**
+   * Runs the intake to collect algae.
+   */
+  public void intakeAlgae() {
+    targetSpeed = MotorSetPoint.INTAKE_VELOCITY_ALGAE;
     controller.setReference(targetSpeed, ControlType.kMAXMotionVelocityControl);
   }
 
-  public void stopIntake() {
+  /**
+   * Reverses the intake to eject coral.
+   */
+  public void reverseCoral() {
+    motor.set(-1);
+    // targetSpeed = MotorSetPoint.INTAKE_VELOCITY_REVERSE_CORAL;
+    // controller.setReference(targetSpeed, ControlType.kMAXMotionVelocityControl);
+  }
+
+  /**
+   * Reverses the intake to eject algae.
+   */
+  public void reverseAlgae() {
+    targetSpeed = MotorSetPoint.INTAKE_VELOCITY_REVERSE_ALGAE;
+    controller.setReference(targetSpeed, ControlType.kMAXMotionVelocityControl);
+  }
+
+  /**
+   * Stops the intake.
+   */
+  public void stop() {
     targetSpeed = MotorSetPoint.STOP_INTAKE;
     controller.setReference(targetSpeed, ControlType.kMAXMotionVelocityControl);
   }
 
+  public boolean hasCoral() {
+    return !coralBeamBreak.get();
+  }
+
+  public boolean hasAlgae() {
+    return !algeaBeamBreak.get();
+  }
+
   @Override
   public void periodic() {
-    RobotControlState.setHasAlgea(AlgeaBeamBreak.get());
-    RobotControlState.setHasCoral(coralBeamBreak.get());
+    SmartDashboard.putBoolean("Coral", hasCoral());
+    SmartDashboard.putBoolean("Algae", hasAlgae());
   }
 }
