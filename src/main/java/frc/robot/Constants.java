@@ -145,12 +145,12 @@ public final class Constants {
     public static final int WRIST_PROCESSOR = 11;
 
     // Climber values
-    public static final int CLIMBER_POSITION_CONVERTION_FACTOR = 0;
-    public static final int CLIMBER_VELOCITY_CONVERTION_FACTOR = 0;
-    public static final int CLIMBER_MAX_VELOCITY = 0;
-    public static final int CLIMBER_MAX_ACCELERATION = 0;
+    public static final int CLIMBER_POSITION_CONVERTION_FACTOR = 1;
+    public static final int CLIMBER_VELOCITY_CONVERTION_FACTOR = 1;
+    public static final int CLIMBER_MAX_VELOCITY = 6000;
+    public static final int CLIMBER_MAX_ACCELERATION = 6000;
     public static final int CLIMBER_ALLOWED_CLOSED_LOOP_ERROR = 2;
-    public static final int CLIMBER_BOTTOM_POSITION = 1;
+    public static final int CLIMBER_BOTTOM_POSITION = 0;
     public static final int CLIMBER_CLIMBING_POSITION = 1;
 
     // Elevator values
