@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -25,7 +24,6 @@ public class Intake extends SubsystemBase {
   private final SparkFlex motor;
   private final SparkFlexConfig motorConfig;
   private final SparkClosedLoopController controller;
-  private final RelativeEncoder encoder;
 
   private DigitalInput coralBeamBreak = new DigitalInput(1);
   private DigitalInput algeaBeamBreak = new DigitalInput(0);
@@ -39,7 +37,6 @@ public class Intake extends SubsystemBase {
   public Intake() {
     motor = new SparkFlex(CanbusId.INTAKE_MOTOR, MotorType.kBrushless);
     controller = motor.getClosedLoopController();
-    encoder = motor.getEncoder();
 
     // Configure motor properties
     motorConfig = new SparkFlexConfig();
@@ -88,9 +85,8 @@ public class Intake extends SubsystemBase {
    * Reverses the intake to eject coral.
    */
   public void reverseCoral() {
-    motor.set(-1);
-    // targetSpeed = MotorSetPoint.INTAKE_VELOCITY_REVERSE_CORAL;
-    // controller.setReference(targetSpeed, ControlType.kMAXMotionVelocityControl);
+    targetSpeed = MotorSetPoint.INTAKE_VELOCITY_REVERSE_CORAL;
+    controller.setReference(targetSpeed, ControlType.kMAXMotionVelocityControl);
   }
 
   /**
@@ -107,6 +103,10 @@ public class Intake extends SubsystemBase {
   public void stop() {
     targetSpeed = MotorSetPoint.STOP_INTAKE;
     controller.setReference(targetSpeed, ControlType.kMAXMotionVelocityControl);
+  }
+
+  public boolean hasGamePiece() {
+    return hasAlgae() || hasCoral();
   }
 
   public boolean hasCoral() {

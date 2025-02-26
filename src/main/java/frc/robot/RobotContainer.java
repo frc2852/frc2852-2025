@@ -1,6 +1,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.Pattern;
 import frc.robot.Constants.ScoringLevel;
 import frc.robot.Constants.Side;
 import frc.robot.subsystems.Climb;
@@ -30,7 +31,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
 
   private final CommandXboxController driverController = new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER);
-  private final CommandXboxController operatorController = new CommandXboxController(OperatorConstants.OPERATOR_CONTROLLER);
+  private final CommandXboxController operatorController = new CommandXboxController(
+      OperatorConstants.OPERATOR_CONTROLLER);
 
   // Subsystem
   private final Swerve drivebase = new Swerve(new File(Filesystem.getDeployDirectory(), "swerve/pinky"));
@@ -63,7 +65,7 @@ public class RobotContainer {
     DriverStation.startDataLog(DataLogManager.getLog());
 
     // Set default led color during initialization
-    // led.setPattern(Pattern.OFF);
+    led.setPattern(Pattern.OFF);
 
     configureBindings();
   }
@@ -81,7 +83,8 @@ public class RobotContainer {
     drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
 
     if (Robot.isSimulation()) {
-      driverController.start().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
+      driverController.start()
+          .onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
     }
 
     driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
@@ -89,7 +92,8 @@ public class RobotContainer {
     driverController.start().whileTrue(Commands.none());
     driverController.back().whileTrue(Commands.none());
 
-    // driverController.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+    // driverController.leftBumper().whileTrue(Commands.runOnce(drivebase::lock,
+    // drivebase).repeatedly());
     // driverController.rightBumper().onTrue(Commands.none());
 
     driverController.b().onTrue(
@@ -106,8 +110,8 @@ public class RobotContainer {
     new Trigger(driverController.rightBumper())
         .onTrue(new InstantCommand(() -> RobotControlState.setSide(Side.RIGHT)));
 
-    // new Trigger(() -> driverController.leftBumper().getAsBoolean() && driverController.rightBumper().getAsBoolean())
-    // .onTrue(new InstantCommand(() -> RobotControlState.toggleClimbEnabled()));
+    new Trigger(() -> driverController.leftBumper().getAsBoolean() && driverController.rightBumper().getAsBoolean())
+        .onTrue(new InstantCommand(() -> RobotControlState.toggleClimbEnabled()));
   }
 
   private void configureOperatorBindings() {
@@ -127,13 +131,13 @@ public class RobotContainer {
 
   private void configureLEDTriggers() {
 
-    // Trigger hasGamePiece = new Trigger(() -> intake.hasGamePiece());
-    // hasGamePiece.onTrue(new InstantCommand(() -> led.activatePattern(Pattern.GREEN)));
-    // hasGamePiece.onFalse(new InstantCommand(() -> led.deactivatePattern(Pattern.GREEN)));
+    Trigger hasGamePiece = new Trigger(() -> intake.hasGamePiece());
+    hasGamePiece.onTrue(new InstantCommand(() -> led.activatePattern(Pattern.GREEN)));
+    hasGamePiece.onFalse(new InstantCommand(() -> led.deactivatePattern(Pattern.GREEN)));
 
-    // Trigger isClimbEnabled = new Trigger(() -> RobotControlState.isClimbEnabled());
-    // isClimbEnabled.onTrue(new InstantCommand(() -> led.activatePattern(Pattern.BLUE)));
-    // isClimbEnabled.onFalse(new InstantCommand(() -> led.deactivatePattern(Pattern.BLUE)));
+    Trigger isClimbEnabled = new Trigger(() -> RobotControlState.isClimbEnabled());
+    isClimbEnabled.onTrue(new InstantCommand(() -> led.activatePattern(Pattern.BLUE)));
+    isClimbEnabled.onFalse(new InstantCommand(() -> led.deactivatePattern(Pattern.BLUE)));
   }
 
   private void configurePathPlanner() {
