@@ -71,7 +71,7 @@ public class Swerve extends SubsystemBase {
   /**
    * Enable vision odometry updates while driving.
    */
-  private final boolean visionDriveTest = false;
+  private final boolean ENABLE_VISION = false;
   /**
    * PhotonVision class to keep an accurate odometry.
    */
@@ -132,7 +132,7 @@ public class Swerve extends SubsystemBase {
     // over the internal encoder and push the offsets onto it. Throws warning if not
     // possible
 
-    if (visionDriveTest) {
+    if (ENABLE_VISION) {
       setupPhotonVision();
       // Stop the odometry thread if we are using vision that way we can synchronize
       // updates better.
@@ -167,7 +167,7 @@ public class Swerve extends SubsystemBase {
   @Override
   public void periodic() {
     // When vision is enabled we must manually update odometry in SwerveDrive
-    if (visionDriveTest) {
+    if (ENABLE_VISION) {
       swerveDrive.updateOdometry();
       vision.updatePoseEstimation(swerveDrive);
     }

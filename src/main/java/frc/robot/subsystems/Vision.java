@@ -58,19 +58,9 @@ public class Vision {
   public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(
       AprilTagFields.k2025ReefscapeAndyMark);
   /**
-   * Ambiguity defined as a value between (0,1). Used in
-   * {@link Vision#filterPose}.
-   */
-  private final double maximumAmbiguity = 0.25;
-  /**
    * Photon Vision Simulation
    */
   public VisionSystemSim visionSim;
-  /**
-   * Count of times that the odom thinks we're more than 10meters away from the
-   * april tag.
-   */
-  private double longDistangePoseEstimationCount = 0;
   /**
    * Current pose from the pose estimator using wheel odometry.
    */
@@ -142,6 +132,7 @@ public class Vision {
        */
       visionSim.update(swerveDrive.getSimulationDriveTrainPose().get());
     }
+
     for (Cameras camera : Cameras.values()) {
       Optional<EstimatedRobotPose> poseEst = getEstimatedGlobalPose(camera);
       if (poseEst.isPresent()) {
@@ -151,7 +142,6 @@ public class Vision {
             camera.curStdDevs);
       }
     }
-
   }
 
   /**
@@ -178,47 +168,6 @@ public class Vision {
           });
     }
     return poseEst;
-  }
-
-  /**
-   * Filter pose via the ambiguity and find best estimate between all of the
-   * camera's throwing out distances more than
-   * 10m for a short amount of time.
-   *
-   * @param pose Estimated robot pose.
-   * @return Could be empty if there isn't a good reading.
-   */
-  @SuppressWarnings("unused")
-  @Deprecated(since = "2024", forRemoval = true)
-  private Optional<EstimatedRobotPose> filterPose(Optional<EstimatedRobotPose> pose) {
-    if (pose.isPresent()) {
-      double bestTargetAmbiguity = 1; // 1 is max ambiguity
-      for (PhotonTrackedTarget target : pose.get().targetsUsed) {
-        double ambiguity = target.getPoseAmbiguity();
-        if (ambiguity != -1 && ambiguity < bestTargetAmbiguity) {
-          bestTargetAmbiguity = ambiguity;
-        }
-      }
-      // ambiguity to high dont use estimate
-      if (bestTargetAmbiguity > maximumAmbiguity) {
-        return Optional.empty();
-      }
-
-      // est pose is very far from recorded robot pose
-      if (PhotonUtils.getDistanceToPose(currentPose.get(), pose.get().estimatedPose.toPose2d()) > 1) {
-        longDistangePoseEstimationCount++;
-
-        // if it calculates that were 10 meter away for more than 10 times in a row its
-        // probably right
-        if (longDistangePoseEstimationCount < 10) {
-          return Optional.empty();
-        }
-      } else {
-        longDistangePoseEstimationCount = 0;
-      }
-      return pose;
-    }
-    return Optional.empty();
   }
 
   /**
@@ -314,7 +263,7 @@ public class Vision {
     /**
      * Left Camera
      */
-    LEFT_CAM("left",
+    BARGE_CAMERA("barge_camera",
         new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(30)),
         new Translation3d(Units.inchesToMeters(12.056),
             Units.inchesToMeters(10.981),
@@ -323,7 +272,7 @@ public class Vision {
     /**
      * Right Camera
      */
-    RIGHT_CAM("right",
+    PICKUP_STATION_CAMERA("pickup_station_camera",
         new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(-30)),
         new Translation3d(Units.inchesToMeters(12.056),
             Units.inchesToMeters(-10.981),
@@ -332,7 +281,7 @@ public class Vision {
     /**
      * Center Camera
      */
-    CENTER_CAM("center",
+    REEF_CAMERA("reef_camera",
         new Rotation3d(0, Units.degreesToRadians(18), 0),
         new Translation3d(Units.inchesToMeters(-4.628),
             Units.inchesToMeters(-10.687),
