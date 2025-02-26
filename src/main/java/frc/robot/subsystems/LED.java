@@ -1,62 +1,59 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotControlState;
-import frc.robot.Constants.Colors;
-import frc.robot.Constants.DIO;
+import frc.robot.Constants;
+import frc.robot.Constants.Pattern;
+import java.util.ArrayList;
+import java.util.List;
+import edu.wpi.first.wpilibj.PWM;
 
 public class LED extends SubsystemBase {
-  private final PWM blinkin;
 
-  public LED() {
-    blinkin = new PWM(DIO.BLINKIN);
-  }
+    private final PWM blinkin;
+    private final List<Pattern> activePatterns = new ArrayList<>();
 
-  // blinkin.setSpeed(pattern.getValue())
-  public void setColor(int color) {
-    blinkin.setSpeed(color);
-  }
-
-  /*
-   * HOT_PINK
-   * DARK_GREEN
-   * VIOLET
-   * TWINKLES_PARTY
-   */
-  public void setPink() {
-    setColor(Colors.HOT_PINK); // coral in
-  }
-
-  public void setGreen() {
-    setColor(Colors.DARK_GREEN); // algea in
-  }
-
-  public void setViolet() {
-    setColor(Colors.VIOLET); // coral rollers running
-  }
-
-  public void setParty() {
-    setColor(Colors.TWINKLES_PARTY);// algea rollers runng
-  }
-
-  public void turnoff() {
-    setColor(0);
-  }
-
-  @Override
-  public void periodic() {
-    if (RobotControlState.hasAlgea()) {
-      setGreen();
-    } else if (RobotControlState.hasCoral()) {
-      setPink();
-    } else {
-      turnoff();
+    public LED() {
+        blinkin = new PWM(Constants.PWM.BLINKIN);
     }
 
-  }
+    /**
+     * Adds a pattern to the stack and updates the LED.
+     */
+    public void activatePattern(Pattern pattern) {
+        if (!activePatterns.contains(pattern)) {
+            activePatterns.add(pattern);
+            updateLED();
+        }
+    }
+
+    /**
+     * Removes a pattern from the stack and updates the LED.
+     */
+    public void deactivatePattern(Pattern pattern) {
+        activePatterns.remove(pattern);
+        updateLED();
+    }
+
+    /**
+     * Updates the LED based on the most recently activated pattern.
+     */
+    private void updateLED() {
+        if (activePatterns.isEmpty()) {
+            setPattern(Pattern.OFF); // Turn off if no active patterns
+        } else {
+            setPattern(activePatterns.get(activePatterns.size() - 1)); // Most recent pattern
+        }
+    }
+
+    /**
+     * Sets the LED to the specified pattern.
+     */
+    public void setPattern(Pattern pattern) {
+        blinkin.setSpeed(pattern.getValue());
+    }
+
+    @Override
+    public void periodic() {
+
+    }
 }
