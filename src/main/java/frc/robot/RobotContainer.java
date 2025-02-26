@@ -10,8 +10,6 @@ import frc.robot.commands.IntakeStationPickup;
 import frc.robot.commands.ProcessorScore;
 import frc.robot.commands.ReefAlgeaLevel1;
 import frc.robot.commands.ReefAlgeaLevel2;
-import frc.robot.commands.ReefAlgeaLevel3;
-import frc.robot.commands.ReefAlgeaLevel4;
 import frc.robot.commands.ReefScoreLevel1;
 import frc.robot.commands.ReefScoreLevel2;
 import frc.robot.commands.ReefScoreLevel3;
@@ -60,26 +58,29 @@ public class RobotContainer {
   private final LED led = new LED();
   private final Wrist wrist = new Wrist();
 
-  // Commands
+  // Debug only
   private final IntakeAlgae intakeAlgae = new IntakeAlgae(intake);
   private final IntakeCoral intakeCoral = new IntakeCoral(intake);
   private final IntakeScoreAlgae intakeScoreAlgae = new IntakeScoreAlgae(intake);
   private final IntakeScoreCoral intakeScoreCoral = new IntakeScoreCoral(intake);
-  private final BargeScore bargeScore = new BargeScore(elevator, wrist, intake);
-  private final CoralFloorPickup coralFloorPickup = new CoralFloorPickup(elevator, wrist, intake);
-  private final IntakeStationPickup intakeStationPickup = new IntakeStationPickup(elevator, wrist, intake);
+  // End Debug
 
-  @SuppressWarnings("unused")
-  private final ProcessorScore processorScore = new ProcessorScore(wrist, intake, elevator);
+  // Commands
+  private final BargeScore bargeScore = new BargeScore(elevator, wrist, intake);
+  private final IntakeStationPickup intakeStationPickup = new IntakeStationPickup(elevator, wrist, intake);
 
   private final ReefAlgeaLevel1 reefAlgeaLevel1 = new ReefAlgeaLevel1(elevator, wrist, intake);
   private final ReefAlgeaLevel2 reefAlgeaLevel2 = new ReefAlgeaLevel2(elevator, wrist, intake);
-  private final ReefAlgeaLevel3 reefAlgeaLevel3 = new ReefAlgeaLevel3(elevator, wrist, intake);
-  private final ReefAlgeaLevel4 reefAlgeaLevel4 = new ReefAlgeaLevel4(elevator, wrist, intake);
+
   private final ReefScoreLevel1 reefScoreLevel1 = new ReefScoreLevel1(elevator, wrist, intake);
   private final ReefScoreLevel2 reefScoreLevel2 = new ReefScoreLevel2(elevator, wrist, intake);
   private final ReefScoreLevel3 reefScoreLevel3 = new ReefScoreLevel3(elevator, wrist, intake);
   private final ReefScoreLevel4 reefScoreLevel4 = new ReefScoreLevel4(elevator, wrist, intake);
+
+  private final ProcessorScore processorScore = new ProcessorScore(wrist, intake, elevator);
+
+  // Auto only
+  private final CoralFloorPickup coralFloorPickup = new CoralFloorPickup(elevator, wrist, intake);
 
   // Drive commands
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
@@ -102,7 +103,7 @@ public class RobotContainer {
     DriverStation.startDataLog(DataLogManager.getLog());
 
     // Set default led color during initialization
-    led.setPattern(Pattern.OFF);
+    led.setPattern(Pattern.OCEAN_RAINBOW);
 
     configureBindings();
   }
@@ -115,7 +116,6 @@ public class RobotContainer {
   }
 
   private void configureDriverBindings() {
-
     // Drive commands
     drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
 
@@ -123,15 +123,6 @@ public class RobotContainer {
       driverController.start()
           .onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
     }
-
-    driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-    driverController.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-    driverController.start().whileTrue(Commands.none());
-    driverController.back().whileTrue(Commands.none());
-
-    // driverController.leftBumper().whileTrue(Commands.runOnce(drivebase::lock,
-    // drivebase).repeatedly());
-    // driverController.rightBumper().onTrue(Commands.none());
 
     driverController.b().onTrue(
         new InstantCommand(() -> {
@@ -141,33 +132,74 @@ public class RobotContainer {
           }
         }));
 
-    new Trigger(driverController.leftBumper())
-        .onTrue(new InstantCommand(() -> RobotControlState.setSide(Side.LEFT)));
+    driverController.a().onTrue(getSelectedCommand());
+    driverController.leftBumper().and(driverController.rightBumper())
+        .onTrue(new InstantCommand(() -> RobotControlState.toggleClimb()));
+  }
 
-    new Trigger(driverController.rightBumper())
-        .onTrue(new InstantCommand(() -> RobotControlState.setSide(Side.RIGHT)));
-
-    new Trigger(() -> driverController.leftBumper().getAsBoolean() && driverController.rightBumper().getAsBoolean())
-        .onTrue(new InstantCommand(() -> RobotControlState.toggleClimbEnabled()));
+  public Command getSelectedCommand() {
+    if (!intake.hasGamePiece() && !RobotControlState.isAlgaePickup()) {
+      // This can be simplified in the future by checking our location
+      return intakeStationPickup;
+    } else if (intake.hasAlgae()) {
+      return bargeScore;
+    } else if (RobotControlState.isProcessorScore()) {
+      return processorScore;
+    } else if (RobotControlState.isClimbEnabled()) {
+      return processorScore;
+    } else if (RobotControlState.isAlgaePickup()) {
+      switch (RobotControlState.getScoringLevel()) {
+        case LEVEL_1:
+          return reefAlgeaLevel1;
+        case LEVEL_2:
+          return reefAlgeaLevel2;
+        default:
+          return null;
+      }
+    } else {
+      switch (RobotControlState.getScoringLevel()) {
+        case LEVEL_1:
+          return reefScoreLevel1;
+        case LEVEL_2:
+          return reefScoreLevel2;
+        case LEVEL_3:
+          return reefScoreLevel3;
+        case LEVEL_4:
+          return reefScoreLevel4;
+        default:
+          return null;
+      }
+    }
   }
 
   private void configureOperatorBindings() {
     // Bind operator buttons to set scoring levels
-    new Trigger(operatorController.povDown())
+    operatorController.povDown()
         .onTrue(new InstantCommand(() -> RobotControlState.setScoringLevel(ScoringLevel.LEVEL_1)));
 
-    new Trigger(operatorController.povLeft())
+    operatorController.povLeft()
         .onTrue(new InstantCommand(() -> RobotControlState.setScoringLevel(ScoringLevel.LEVEL_2)));
 
-    new Trigger(operatorController.povUp())
+    operatorController.povUp()
         .onTrue(new InstantCommand(() -> RobotControlState.setScoringLevel(ScoringLevel.LEVEL_3)));
 
-    new Trigger(operatorController.povRight())
+    operatorController.povRight()
         .onTrue(new InstantCommand(() -> RobotControlState.setScoringLevel(ScoringLevel.LEVEL_4)));
+
+    operatorController.x()
+        .onTrue(new InstantCommand(() -> RobotControlState.setSide(Side.LEFT)));
+
+    operatorController.b()
+        .onTrue(new InstantCommand(() -> RobotControlState.setSide(Side.RIGHT)));
+
+    operatorController.y()
+        .onTrue(new InstantCommand(() -> RobotControlState.setProcessor()));
+
+    operatorController.a()
+        .onTrue(new InstantCommand(() -> RobotControlState.setAlgae()));
   }
 
   private void configureLEDTriggers() {
-
     Trigger hasGamePiece = new Trigger(() -> intake.hasGamePiece());
     hasGamePiece.onTrue(new InstantCommand(() -> led.activatePattern(Pattern.GREEN)));
     hasGamePiece.onFalse(new InstantCommand(() -> led.deactivatePattern(Pattern.GREEN)));
@@ -188,11 +220,11 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("coralFloorPickup", coralFloorPickup);
     NamedCommands.registerCommand("intakeStationPickup", intakeStationPickup);
-    
+
+    NamedCommands.registerCommand("processorScore", processorScore);
+
     NamedCommands.registerCommand("reefAlgeaLevel1", reefAlgeaLevel1);
     NamedCommands.registerCommand("reefAlgeaLevel2", reefAlgeaLevel2);
-    NamedCommands.registerCommand("reefAlgeaLevel3", reefAlgeaLevel3);
-    NamedCommands.registerCommand("reefAlgeaLevel4", reefAlgeaLevel4);
 
     NamedCommands.registerCommand("reefScoreLevel1", reefScoreLevel1);
     NamedCommands.registerCommand("reefScoreLevel2", reefScoreLevel2);
@@ -209,7 +241,7 @@ public class RobotContainer {
   }
 
   public void setDriveMode() {
-    
+
   }
 
   public void setMotorBrake(boolean brake) {

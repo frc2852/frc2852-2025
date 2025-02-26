@@ -13,7 +13,6 @@ import frc.robot.Constants.PoseMappings;
 import frc.robot.Constants.ScoringLevel;
 import frc.robot.Constants.ScoringZone;
 import frc.robot.Constants.Side;
-import frc.robot.data.RobotControlStateSendable;
 
 public class RobotControlState {
 
@@ -25,22 +24,27 @@ public class RobotControlState {
   private static boolean climbEnabled = false;
   private static Translation2d allianceReef = null;
 
+  private static boolean algaePickup = false;
+  private static boolean processorScore = false;
+
   // Angle offset to align with the opposite side of the scoring table.
   public static double angleOffset = 90;
 
-  private static final RobotControlStateSendable robotControlStateSendable = new RobotControlStateSendable();
+  // private static final RobotControlStateSendable robotControlStateSendable = new RobotControlStateSendable();
 
   private RobotControlState() {
   }
 
   public static void periodic() {
-    SmartDashboard.putData("Robot Control State", robotControlStateSendable);
+    // SmartDashboard.putData("Robot Control State", robotControlStateSendable);
 
     // Add boolean indicators for each scoring level.
     SmartDashboard.putBoolean("Level1", scoringLevel == ScoringLevel.LEVEL_1);
     SmartDashboard.putBoolean("Level2", scoringLevel == ScoringLevel.LEVEL_2);
     SmartDashboard.putBoolean("Level3", scoringLevel == ScoringLevel.LEVEL_3);
     SmartDashboard.putBoolean("Level4", scoringLevel == ScoringLevel.LEVEL_4);
+    SmartDashboard.putBoolean("Algae Pickup", algaePickup);
+    SmartDashboard.putBoolean("Processor Score", processorScore);
 
     SmartDashboard.putString("Zone", getAllianceZone());
     SmartDashboard.putBoolean("ClimbEnabled", climbEnabled);
@@ -52,6 +56,11 @@ public class RobotControlState {
   }
 
   public static void setScoringLevel(ScoringLevel newScoringLevel) {
+    // If the operator selects a new scoring level, reset the barge and processor
+    // state.
+    algaePickup = false;
+    processorScore = false;
+
     scoringLevel = newScoringLevel;
   }
 
@@ -60,7 +69,27 @@ public class RobotControlState {
   }
 
   public static void setSide(Side newSide) {
+    // If the operator selects a side, reset the barge and processor state.
+    algaePickup = false;
+    processorScore = false;
+
     side = newSide;
+  }
+
+  public static void setAlgae() {
+    algaePickup = true;
+  }
+
+  public static boolean isAlgaePickup() {
+    return algaePickup;
+  }
+
+  public static void setProcessor() {
+    processorScore = true;
+  }
+
+  public static boolean isProcessorScore() {
+    return processorScore;
   }
 
   /**
@@ -114,7 +143,7 @@ public class RobotControlState {
     return climbEnabled;
   }
 
-  public static void toggleClimbEnabled() {
+  public static void toggleClimb() {
     climbEnabled = !climbEnabled;
   }
 
