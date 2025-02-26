@@ -4,6 +4,22 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.Pattern;
 import frc.robot.Constants.ScoringLevel;
 import frc.robot.Constants.Side;
+import frc.robot.commands.BargeScore;
+import frc.robot.commands.CoralFloorPickup;
+import frc.robot.commands.IntakeStationPickup;
+import frc.robot.commands.ProcessorScore;
+import frc.robot.commands.ReefAlgeaLevel1;
+import frc.robot.commands.ReefAlgeaLevel2;
+import frc.robot.commands.ReefAlgeaLevel3;
+import frc.robot.commands.ReefAlgeaLevel4;
+import frc.robot.commands.ReefScoreLevel1;
+import frc.robot.commands.ReefScoreLevel2;
+import frc.robot.commands.ReefScoreLevel3;
+import frc.robot.commands.ReefScoreLevel4;
+import frc.robot.commands.intake.IntakeAlgae;
+import frc.robot.commands.intake.IntakeCoral;
+import frc.robot.commands.intake.IntakeScoreAlgae;
+import frc.robot.commands.intake.IntakeScoreCoral;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
@@ -15,6 +31,8 @@ import swervelib.SwerveInputStream;
 import java.io.File;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
@@ -43,6 +61,25 @@ public class RobotContainer {
   private final Wrist wrist = new Wrist();
 
   // Commands
+  private final IntakeAlgae intakeAlgae = new IntakeAlgae(intake);
+  private final IntakeCoral intakeCoral = new IntakeCoral(intake);
+  private final IntakeScoreAlgae intakeScoreAlgae = new IntakeScoreAlgae(intake);
+  private final IntakeScoreCoral intakeScoreCoral = new IntakeScoreCoral(intake);
+  private final BargeScore bargeScore = new BargeScore(elevator, wrist, intake);
+  private final CoralFloorPickup coralFloorPickup = new CoralFloorPickup(elevator, wrist, intake);
+  private final IntakeStationPickup intakeStationPickup = new IntakeStationPickup(elevator, wrist, intake);
+
+  @SuppressWarnings("unused")
+  private final ProcessorScore processorScore = new ProcessorScore(wrist, intake, elevator);
+
+  private final ReefAlgeaLevel1 reefAlgeaLevel1 = new ReefAlgeaLevel1(elevator, wrist, intake);
+  private final ReefAlgeaLevel2 reefAlgeaLevel2 = new ReefAlgeaLevel2(elevator, wrist, intake);
+  private final ReefAlgeaLevel3 reefAlgeaLevel3 = new ReefAlgeaLevel3(elevator, wrist, intake);
+  private final ReefAlgeaLevel4 reefAlgeaLevel4 = new ReefAlgeaLevel4(elevator, wrist, intake);
+  private final ReefScoreLevel1 reefScoreLevel1 = new ReefScoreLevel1(elevator, wrist, intake);
+  private final ReefScoreLevel2 reefScoreLevel2 = new ReefScoreLevel2(elevator, wrist, intake);
+  private final ReefScoreLevel3 reefScoreLevel3 = new ReefScoreLevel3(elevator, wrist, intake);
+  private final ReefScoreLevel4 reefScoreLevel4 = new ReefScoreLevel4(elevator, wrist, intake);
 
   // Drive commands
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
@@ -143,7 +180,24 @@ public class RobotContainer {
   private void configurePathPlanner() {
 
     // Register commands
-    // NamedCommands.registerCommand("CoralFloorPickup", coralFloorPickup);
+    NamedCommands.registerCommand("intakeAlgae", intakeAlgae);
+    NamedCommands.registerCommand("intakeCoral", intakeCoral);
+    NamedCommands.registerCommand("intakeScoreAlgae", intakeScoreAlgae);
+    NamedCommands.registerCommand("intakeScoreCoral", intakeScoreCoral);
+    NamedCommands.registerCommand("bargeScore", bargeScore);
+
+    NamedCommands.registerCommand("coralFloorPickup", coralFloorPickup);
+    NamedCommands.registerCommand("intakeStationPickup", intakeStationPickup);
+    
+    NamedCommands.registerCommand("reefAlgeaLevel1", reefAlgeaLevel1);
+    NamedCommands.registerCommand("reefAlgeaLevel2", reefAlgeaLevel2);
+    NamedCommands.registerCommand("reefAlgeaLevel3", reefAlgeaLevel3);
+    NamedCommands.registerCommand("reefAlgeaLevel4", reefAlgeaLevel4);
+
+    NamedCommands.registerCommand("reefScoreLevel1", reefScoreLevel1);
+    NamedCommands.registerCommand("reefScoreLevel2", reefScoreLevel2);
+    NamedCommands.registerCommand("reefScoreLevel3", reefScoreLevel3);
+    NamedCommands.registerCommand("reefScoreLevel4", reefScoreLevel4);
 
     // Build an auto chooser
     autoChooser = AutoBuilder.buildAutoChooser("Example");
@@ -155,7 +209,7 @@ public class RobotContainer {
   }
 
   public void setDriveMode() {
-    configureBindings();
+    
   }
 
   public void setMotorBrake(boolean brake) {

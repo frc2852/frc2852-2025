@@ -131,18 +131,19 @@ public final class Constants {
     public static final int WRIST_MAX_VELOCITY = 6000;
     public static final int WRIST_MAX_ACCELERATION = 6000;
     public static final int WRIST_ALLOWED_CLOSED_LOOP_ERROR = 1;
-    public static final int WRIST_DRIVE_POSITION = 1;
-    public static final int WRIST_REEF_LEVEL_1 = 2;
-    public static final int WRIST_REEF_LEVEL_2 = 3;
-    public static final int WRIST_REEF_LEVEL_3 = 4;
-    public static final int WRIST_REEF_LEVEL_4 = 5;
-    public static final int WRIST_ALGEA_LEVEL_1 = 6;
-    public static final int WRIST_ALGEA_LEVEL_2 = 7;
-    public static final int WRIST_ALGEA_LEVEL_3 = 8;
-    public static final int WRIST_ALGEA_LEVEL_4 = 9;
-    public static final int WRIST_INTAKE_STATION = 10;
-    public static final int WRIST_BARGE = 11;
-    public static final int WRIST_PROCESSOR = 11;
+    public static final int WRIST_DRIVE_POSITION = 0;
+    public static final int WRIST_REEF_LEVEL_1 = 0;
+    public static final int WRIST_REEF_LEVEL_2 = 0;
+    public static final int WRIST_REEF_LEVEL_3 = 0;
+    public static final int WRIST_REEF_LEVEL_4 = 0;
+    public static final int WRIST_ALGEA_LEVEL_1 = 0;
+    public static final int WRIST_ALGEA_LEVEL_2 = 0;
+    public static final int WRIST_ALGEA_LEVEL_3 = 0;
+    public static final int WRIST_ALGEA_LEVEL_4 = 0;
+    public static final int WRIST_INTAKE_STATION = 0;
+    public static final int WRIST_BARGE = 0;
+    public static final int WRIST_PROCESSOR = 0;
+    public static final int WRIST_FLOOR_PICKUP = 0;
 
     // Climber values
     public static final int CLIMBER_POSITION_CONVERTION_FACTOR = 1;
@@ -151,7 +152,7 @@ public final class Constants {
     public static final int CLIMBER_MAX_ACCELERATION = 6000;
     public static final int CLIMBER_ALLOWED_CLOSED_LOOP_ERROR = 2;
     public static final int CLIMBER_BOTTOM_POSITION = 0;
-    public static final int CLIMBER_CLIMBING_POSITION = 1;
+    public static final int CLIMBER_CLIMBING_POSITION = 0;
 
     // Elevator values
     public static final int ELEVATOR_POSITION_CONVERSION_FACTOR = 1;
