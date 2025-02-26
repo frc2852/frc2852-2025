@@ -35,6 +35,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -106,6 +107,11 @@ public class RobotContainer {
     // Start data logger
     DataLogManager.start();
     DriverStation.startDataLog(DataLogManager.getLog());
+
+    // Port forwarding
+    PortForwarder.add(5800, "barge-photon.local", 5800);
+    PortForwarder.add(5800, "pickup-station-photon.local", 5800);
+    PortForwarder.add(5800, "reef-photon.local", 5800);
 
     // Set default led color during initialization
     led.setPattern(Pattern.OCEAN_RAINBOW);
