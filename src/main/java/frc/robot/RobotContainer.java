@@ -5,6 +5,8 @@ import frc.robot.Constants.Pattern;
 import frc.robot.Constants.ScoringLevel;
 import frc.robot.Constants.Side;
 import frc.robot.commands.BargeScore;
+import frc.robot.commands.ClimbDrivePosition;
+import frc.robot.commands.ClimbUp;
 import frc.robot.commands.CoralFloorPickup;
 import frc.robot.commands.IntakeStationPickup;
 import frc.robot.commands.ProcessorScore;
@@ -79,6 +81,9 @@ public class RobotContainer {
 
   private final ProcessorScore processorScore = new ProcessorScore(wrist, intake, elevator);
 
+  private final ClimbDrivePosition climbDrivePosition = new ClimbDrivePosition(climb);
+  private final ClimbUp climbUp = new ClimbUp(climb);
+
   // Auto only
   private final CoralFloorPickup coralFloorPickup = new CoralFloorPickup(elevator, wrist, intake);
 
@@ -133,6 +138,8 @@ public class RobotContainer {
         }));
 
     driverController.a().onTrue(getSelectedCommand());
+    driverController.y().onTrue(climbDrivePosition);
+    
     driverController.leftBumper().and(driverController.rightBumper())
         .onTrue(new InstantCommand(() -> RobotControlState.toggleClimb()));
   }
@@ -146,7 +153,7 @@ public class RobotContainer {
     } else if (RobotControlState.isProcessorScore()) {
       return processorScore;
     } else if (RobotControlState.isClimbEnabled()) {
-      return processorScore;
+      return climbUp;
     } else if (RobotControlState.isAlgaePickup()) {
       switch (RobotControlState.getScoringLevel()) {
         case LEVEL_1:

@@ -151,7 +151,8 @@ public final class Constants {
     public static final int CLIMBER_MAX_VELOCITY = 6000;
     public static final int CLIMBER_MAX_ACCELERATION = 6000;
     public static final int CLIMBER_ALLOWED_CLOSED_LOOP_ERROR = 2;
-    public static final int CLIMBER_BOTTOM_POSITION = 0;
+
+    public static final int CLIMBER_DRIVE_POSITION = 0;
     public static final int CLIMBER_CLIMBING_POSITION = 0;
 
     // Elevator values
