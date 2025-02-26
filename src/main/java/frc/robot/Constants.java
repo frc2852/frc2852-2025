@@ -132,7 +132,7 @@ public final class Constants {
     public static final int WRIST_MAX_VELOCITY = 6000;
     public static final int WRIST_MAX_ACCELERATION = 6000;
     public static final int WRIST_ALLOWED_CLOSED_LOOP_ERROR = 1;
-    public static final int BOTTOM_POSITION = 1;
+    public static final int WRIST_DRIVE_POSITION = 1;
     public static final int WRIST_REEF_LEVEL_1 = 2;
     public static final int WRIST_REEF_LEVEL_2 = 3;
     public static final int WRIST_REEF_LEVEL_3 = 4;
@@ -141,7 +141,7 @@ public final class Constants {
     public static final int WRIST_ALGEA_LEVEL_2 = 7;
     public static final int WRIST_ALGEA_LEVEL_3 = 8;
     public static final int WRIST_ALGEA_LEVEL_4 = 9;
-    public static final int WRIST_HP_STATION = 10;
+    public static final int WRIST_INTAKE_STATION = 10;
     public static final int WRIST_BARGE = 11;
     public static final int WRIST_PROCESSOR = 11;
 
@@ -160,6 +160,7 @@ public final class Constants {
     public static final int ELEVATOR_CLOSED_LOOP = 1;
     public static final int ELEVATOR_MAX_ACCELERATION = 6000;
     public static final int ELEVATOR_MAX_VELOCITY = 6000;
+    public static final int ELEVATOR_DRIVE_POSITION = 0;
     public static final int ELEVATOR_REEF_LEVEL_1 = 0;
     public static final int ELEVATOR_REEF_LEVEL_2 = 0;
     public static final int ELEVATOR_REEF_LEVEL_3 = 0;
@@ -168,7 +169,7 @@ public final class Constants {
     public static final int ELEVATOR_ALGEA_LEVEL_2 = 0;
     public static final int ELEVATOR_ALGEA_LEVEL_3 = 0;
     public static final int ELEVATOR_ALGEA_LEVEL_4 = 0;
-    public static final int ELEVATOR_HP = 0;
+    public static final int ELEVATOR_INTAKE_STATION = 0;
     public static final int ELEVATOR_BARGE = 0;
   }
 

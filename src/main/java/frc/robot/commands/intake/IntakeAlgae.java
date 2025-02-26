@@ -32,4 +32,3 @@ public class IntakeAlgae extends Command {
     intake.stop();
   }
 }
-

@@ -14,15 +14,24 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Wrist;
 
-public class BargeScore extends SequentialCommandGroup {
-  // change the reefscore 1 to barge
-  public BargeScore(Elevator elevator, Wrist wrist, Intake intake) {
+/**
+ * CoralPickupPosition
+ * Workflow:
+ * 
+ * Move Elevator
+ * Set wrist position
+ * Validate we are correct position
+ * Intake the Coral (intake)
+ * Set elevator and wrist back to drive position
+ */
+public class IntakeStationPickup extends SequentialCommandGroup {
+  public IntakeStationPickup(Elevator elevator, Wrist wrist, Intake intake) {
     addCommands(
         new ParallelCommandGroup(
-            new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_BARGE), elevator),
-            new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_BARGE), wrist)),
+            new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_INTAKE_STATION), elevator),
+            new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_INTAKE_STATION), wrist)),
         new WaitUntilCommand(() -> elevator.isAtPosition() && wrist.isAtPosition()),
-        new InstantCommand(() -> intake.reverseAlgae()),
+        new InstantCommand(() -> intake.intakeCoral()),
         new WaitCommand(2),
         new InstantCommand(() -> intake.stop()),
         new ParallelCommandGroup(
