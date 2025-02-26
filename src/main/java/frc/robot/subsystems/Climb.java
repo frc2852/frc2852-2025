@@ -17,68 +17,65 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CanbusId;
 import frc.robot.Constants.MotorSetPoint;
 
-/* Channel: 0,1
-climberUp
-climberDown  */
 public class Climb extends SubsystemBase {
 
-    private final SparkFlex motor;
-    private final SparkClosedLoopController controller;
-    private final RelativeEncoder encoder;
-    private final SparkFlexConfig motorConfig;
+  private final SparkFlex motor;
+  private final SparkClosedLoopController controller;
+  private final RelativeEncoder encoder;
+  private final SparkFlexConfig motorConfig;
 
-    private double targetPosition;
-    private double p = 0.4;
-    private double i = 0;
-    private double d = 0;
-    private double manualPosition;
+  private double targetPosition;
+  private double p = 0.4;
+  private double i = 0;
+  private double d = 0;
+  private double manualPosition;
 
-    public Climb() {
-        motor = new SparkFlex(CanbusId.CLIMBER_MOTOR, MotorType.kBrushless);
-        controller = motor.getClosedLoopController();
+  public Climb() {
+    motor = new SparkFlex(CanbusId.CLIMBER_MOTOR, MotorType.kBrushless);
+    controller = motor.getClosedLoopController();
 
-        // Configure encoder
-        encoder = motor.getEncoder();
+    // Configure encoder
+    encoder = motor.getEncoder();
 
-        // Configure motor properties
-        motorConfig = new SparkFlexConfig();
-        motorConfig.idleMode(IdleMode.kBrake);
-        motorConfig.inverted(false);
+    // Configure motor properties
+    motorConfig = new SparkFlexConfig();
+    motorConfig.idleMode(IdleMode.kBrake);
+    motorConfig.inverted(false);
 
-        // Configure encoder conversion factors
-        motorConfig.encoder
-                .positionConversionFactor(MotorSetPoint.CLIMBER_POSITION_CONVERTION_FACTOR)
-                .velocityConversionFactor(MotorSetPoint.CLIMBER_VELOCITY_CONVERTION_FACTOR);
+    // Configure encoder conversion factors
+    motorConfig.encoder
+        .positionConversionFactor(MotorSetPoint.CLIMBER_POSITION_CONVERTION_FACTOR)
+        .velocityConversionFactor(MotorSetPoint.CLIMBER_VELOCITY_CONVERTION_FACTOR);
 
-        // Configure PID
-        motorConfig.closedLoop
-                .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-                .p(p)
-                .i(i)
-                .d(d)
-                .outputRange(-1, 1);
+    // Configure PID
+    motorConfig.closedLoop
+        .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+        .p(p)
+        .i(i)
+        .d(d)
+        .outputRange(-1, 1);
 
-        motorConfig.closedLoop.maxMotion
-                .maxVelocity(MotorSetPoint.CLIMBER_MAX_VELOCITY)
-                .maxAcceleration(MotorSetPoint.CLIMBER_MAX_ACCELERATION)
-                .allowedClosedLoopError(MotorSetPoint.CLIMBER_ALLOWED_CLOSED_LOOP_ERROR);
+    motorConfig.closedLoop.maxMotion
+        .maxVelocity(MotorSetPoint.CLIMBER_MAX_VELOCITY)
+        .maxAcceleration(MotorSetPoint.CLIMBER_MAX_ACCELERATION)
+        .allowedClosedLoopError(MotorSetPoint.CLIMBER_ALLOWED_CLOSED_LOOP_ERROR);
 
-        motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        SmartDashboard.putNumber("Climber/P", p);
-        SmartDashboard.putNumber("Climber/I", i);
-        SmartDashboard.putNumber("Climber/D", d);
-        SmartDashboard.putNumber("Climber/ManualPosition", manualPosition);
-    }
+    SmartDashboard.putNumber("Climber/P", p);
+    SmartDashboard.putNumber("Climber/I", i);
+    SmartDashboard.putNumber("Climber/D", d);
+    SmartDashboard.putNumber("Climber/ManualPosition", manualPosition);
+  }
 
-    public void climberUp() {
-        targetPosition = MotorSetPoint.CLIMBER_CLIMBING_POSITION;
-        controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
-    }
+  public void climberUp() {
+    targetPosition = MotorSetPoint.CLIMBER_CLIMBING_POSITION;
+    controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
+  }
 
-    public void climberDown() {
-        targetPosition = MotorSetPoint.CLIMBER_BOTTOM_POSITION;
-        controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
-    }
+  public void climberDown() {
+    targetPosition = MotorSetPoint.CLIMBER_BOTTOM_POSITION;
+    controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
+  }
 
 }

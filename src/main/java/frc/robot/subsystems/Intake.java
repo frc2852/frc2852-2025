@@ -47,7 +47,6 @@ public class Intake extends SubsystemBase {
     motorConfig.encoder
         .positionConversionFactor(MotorSetPoint.INTAKE_POSITION_CONVERTION_FACTOR)
         .velocityConversionFactor(MotorSetPoint.INTAKE_VELOCITY_CONVERTION_FACTOR);
-        
 
     // Configure PID
     motorConfig.closedLoop
