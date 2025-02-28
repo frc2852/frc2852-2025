@@ -19,10 +19,7 @@ import frc.robot.commands.ReefAlgeaLevel4;
 import frc.robot.commands.BargeScore;
 import frc.robot.commands.CoralPickUPPosition;
 import frc.robot.commands.HSPickUp;
-<<<<<<< Updated upstream
-=======
 import frc.robot.commands.ClimbDown;
->>>>>>> Stashed changes
 import frc.robot.commands.ProcessorScore;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Elevator;
@@ -58,20 +55,12 @@ public class RobotContainer {
     private final Elevator elevator = new Elevator();
     private final Intake intake = new Intake();
 
-<<<<<<< Updated upstream
-    // Commands
-    private final BargeScore bargeScore = new BargeScore(elevator, wrist, intake);
-    private final ProcessorScore processorScore = new ProcessorScore(wrist, intake, elevator);
-    private final HSPickUp hsPickUp = new HSPickUp(elevator, wrist, intake);
-    private final CoralPickUPPosition coralPickUpPosition = new CoralPickUPPosition(elevator, wrist, intake);
-=======
   // Commands
   private final BargeScore bargeScore = new BargeScore(elevator, wrist, intake);
   private final ProcessorScore processorScore = new ProcessorScore(wrist, intake, elevator);
   private final ClimbDown cageClimb = new ClimbDown(climb);
   private final HSPickUp hsPickUp = new HSPickUp(elevator, wrist, intake);
   private final CoralPickUPPosition coralPickUpPosition = new CoralPickUPPosition(elevator, wrist, intake);
->>>>>>> Stashed changes
 
     private final ReefScoreLevel1 reefScoreLevel1 = new ReefScoreLevel1(elevator, wrist, intake);
     private final ReefScoreLevel2 reefScoreLevel2 = new ReefScoreLevel2(elevator, wrist, intake);
