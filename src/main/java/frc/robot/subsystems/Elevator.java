@@ -97,7 +97,7 @@ public class Elevator extends SubsystemBase {
         controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
     }
 
-    public void gotToHPStation() {
+    public void goToHPStation() {
         targetPosition = MotorSetPoint.ELEVATOR_HP;
         controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
     }

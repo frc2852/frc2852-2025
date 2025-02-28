@@ -27,8 +27,8 @@ public class CoralPickUPPosition extends SequentialCommandGroup {
     public CoralPickUPPosition(Elevator elevator, Wrist wrist, Intake intake) {
         addCommands(
                 new ParallelCommandGroup(
-                        new InstantCommand(() -> elevator.gotToHPStation(), elevator),
-                        new InstantCommand(() -> wrist.gotToHPStation(), wrist)),
+                        new InstantCommand(() -> elevator.goToBottom(), elevator),
+                        new InstantCommand(() -> wrist.goToBottom(), wrist)),
                 new WaitUntilCommand(() -> elevator.isAtPosition() && wrist.isAtPosition()),
                 new InstantCommand(() -> intake.reverseIntake()),
                 new WaitCommand(2),

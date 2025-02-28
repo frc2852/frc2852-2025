@@ -45,10 +45,30 @@ public class RobotControlState {
 
   public static void setSide(Side newSide) {
     side = newSide;
+    setAlgea(false);
+    setProcessor(false);
   }
 
   public static void setScoringLevel(ScoringLevel newScoringLevel) {
     scoringLevel = newScoringLevel;
+    setAlgea(false);
+    setProcessor(false);
+  }
+
+  public static void setProcessor(boolean b) {
+    setProcessor(true);
+  }
+
+  public static void getProcessor(boolean b) {
+    getProcessor(b);
+  }
+
+  public static void setAlgea(boolean b) {
+    setAlgea(true);
+  }
+
+  public static void getAlgea(boolean b) {
+    getAlgea(b);
   }
 
   public static void calculateArea(Translation2d p1, Translation2d p2, Translation2d p3) {

@@ -17,8 +17,8 @@ public class HSPickUp extends SequentialCommandGroup {
   public HSPickUp(Elevator elevator, Wrist wrist, Intake intake) {
     addCommands(
         new ParallelCommandGroup(
-            new InstantCommand(() -> elevator.gotToHPStation(), elevator),
-            new InstantCommand(() -> wrist.gotToHPStation(), wrist)),
+            new InstantCommand(() -> elevator.goToHPStation(), elevator),
+            new InstantCommand(() -> wrist.goToHPStation(), wrist)),
         new WaitUntilCommand(() -> elevator.isAtPosition() && wrist.isAtPosition()),
         new InstantCommand(() -> intake.runIntake()),
         new WaitCommand(2),
