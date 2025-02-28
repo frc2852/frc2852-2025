@@ -62,6 +62,24 @@ public class RobotControlState {
     processorScore = false;
 
     scoringLevel = newScoringLevel;
+    setAlgea(false);
+    setProcessor(false);
+  }
+
+  public static void setProcessor(boolean b) {
+    setProcessor(true);
+  }
+
+  public static void getProcessor(boolean b) {
+    getProcessor(b);
+  }
+
+  public static void setAlgea(boolean b) {
+    setAlgea(true);
+  }
+
+  public static void getAlgea(boolean b) {
+    getAlgea(b);
   }
 
   public static Side getSide() {

@@ -105,9 +105,10 @@ public final class Constants {
 
   public static class CanbusId {
     public static final int INTAKE_MOTOR = 10;
-    public static final int WRIST_MOTOR = 11;
+    public static final int WRIST_MOTOR = 14;
     public static final int ELEVATOR_MOTOR = 12;
     public static final int CLIMBER_MOTOR = 13;
+    public static final int ARM_MOTOR =11;
   }
 
   public static class MotorSetPoint {
@@ -145,11 +146,30 @@ public final class Constants {
     public static final int WRIST_PROCESSOR = 0;
     public static final int WRIST_FLOOR_PICKUP = 0;
 
-    // Climber values
-    public static final int CLIMBER_POSITION_CONVERTION_FACTOR = 1;
-    public static final int CLIMBER_VELOCITY_CONVERTION_FACTOR = 1;
-    public static final int CLIMBER_MAX_VELOCITY = 6000;
-    public static final int CLIMBER_MAX_ACCELERATION = 6000;
+    // Arm values 
+    public static final int ARM_POSITION_CONVERTION_FACTOR = 0;
+    public static final int ARM_VELOCITY_CONVERTION_FACTOR = 0;
+    public static final int ARM_MAX_VELOCITY = 0;
+    public static final int ARM_MAX_ACCELERATION = 0;
+    public static final int ARM_ALLOWED_CLOSED_LOOP_ERROR = 2;
+    public static final int ARM_BOTTOM_POSITION = 1;
+    public static final int ARM_REEF_LEVEL_1 = 2;
+    public static final int ARM_REEF_LEVEL_2 = 3;
+    public static final int ARM_REEF_LEVEL_3 = 4;
+    public static final int ARM_REEF_LEVEL_4 = 5;
+    public static final int ARM_ALGEA_LEVEL_1 = 6;
+    public static final int ARM_ALGEA_LEVEL_2 = 7;
+    public static final int ARM_ALGEA_LEVEL_3 = 8;
+    public static final int ARM_ALGEA_LEVEL_4 = 9;
+    public static final int ARM_HP_STATION = 10;
+    public static final int ARM_BARGE = 11;
+    public static final int ARM_PROCESSOR = 11;
+
+    //Climber values
+    public static final int CLIMBER_POSITION_CONVERTION_FACTOR = 0;
+    public static final int CLIMBER_VELOCITY_CONVERTION_FACTOR = 0;
+    public static final int CLIMBER_MAX_VELOCITY = 0;
+    public static final int CLIMBER_MAX_ACCELERATION = 0;
     public static final int CLIMBER_ALLOWED_CLOSED_LOOP_ERROR = 2;
 
     public static final int CLIMBER_DRIVE_POSITION = 0;
