@@ -15,7 +15,8 @@ public class CoralFloorPickup extends SequentialCommandGroup {
   public CoralFloorPickup(Elevator elevator, Wrist wrist, Intake intake) {
     addCommands(
         new ParallelCommandGroup(
-            new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_DRIVE_POSITION), elevator), // Should already be here
+            // Should already be here
+            new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_DRIVE_POSITION), elevator),
             new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_FLOOR_PICKUP), wrist)),
         new WaitUntilCommand(() -> elevator.isAtPosition() && wrist.isAtPosition()),
         new InstantCommand(() -> intake.intakeCoral(), intake),

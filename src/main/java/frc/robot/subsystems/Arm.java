@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -29,7 +28,7 @@ public class Arm extends SubsystemBase {
   private final SparkClosedLoopController controller;
   private final RelativeEncoder encoder;
   private final SparkFlexConfig motorConfig;
-  
+
   private double targetPosition;
   private double p;
   private double i;

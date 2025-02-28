@@ -30,7 +30,8 @@ public class RobotControlState {
   // Angle offset to align with the opposite side of the scoring table.
   public static double angleOffset = 90;
 
-  // private static final RobotControlStateSendable robotControlStateSendable = new RobotControlStateSendable();
+  // private static final RobotControlStateSendable robotControlStateSendable =
+  // new RobotControlStateSendable();
 
   private RobotControlState() {
   }
@@ -58,28 +59,11 @@ public class RobotControlState {
   public static void setScoringLevel(ScoringLevel newScoringLevel) {
     // If the operator selects a new scoring level, reset the barge and processor
     // state.
-    algaePickup = false;
+    algaePickup = true;
     processorScore = false;
 
     scoringLevel = newScoringLevel;
-    setAlgea(false);
-    setProcessor(false);
-  }
 
-  public static void setProcessor(boolean b) {
-    setProcessor(true);
-  }
-
-  public static void getProcessor(boolean b) {
-    getProcessor(b);
-  }
-
-  public static void setAlgea(boolean b) {
-    setAlgea(true);
-  }
-
-  public static void getAlgea(boolean b) {
-    getAlgea(b);
   }
 
   public static Side getSide() {

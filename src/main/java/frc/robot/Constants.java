@@ -108,7 +108,7 @@ public final class Constants {
     public static final int WRIST_MOTOR = 14;
     public static final int ELEVATOR_MOTOR = 12;
     public static final int CLIMBER_MOTOR = 13;
-    public static final int ARM_MOTOR =11;
+    public static final int ARM_MOTOR = 11;
   }
 
   public static class MotorSetPoint {
@@ -146,7 +146,7 @@ public final class Constants {
     public static final int WRIST_PROCESSOR = 0;
     public static final int WRIST_FLOOR_PICKUP = 0;
 
-    // Arm values 
+    // Arm values
     public static final int ARM_POSITION_CONVERTION_FACTOR = 0;
     public static final int ARM_VELOCITY_CONVERTION_FACTOR = 0;
     public static final int ARM_MAX_VELOCITY = 0;
@@ -165,7 +165,7 @@ public final class Constants {
     public static final int ARM_BARGE = 11;
     public static final int ARM_PROCESSOR = 11;
 
-    //Climber values
+    // Climber values
     public static final int CLIMBER_POSITION_CONVERTION_FACTOR = 0;
     public static final int CLIMBER_VELOCITY_CONVERTION_FACTOR = 0;
     public static final int CLIMBER_MAX_VELOCITY = 0;
