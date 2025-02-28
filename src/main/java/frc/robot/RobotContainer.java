@@ -5,10 +5,11 @@ import frc.robot.Constants.Pattern;
 import frc.robot.Constants.ScoringLevel;
 import frc.robot.Constants.Side;
 import frc.robot.commands.BargeScore;
-import frc.robot.commands.ClimbDrivePosition;
-import frc.robot.commands.ClimbUp;
+import frc.robot.commands.ClimberDrivePosition;
+import frc.robot.commands.ClimberUp;
 import frc.robot.commands.CoralFloorPickup;
 import frc.robot.commands.IntakeStationPickup;
+import frc.robot.commands.MechClimbPosition;
 import frc.robot.commands.ProcessorScore;
 import frc.robot.commands.ReefAlgeaLevel1;
 import frc.robot.commands.ReefAlgeaLevel2;
@@ -20,6 +21,7 @@ import frc.robot.commands.intake.IntakeAlgae;
 import frc.robot.commands.intake.IntakeCoral;
 import frc.robot.commands.intake.IntakeScoreAlgae;
 import frc.robot.commands.intake.IntakeScoreCoral;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
@@ -44,6 +46,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -59,6 +62,7 @@ public class RobotContainer {
   private final Elevator elevator = new Elevator();
   private final Intake intake = new Intake();
   private final LED led = new LED();
+  private final Arm arm = new Arm();
   private final Wrist wrist = new Wrist();
 
   // Debug only
@@ -69,24 +73,24 @@ public class RobotContainer {
   // End Debug
 
   // Commands
-  private final BargeScore bargeScore = new BargeScore(elevator, wrist, intake);
-  private final IntakeStationPickup intakeStationPickup = new IntakeStationPickup(elevator, wrist, intake);
+  private final BargeScore bargeScore = new BargeScore(elevator, arm, wrist, intake);
+  private final IntakeStationPickup intakeStationPickup = new IntakeStationPickup(elevator, arm, wrist, intake);
 
-  private final ReefAlgeaLevel1 reefAlgeaLevel1 = new ReefAlgeaLevel1(elevator, wrist, intake);
-  private final ReefAlgeaLevel2 reefAlgeaLevel2 = new ReefAlgeaLevel2(elevator, wrist, intake);
+  private final ReefAlgeaLevel1 reefAlgeaLevel1 = new ReefAlgeaLevel1(elevator, arm, wrist, intake);
+  private final ReefAlgeaLevel2 reefAlgeaLevel2 = new ReefAlgeaLevel2(elevator, arm, wrist, intake);
 
-  private final ReefScoreLevel1 reefScoreLevel1 = new ReefScoreLevel1(elevator, wrist, intake);
-  private final ReefScoreLevel2 reefScoreLevel2 = new ReefScoreLevel2(elevator, wrist, intake);
-  private final ReefScoreLevel3 reefScoreLevel3 = new ReefScoreLevel3(elevator, wrist, intake);
-  private final ReefScoreLevel4 reefScoreLevel4 = new ReefScoreLevel4(elevator, wrist, intake);
+  private final ReefScoreLevel1 reefScoreLevel1 = new ReefScoreLevel1(elevator, arm, wrist, intake);
+  private final ReefScoreLevel2 reefScoreLevel2 = new ReefScoreLevel2(elevator, arm, wrist, intake);
+  private final ReefScoreLevel3 reefScoreLevel3 = new ReefScoreLevel3(elevator, arm, wrist, intake);
+  private final ReefScoreLevel4 reefScoreLevel4 = new ReefScoreLevel4(elevator, arm, wrist, intake);
 
-  private final ProcessorScore processorScore = new ProcessorScore(wrist, intake, elevator);
+  private final ProcessorScore processorScore = new ProcessorScore(elevator, arm, wrist, intake);
 
-  private final ClimbDrivePosition climbDrivePosition = new ClimbDrivePosition(climb);
-  private final ClimbUp climbUp = new ClimbUp(climb);
+  private final ClimberDrivePosition climbDrivePosition = new ClimberDrivePosition(climb);
+  private final ClimberUp climbUp = new ClimberUp(climb);
 
   // Auto only
-  private final CoralFloorPickup coralFloorPickup = new CoralFloorPickup(elevator, wrist, intake);
+  private final CoralFloorPickup coralFloorPickup = new CoralFloorPickup(elevator, arm, wrist, intake);
 
   // Drive commands
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
@@ -147,7 +151,9 @@ public class RobotContainer {
     driverController.y().onTrue(climbDrivePosition);
 
     driverController.leftBumper().and(driverController.rightBumper())
-        .onTrue(new InstantCommand(() -> RobotControlState.toggleClimb()));
+        .onTrue(new ParallelCommandGroup(
+            new MechClimbPosition(elevator, arm, wrist),
+            new InstantCommand(() -> RobotControlState.toggleClimb())));
   }
 
   public Command getSelectedCommand() {

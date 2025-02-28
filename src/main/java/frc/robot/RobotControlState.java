@@ -293,7 +293,7 @@ public class RobotControlState {
     ScoringZone newZone = ScoringZone.UNKNOWN;
 
     // Determine the circular zone only if within the specified distance.
-    if (distance <= OperatorConstants.AUTO_DRIVE_DISTANCE) {
+    if (distance <= OperatorConstants.AUTO_DRIVE_DISTANCE_METRES) {
       double angleDeg = calculateNormalizedAngle(diff);
       newZone = determineZone(angleDeg, alliance.get());
       SmartDashboard.putNumber("Angle", angleDeg);

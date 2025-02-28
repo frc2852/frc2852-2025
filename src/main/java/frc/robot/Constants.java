@@ -11,7 +11,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
 
@@ -29,63 +28,6 @@ import swervelib.math.Matter;
  */
 public final class Constants {
 
-  public static final class VortexMotorConstants {
-    public static final double kFreeSpeedRpm = 6784;
-  }
-
-  public static final class NeoMotorConstants {
-    public static final double kFreeSpeedRpm = 5676;
-  }
-
-  public static final class ModuleConstants {
-    // Calculations required for driving motor conversion factors and feed forward
-    public static final double kDrivingMotorFreeSpeedRps = VortexMotorConstants.kFreeSpeedRpm / 60;
-    public static final double kWheelDiameterMeters = Units.inchesToMeters(4);
-    public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
-    public static final double kDrivingMotorReduction = 6.75;
-    public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters)
-        / kDrivingMotorReduction;
-  }
-
-  public static final class DriveConstants {
-    // Driving Parameters - Note that these are not the maximum capable speeds of
-    // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = Units.feetToMeters(17.6);
-    public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
-
-    // Chassis configuration
-    public static final double kTrackWidth = Units.inchesToMeters(21.25);
-    // Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = Units.inchesToMeters(21.25);
-    // Distance between front and back wheels on robot
-    public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
-        new Translation2d(kWheelBase / 2, kTrackWidth / 2),
-        new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
-        new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
-        new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
-
-    // Angular offsets of the modules relative to the chassis in radians
-    public static final double kFrontLeftChassisAngularOffset = -Math.PI / 2;
-    public static final double kFrontRightChassisAngularOffset = 0;
-    public static final double kBackLeftChassisAngularOffset = Math.PI;
-    public static final double kBackRightChassisAngularOffset = Math.PI / 2;
-
-    // SPARK MAX CAN IDs
-    public static final int kFrontLeftDrivingCanId = 1;
-    public static final int kFrontLeftTurningCanId = 2;
-
-    public static final int kRearLeftDrivingCanId = 5;
-    public static final int kRearLeftTurningCanId = 6;
-
-    public static final int kFrontRightDrivingCanId = 8;
-    public static final int kFrontRightTurningCanId = 7;
-
-    public static final int kRearRightDrivingCanId = 3;
-    public static final int kRearRightTurningCanId = 4;
-
-    public static final boolean kGyroReversed = false;
-  }
-
   public static class OperatorConstants {
     public static final int DRIVER_CONTROLLER = 0;
     public static final int OPERATOR_CONTROLLER = 1;
@@ -94,9 +36,9 @@ public final class Constants {
     public static final double DEADBAND = 0.1;
     public static final double LEFT_Y_DEADBAND = 0.1;
     public static final double RIGHT_X_DEADBAND = 0.1;
-    public static final double TURN_CONSTANT = 6;
 
-    public static final double AUTO_DRIVE_DISTANCE = 3.0;
+    // Reef auto drive distance
+    public static final double AUTO_DRIVE_DISTANCE_METRES = 3.0;
   }
 
   public static class PWM {
@@ -105,10 +47,10 @@ public final class Constants {
 
   public static class CanbusId {
     public static final int INTAKE_MOTOR = 10;
-    public static final int WRIST_MOTOR = 14;
+    public static final int ARM_MOTOR = 11;
     public static final int ELEVATOR_MOTOR = 12;
     public static final int CLIMBER_MOTOR = 13;
-    public static final int ARM_MOTOR = 11;
+    public static final int WRIST_MOTOR = 14;
   }
 
   public static class MotorSetPoint {
@@ -132,7 +74,10 @@ public final class Constants {
     public static final int WRIST_MAX_VELOCITY = 6000;
     public static final int WRIST_MAX_ACCELERATION = 6000;
     public static final int WRIST_ALLOWED_CLOSED_LOOP_ERROR = 1;
+
     public static final int WRIST_DRIVE_POSITION = 0;
+    public static final int WRIST_CLIMB_POSITION = 0;
+
     public static final int WRIST_REEF_LEVEL_1 = 0;
     public static final int WRIST_REEF_LEVEL_2 = 0;
     public static final int WRIST_REEF_LEVEL_3 = 0;
@@ -147,30 +92,33 @@ public final class Constants {
     public static final int WRIST_FLOOR_PICKUP = 0;
 
     // Arm values
-    public static final int ARM_POSITION_CONVERTION_FACTOR = 0;
-    public static final int ARM_VELOCITY_CONVERTION_FACTOR = 0;
-    public static final int ARM_MAX_VELOCITY = 0;
-    public static final int ARM_MAX_ACCELERATION = 0;
-    public static final int ARM_ALLOWED_CLOSED_LOOP_ERROR = 2;
-    public static final int ARM_BOTTOM_POSITION = 1;
-    public static final int ARM_REEF_LEVEL_1 = 2;
-    public static final int ARM_REEF_LEVEL_2 = 3;
-    public static final int ARM_REEF_LEVEL_3 = 4;
-    public static final int ARM_REEF_LEVEL_4 = 5;
-    public static final int ARM_ALGEA_LEVEL_1 = 6;
-    public static final int ARM_ALGEA_LEVEL_2 = 7;
-    public static final int ARM_ALGEA_LEVEL_3 = 8;
-    public static final int ARM_ALGEA_LEVEL_4 = 9;
-    public static final int ARM_HP_STATION = 10;
-    public static final int ARM_BARGE = 11;
-    public static final int ARM_PROCESSOR = 11;
+    public static final int ARM_POSITION_CONVERTION_FACTOR = 1;
+    public static final int ARM_VELOCITY_CONVERTION_FACTOR = 1;
+    public static final int ARM_MAX_VELOCITY = 6000;
+    public static final int ARM_MAX_ACCELERATION = 6000;
+    public static final int ARM_ALLOWED_CLOSED_LOOP_ERROR = 1;
+
+    public static final int ARM_DRIVE_POSITION = 0;
+    public static final int ARM_CLIMB_POSITION = 0;
+
+    public static final int ARM_REEF_LEVEL_1 = 0;
+    public static final int ARM_REEF_LEVEL_2 = 0;
+    public static final int ARM_REEF_LEVEL_3 = 0;
+    public static final int ARM_REEF_LEVEL_4 = 0;
+    public static final int ARM_ALGEA_LEVEL_1 = 0;
+    public static final int ARM_ALGEA_LEVEL_2 = 0;
+    public static final int ARM_ALGEA_LEVEL_3 = 0;
+    public static final int ARM_ALGEA_LEVEL_4 = 0;
+    public static final int ARM_INTAKE_STATION = 0;
+    public static final int ARM_BARGE = 0;
+    public static final int ARM_PROCESSOR = 0;
 
     // Climber values
-    public static final int CLIMBER_POSITION_CONVERTION_FACTOR = 0;
-    public static final int CLIMBER_VELOCITY_CONVERTION_FACTOR = 0;
-    public static final int CLIMBER_MAX_VELOCITY = 0;
-    public static final int CLIMBER_MAX_ACCELERATION = 0;
-    public static final int CLIMBER_ALLOWED_CLOSED_LOOP_ERROR = 2;
+    public static final int CLIMBER_POSITION_CONVERTION_FACTOR = 1;
+    public static final int CLIMBER_VELOCITY_CONVERTION_FACTOR = 1;
+    public static final int CLIMBER_MAX_VELOCITY = 6000;
+    public static final int CLIMBER_MAX_ACCELERATION = 6000;
+    public static final int CLIMBER_ALLOWED_CLOSED_LOOP_ERROR = 1;
 
     public static final int CLIMBER_DRIVE_POSITION = 0;
     public static final int CLIMBER_CLIMBING_POSITION = 0;
@@ -178,10 +126,13 @@ public final class Constants {
     // Elevator values
     public static final int ELEVATOR_POSITION_CONVERSION_FACTOR = 1;
     public static final int ELEVATOR_VELOCITY_CONVERSION_FACTOR = 1;
-    public static final int ELEVATOR_CLOSED_LOOP = 1;
     public static final int ELEVATOR_MAX_ACCELERATION = 6000;
     public static final int ELEVATOR_MAX_VELOCITY = 6000;
+    public static final int ELEVATOR_CLOSED_LOOP = 1;
+
     public static final int ELEVATOR_DRIVE_POSITION = 0;
+    public static final int ELEVATOR_CLIMB_POSITION = 0;
+
     public static final int ELEVATOR_REEF_LEVEL_1 = 0;
     public static final int ELEVATOR_REEF_LEVEL_2 = 0;
     public static final int ELEVATOR_REEF_LEVEL_3 = 0;

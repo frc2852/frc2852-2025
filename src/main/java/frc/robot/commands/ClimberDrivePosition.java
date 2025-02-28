@@ -9,10 +9,9 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.MotorSetPoint;
 import frc.robot.subsystems.Climb;
 
-public class ClimbUp extends SequentialCommandGroup {
-
-  public ClimbUp(Climb climb) {
+public class ClimberDrivePosition extends SequentialCommandGroup {
+  public ClimberDrivePosition(Climb climb) {
     addCommands(
-        new InstantCommand(() -> climb.goToPosition(MotorSetPoint.CLIMBER_CLIMBING_POSITION), climb));
+        new InstantCommand(() -> climb.goToPosition(MotorSetPoint.CLIMBER_DRIVE_POSITION), climb));
   }
 }
