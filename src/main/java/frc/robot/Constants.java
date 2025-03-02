@@ -102,14 +102,15 @@ public final class Constants {
     public static final int ARM_PROCESSOR = 150;
 
     // Climber values
-    public static final int CLIMBER_POSITION_CONVERTION_FACTOR = 1;
-    public static final int CLIMBER_VELOCITY_CONVERTION_FACTOR = 1;
+    public static final int CLIMBER_POSITION_CONVERTION_FACTOR = 90;
+    public static final int CLIMBER_VELOCITY_CONVERTION_FACTOR = 90;
     public static final int CLIMBER_MAX_VELOCITY = 6000;
     public static final int CLIMBER_MAX_ACCELERATION = 6000;
     public static final int CLIMBER_ALLOWED_CLOSED_LOOP_ERROR = 1;
 
-    public static final int CLIMBER_DRIVE_POSITION = 0;
-    public static final int CLIMBER_CLIMBING_POSITION = 0;
+    public static final double CLIMBER_GRAB_POSITION = 5;
+    public static final double CLIMBER_DRIVE_POSITION = 25;
+    public static final double CLIMBER_CLIMB_POSITION = 30;
 
     // Elevator 
     public static final int ELEVATOR_POSITION_CONVERSION_FACTOR = 1;

@@ -1,9 +1,13 @@
 package frc.robot;
 
+import frc.robot.Constants.MotorSetPoint;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.Pattern;
 import frc.robot.Constants.ScoringLevel;
 import frc.robot.commands.BargeScore;
+import frc.robot.commands.ClimberDrivePosition;
+import frc.robot.commands.ClimberGrabPosition;
+import frc.robot.commands.ClimberUp;
 import frc.robot.commands.CoralFloorPickup;
 import frc.robot.commands.IntakeStationPickup;
 import frc.robot.commands.ProcessorScore;
@@ -20,6 +24,7 @@ import frc.robot.commands.intake.IntakeCoral;
 import frc.robot.commands.intake.IntakeScoreAlgae;
 import frc.robot.commands.intake.IntakeScoreCoral;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LED;
@@ -55,7 +60,7 @@ public class RobotContainer {
 
   // Subsystem
   private final Swerve drivebase = new Swerve(new File(Filesystem.getDeployDirectory(), "swerve/pinky"));
-  // private final Climb climb = new Climb();
+  private final Climb climb = new Climb();
   private final Elevator elevator = new Elevator(); // done
   private final Intake intake = new Intake(); // done
   private final LED led = new LED(); // done
@@ -86,8 +91,8 @@ public class RobotContainer {
   private final ProcessorScore processorScore = new ProcessorScore(elevator, arm, wrist, intake);
 
   // private final ClimberDrivePosition climbDrivePosition = new
-  // ClimberDrivePosition(climb);
-  // private final ClimberUp climbUp = new ClimberUp(climb);
+  private final ClimberGrabPosition climberGrabPosition = new ClimberGrabPosition(climb);
+  private final ClimberUp climberUp = new ClimberUp(climb);
 
   // Auto only
   private final CoralFloorPickup coralFloorPickup = new CoralFloorPickup(elevator, arm, wrist, intake);
@@ -171,6 +176,15 @@ public class RobotContainer {
     boolean hasAlgae = intake.hasAlgae();
     boolean hasGamePiece = intake.hasGamePiece();
 
+    // Climb mode check.
+    if (RobotControlState.isClimbEnabled()) {
+      if(climb.getTargetPosition() == MotorSetPoint.CLIMBER_GRAB_POSITION) {
+        return climberUp;
+      } else {
+        return climberGrabPosition;
+      }
+    }
+
     // Early exit: if nothing is picked up and we're not in algae mode.
     if (!hasGamePiece && !RobotControlState.isAlgaeMode()) {
       return intakeStationPickup;
@@ -188,11 +202,6 @@ public class RobotContainer {
     // Handle algae waste separately.
     if (RobotControlState.isAlgaeWaste()) {
       return getAlgaeWasteScoringCommand();
-    }
-
-    // Climb mode check.
-    if (RobotControlState.isClimbEnabled()) {
-      return null; // or return climbUp if that's desired
     }
 
     // Default scoring command.

@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -25,66 +26,81 @@ public class Climb extends SubsystemBase {
   private final SparkFlexConfig motorConfig;
   private final SparkClosedLoopController controller;
 
+  private final AbsoluteEncoder absEncoder;
   private final RelativeEncoder encoder;
 
-  private final double P = 0.4;
+  private final double P = 0.1;
   private final double I = 0;
   private final double D = 0;
 
   private double targetPosition;
   private double manualPosition = 0;
 
+  private boolean hasInitialized = false;
+
   public Climb() {
     motor = new SparkFlex(CanbusId.CLIMBER_MOTOR, MotorType.kBrushless);
     controller = motor.getClosedLoopController();
 
-    // Configure encoder
+    // Configure encoders
+    absEncoder = motor.getAbsoluteEncoder();
     encoder = motor.getEncoder();
-    encoder.setPosition(0);
 
     // Configure motor properties
     motorConfig = new SparkFlexConfig();
     motorConfig.idleMode(IdleMode.kBrake);
-    motorConfig.inverted(false);
-    motorConfig.smartCurrentLimit(40);
+    motorConfig.inverted(true);
 
     // Configure encoder conversion factors
-    motorConfig.encoder
+    motorConfig.absoluteEncoder
         .positionConversionFactor(MotorSetPoint.CLIMBER_POSITION_CONVERTION_FACTOR)
-        .velocityConversionFactor(MotorSetPoint.CLIMBER_VELOCITY_CONVERTION_FACTOR);
+        .velocityConversionFactor(MotorSetPoint.CLIMBER_VELOCITY_CONVERTION_FACTOR)
+        .inverted(true);
 
     // Configure PID
     motorConfig.closedLoop
-        .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
         .p(P)
         .i(I)
         .d(D)
         .outputRange(-1, 1);
 
-    motorConfig.closedLoop.maxMotion
-        .maxVelocity(MotorSetPoint.CLIMBER_MAX_VELOCITY)
-        .maxAcceleration(MotorSetPoint.CLIMBER_MAX_ACCELERATION)
-        .allowedClosedLoopError(MotorSetPoint.CLIMBER_ALLOWED_CLOSED_LOOP_ERROR);
-
     motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    goToPosition(MotorSetPoint.CLIMBER_DRIVE_POSITION);
 
     if (DriverStation.isTest()) {
       SmartDashboard.putNumber("ClimbManualPosition", manualPosition);
     }
   }
 
+  public double getTargetPosition() {
+    return targetPosition;
+  }
+
   public void goToPosition(double position) {
+    if(position <= 5){
+      position = 5;
+    } else if (position >= 30){
+      position = 30;
+    }
     targetPosition = position;
     controller.setReference(targetPosition, ControlType.kPosition);
   }
 
   public boolean isAtPosition() {
-    return Math.abs(encoder.getPosition() - targetPosition) <= 2;
+    return Math.abs(encoder.getPosition() - targetPosition) <= 0.2;
   }
 
   @Override
   public void periodic() {
+    if(!hasInitialized && absEncoder.getPosition() > 1) {
+      encoder.setPosition(absEncoder.getPosition());
+      hasInitialized = true;
+    }
+
     if (DriverStation.isTest()) {
+      SmartDashboard.putNumber("ClimbAbsPosition", absEncoder.getPosition());
       SmartDashboard.putNumber("ClimbPosition", encoder.getPosition());
 
       SmartDashboard.putNumber("ClimbCurrent", motor.getOutputCurrent());
