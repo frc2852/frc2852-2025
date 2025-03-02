@@ -8,6 +8,7 @@ import frc.robot.commands.BargeScore;
 import frc.robot.commands.ClimberGrabPosition;
 import frc.robot.commands.ClimberUp;
 import frc.robot.commands.CoralFloorPickup;
+import frc.robot.commands.DrivePosition;
 import frc.robot.commands.IntakeStationPickup;
 import frc.robot.commands.ProcessorScore;
 import frc.robot.commands.ReefAlgeaLevel1;
@@ -88,6 +89,7 @@ public class RobotContainer {
   private final ReefScoreLevel4 reefScoreLevel4 = new ReefScoreLevel4(elevator, arm, wrist, intake);
 
   private final ProcessorScore processorScore = new ProcessorScore(elevator, arm, wrist, intake);
+  private final DrivePosition drivePosition = new DrivePosition(elevator, arm, wrist, intake);
 
   // private final ClimberDrivePosition climbDrivePosition = new
   private final ClimberGrabPosition climberGrabPosition = new ClimberGrabPosition(climb);
@@ -95,6 +97,9 @@ public class RobotContainer {
 
   // Auto only
   private final CoralFloorPickup coralFloorPickup = new CoralFloorPickup(elevator, arm, wrist, intake);
+
+  // Store the currently scheduled scoring command
+  private Command aButtonCommand;
 
   // Drive commands
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
@@ -144,31 +149,37 @@ public class RobotContainer {
           .onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
     }
 
-    driverController.b().onTrue(
-        new InstantCommand(() -> {
-          Command newCommand = drivebase.driveToPose(RobotControlState.getZonePose());
-          if (newCommand != null) {
-            newCommand.schedule();
-          }
-        }));
-
-    // driverController.y().onTrue(climbDrivePosition);
+    // driverController.b().onTrue(
+    //     new InstantCommand(() -> {
+    //       Command newCommand = drivebase.driveToPose(RobotControlState.getZonePose());
+    //       if (newCommand != null) {
+    //         newCommand.schedule();
+    //       }
+    //     }));
 
     driverController.leftBumper().and(driverController.rightBumper())
         .onTrue(new ParallelCommandGroup(
             // new MechClimbPosition(elevator, arm, wrist),
             new InstantCommand(() -> RobotControlState.toggleClimb())));
 
-    // driverController.a().onTrue(getSelectedCommand());
-
-    driverController.a().onTrue(new InstantCommand(() -> {
-      Command selected = getSelectedCommand();
-
-      if (selected != null) {
-        selected.schedule();
+    driverController.b().onTrue(new InstantCommand(() -> {
+      if (aButtonCommand != null && aButtonCommand.isScheduled()) {
+        aButtonCommand.cancel();
+        drivePosition.schedule();
       }
     }));
 
+    driverController.a().onTrue(new InstantCommand(() -> {
+      // Cancel the previous command if it's still running
+      if (aButtonCommand != null && aButtonCommand.isScheduled()) {
+        aButtonCommand.cancel();
+      }
+      // Retrieve and schedule the new command
+      aButtonCommand = getSelectedCommand();
+      if (aButtonCommand != null) {
+        aButtonCommand.schedule();
+      }
+    }));
   }
 
   public Command getSelectedCommand() {
@@ -177,7 +188,7 @@ public class RobotContainer {
 
     // Climb mode check.
     if (RobotControlState.isClimbEnabled()) {
-      if(climb.getTargetPosition() == MotorSetPoint.CLIMBER_GRAB_POSITION) {
+      if (climb.getTargetPosition() == MotorSetPoint.CLIMBER_GRAB_POSITION) {
         return climberUp;
       } else {
         return climberGrabPosition;
