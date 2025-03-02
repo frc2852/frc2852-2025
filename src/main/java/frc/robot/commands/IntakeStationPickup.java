@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.MotorSetPoint;
-import frc.robot.commands.intake.IntakeCoral;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
@@ -33,7 +32,12 @@ public class IntakeStationPickup extends SequentialCommandGroup {
             new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_SCORE_POSITION), wrist),
             new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_INTAKE_STATION), arm)),
         new WaitUntilCommand(() -> elevator.isAtPosition() && wrist.isAtPosition()),
-        new IntakeCoral(intake),
-        new MechDrivePosition(elevator, arm, wrist));
+        new InstantCommand(() -> intake.intakeCoral()),
+        new WaitUntilCommand(() -> intake.hasCoral()),
+        new InstantCommand(() -> intake.hold()),
+        new ParallelCommandGroup(
+            new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_DRIVE_POSITION), elevator),
+            new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_DRIVE_POSITION), arm),
+            new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_DRIVE_POSITION), wrist)));
   }
 }

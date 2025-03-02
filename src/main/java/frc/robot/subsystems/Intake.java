@@ -97,6 +97,15 @@ public class Intake extends SubsystemBase {
     controller.setReference(targetSpeed, ControlType.kMAXMotionVelocityControl);
   }
 
+  
+  /**
+   * Stops the intake.
+   */
+  public void hold() {
+    targetSpeed = MotorSetPoint.INTAKE_VELOCITY_HOLD;
+    controller.setReference(targetSpeed, ControlType.kMAXMotionVelocityControl);
+  }
+
   /**
    * Stops the intake.
    */

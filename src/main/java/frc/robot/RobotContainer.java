@@ -145,13 +145,23 @@ public class RobotContainer {
           }
         }));
 
-    driverController.a().onTrue(getSelectedCommand());
     // driverController.y().onTrue(climbDrivePosition);
 
     driverController.leftBumper().and(driverController.rightBumper())
         .onTrue(new ParallelCommandGroup(
             // new MechClimbPosition(elevator, arm, wrist),
             new InstantCommand(() -> RobotControlState.toggleClimb())));
+
+    // driverController.a().onTrue(getSelectedCommand());
+
+    driverController.a().onTrue(new InstantCommand(() -> {
+      Command selected = getSelectedCommand();
+
+      if (selected != null) {
+        selected.schedule();
+      }
+    }));
+
   }
 
   public Command getSelectedCommand() {

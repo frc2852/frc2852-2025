@@ -97,19 +97,21 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (!hasInitializedPosition) {
+    if (!hasInitializedPosition && absEncoder.getPosition() > 5) {
       // Initialize the relative encoder using the absolute encoder value.
       encoder.setPosition(absEncoder.getPosition());
       hasInitializedPosition = true;
     }
 
+    SmartDashboard.putNumber("ArmPosition", encoder.getPosition());
+    SmartDashboard.putNumber("ArmTargetPosition", targetPosition);
+    SmartDashboard.putBoolean("ArmAtPosition", isAtPosition());
+
     if (DriverStation.isTest()) {
       SmartDashboard.putNumber("ArmAbsPosition", absEncoder.getPosition());
-      SmartDashboard.putNumber("ArmPosition", encoder.getPosition());
 
       SmartDashboard.putNumber("ArmCurrent", motor.getOutputCurrent());
       SmartDashboard.putNumber("ArmTemperature", motor.getMotorTemperature());
-      SmartDashboard.putBoolean("ArmAtPosition", isAtPosition());
 
       manualPosition = SmartDashboard.getNumber("ArmManualPosition", manualPosition);
       goToPosition(manualPosition);

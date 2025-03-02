@@ -122,6 +122,11 @@ public class Elevator extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    SmartDashboard.putBoolean("ElevatorAtPosition", isAtPosition());
+    SmartDashboard.putNumber("ElevatorPosition", encoder.getPosition());
+    SmartDashboard.putNumber("ElevatorTargetPosition", targetPosition);
+
     if (DriverStation.isTest()) {
       double newP = SmartDashboard.getNumber("ElevatorP", P);
       double newI = SmartDashboard.getNumber("ElevatorI", I);
@@ -154,14 +159,11 @@ public class Elevator extends SubsystemBase {
         motor.configure(motorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
       }
 
-      // Optionally, update additional telemetry.
       SmartDashboard.putNumber("ElevatorMotor", motor.getAppliedOutput());
       SmartDashboard.putNumber("ElevatorFollowMotor", motorFollow.getAppliedOutput());
-      SmartDashboard.putNumber("ElevatorPosition", encoder.getPosition());
       SmartDashboard.putNumber("ElevatorFollowPosition", encoderFollow.getPosition());
       SmartDashboard.putNumber("ElevatorCurrent", motor.getOutputCurrent());
       SmartDashboard.putNumber("ElevatorTemperature", motor.getMotorTemperature());
-      SmartDashboard.putBoolean("ElevatorAtPosition", isAtPosition());
 
       goToPosition(manualPosition);
     }

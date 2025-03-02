@@ -59,11 +59,9 @@ public class RobotControlState {
   public static void setScoringLevel(ScoringLevel newScoringLevel) {
     // If the operator selects a new scoring level, reset the barge and processor
     // state.
-    algaePickup = true;
+    algaePickup = false;
     processorScore = false;
-
     scoringLevel = newScoringLevel;
-
   }
 
   public static Side getSide() {

@@ -65,6 +65,7 @@ public final class Constants {
 
     public static final int INTAKE_VELOCITY_ALGAE = 4500;
     public static final int INTAKE_VELOCITY_CORAL = 4500;
+    public static final int INTAKE_VELOCITY_HOLD = 1000;
     public static final int INTAKE_VELOCITY_REVERSE_CORAL = -6000;
     public static final int INTAKE_VELOCITY_REVERSE_ALGAE = -6000;
 
@@ -78,7 +79,7 @@ public final class Constants {
     public static final int WRIST_ALLOWED_CLOSED_LOOP_ERROR = 1;
 
     public static final int WRIST_DRIVE_POSITION = 0;
-    public static final int WRIST_SCORE_POSITION = 0;
+    public static final int WRIST_SCORE_POSITION = 5;
 
     // Arm values
     public static final int ARM_POSITION_CONVERTION_FACTOR = 1;
@@ -90,10 +91,10 @@ public final class Constants {
     public static final int ARM_DRIVE_POSITION = 90;
     public static final int ARM_CLIMB_POSITION = 0;
 
-    public static final int ARM_REEF_LEVEL_1 = 0;
-    public static final int ARM_REEF_LEVEL_2 = 0;
-    public static final int ARM_REEF_LEVEL_3 = 0;
-    public static final int ARM_REEF_LEVEL_4 = 0;
+    public static final int ARM_REEF_LEVEL_1 = 130;
+    public static final int ARM_REEF_LEVEL_2 = 130;
+    public static final int ARM_REEF_LEVEL_3 = 130;
+    public static final int ARM_REEF_LEVEL_4 = 130;
     public static final int ARM_ALGEA_LEVEL_1 = 0;
     public static final int ARM_ALGEA_LEVEL_2 = 0;
     public static final int ARM_ALGEA_LEVEL_3 = 0;
@@ -122,16 +123,16 @@ public final class Constants {
     public static final int ELEVATOR_DRIVE_POSITION = 0;
     public static final int ELEVATOR_CLIMB_POSITION = 0;
 
-    public static final int ELEVATOR_REEF_LEVEL_1 = 0;
-    public static final int ELEVATOR_REEF_LEVEL_2 = 0;
-    public static final int ELEVATOR_REEF_LEVEL_3 = 0;
-    public static final int ELEVATOR_REEF_LEVEL_4 = 0;
-    public static final int ELEVATOR_ALGEA_LEVEL_1 = 0;
-    public static final int ELEVATOR_ALGEA_LEVEL_2 = 0;
-    public static final int ELEVATOR_ALGEA_LEVEL_3 = 0;
-    public static final int ELEVATOR_ALGEA_LEVEL_4 = 0;
-    public static final int ELEVATOR_INTAKE_STATION = 0;
-    public static final int ELEVATOR_BARGE = 0;
+    public static final double ELEVATOR_REEF_LEVEL_1 = 15;
+    public static final double ELEVATOR_REEF_LEVEL_2 = 25;
+    public static final double ELEVATOR_REEF_LEVEL_3 = 30;
+    public static final double ELEVATOR_REEF_LEVEL_4 = 37.5;
+    public static final double ELEVATOR_ALGEA_LEVEL_1 = 0;
+    public static final double ELEVATOR_ALGEA_LEVEL_2 = 0;
+    public static final double ELEVATOR_ALGEA_LEVEL_3 = 0;
+    public static final double ELEVATOR_ALGEA_LEVEL_4 = 0;
+    public static final double ELEVATOR_INTAKE_STATION = 0;
+    public static final double ELEVATOR_BARGE = 0;
     public static final double ELEVATOR_MAX_HEIGHT = 38.5;
   }
 
