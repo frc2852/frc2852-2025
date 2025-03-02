@@ -24,8 +24,9 @@ public class RobotControlState {
   private static boolean climbEnabled = false;
   private static Translation2d allianceReef = null;
 
-  private static boolean algaePickup = false;
+  private static boolean algaeWaste = false;
   private static boolean processorScore = false;
+  private static boolean bargeScore = false;
 
   // Angle offset to align with the opposite side of the scoring table.
   public static double angleOffset = 90;
@@ -44,8 +45,9 @@ public class RobotControlState {
     SmartDashboard.putBoolean("Level2", scoringLevel == ScoringLevel.LEVEL_2);
     SmartDashboard.putBoolean("Level3", scoringLevel == ScoringLevel.LEVEL_3);
     SmartDashboard.putBoolean("Level4", scoringLevel == ScoringLevel.LEVEL_4);
-    SmartDashboard.putBoolean("Algae Pickup", algaePickup);
+    SmartDashboard.putBoolean("Algae Pickup", algaeWaste);
     SmartDashboard.putBoolean("Processor Score", processorScore);
+    SmartDashboard.putBoolean("Barge Score", bargeScore);
 
     SmartDashboard.putString("Zone", getAllianceZone());
     SmartDashboard.putBoolean("ClimbEnabled", climbEnabled);
@@ -59,8 +61,9 @@ public class RobotControlState {
   public static void setScoringLevel(ScoringLevel newScoringLevel) {
     // If the operator selects a new scoring level, reset the barge and processor
     // state.
-    algaePickup = false;
+    algaeWaste = false;
     processorScore = false;
+    bargeScore = false;
     scoringLevel = newScoringLevel;
   }
 
@@ -70,26 +73,48 @@ public class RobotControlState {
 
   public static void setSide(Side newSide) {
     // If the operator selects a side, reset the barge and processor state.
-    algaePickup = false;
+    algaeWaste = false;
     processorScore = false;
+    bargeScore = false;
 
     side = newSide;
   }
 
-  public static void setAlgae() {
-    algaePickup = true;
+  public static void setAlgaeWaste() {
+    bargeScore = false;
+    processorScore = false;
+
+    algaeWaste = true;
   }
 
-  public static boolean isAlgaePickup() {
-    return algaePickup;
+  public static boolean isAlgaeWaste() {
+    return algaeWaste;
   }
 
   public static void setProcessor() {
+    algaeWaste = false;
+    bargeScore = false;
+
     processorScore = true;
   }
 
   public static boolean isProcessorScore() {
     return processorScore;
+  }
+
+  public static void setBarge() {
+    processorScore = false;
+    algaeWaste = false;
+
+    bargeScore = true;
+  }
+
+  public static boolean isBargeScore() {
+    return bargeScore;
+  }
+
+  public static boolean isAlgaeMode(){
+    return bargeScore || algaeWaste || processorScore;
   }
 
   /**

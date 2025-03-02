@@ -3,13 +3,14 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.Pattern;
 import frc.robot.Constants.ScoringLevel;
-import frc.robot.Constants.Side;
 import frc.robot.commands.BargeScore;
 import frc.robot.commands.CoralFloorPickup;
 import frc.robot.commands.IntakeStationPickup;
 import frc.robot.commands.ProcessorScore;
 import frc.robot.commands.ReefAlgeaLevel1;
+import frc.robot.commands.ReefAlgeaLevel1Waste;
 import frc.robot.commands.ReefAlgeaLevel2;
+import frc.robot.commands.ReefAlgeaLevel2Waste;
 import frc.robot.commands.ReefScoreLevel1;
 import frc.robot.commands.ReefScoreLevel2;
 import frc.robot.commands.ReefScoreLevel3;
@@ -74,6 +75,8 @@ public class RobotContainer {
 
   private final ReefAlgeaLevel1 reefAlgeaLevel1 = new ReefAlgeaLevel1(elevator, arm, wrist, intake);
   private final ReefAlgeaLevel2 reefAlgeaLevel2 = new ReefAlgeaLevel2(elevator, arm, wrist, intake);
+  private final ReefAlgeaLevel1Waste reefAlgeaLevel1Waste = new ReefAlgeaLevel1Waste(elevator, arm, wrist, intake);
+  private final ReefAlgeaLevel2Waste reefAlgeaLevel2Waste = new ReefAlgeaLevel2Waste(elevator, arm, wrist, intake);
 
   private final ReefScoreLevel1 reefScoreLevel1 = new ReefScoreLevel1(elevator, arm, wrist, intake);
   private final ReefScoreLevel2 reefScoreLevel2 = new ReefScoreLevel2(elevator, arm, wrist, intake);
@@ -165,37 +168,71 @@ public class RobotContainer {
   }
 
   public Command getSelectedCommand() {
-    if (!intake.hasGamePiece() && !RobotControlState.isAlgaePickup()) {
-      // This can be simplified in the future by checking our location
+    boolean hasAlgae = intake.hasAlgae();
+    boolean hasGamePiece = intake.hasGamePiece();
+
+    // Early exit: if nothing is picked up and we're not in algae mode.
+    if (!hasGamePiece && !RobotControlState.isAlgaeMode()) {
       return intakeStationPickup;
-    } else if (intake.hasAlgae()) {
-      return bargeScore;
-    } else if (RobotControlState.isProcessorScore()) {
-      return processorScore;
-    } else if (RobotControlState.isClimbEnabled()) {
-      return null; // climbUp;
-    } else if (RobotControlState.isAlgaePickup()) {
-      switch (RobotControlState.getScoringLevel()) {
-        case LEVEL_1:
-          return reefAlgeaLevel1;
-        case LEVEL_2:
-          return reefAlgeaLevel2;
-        default:
-          return null;
+    }
+
+    // Barge and Processor scoring share similar behavior when !hasAlgae.
+    if (RobotControlState.isBargeScore() || RobotControlState.isProcessorScore()) {
+      if (hasAlgae) {
+        return RobotControlState.isBargeScore() ? bargeScore : processorScore;
+      } else {
+        return getAlgaeReefPositionCommand();
       }
-    } else {
-      switch (RobotControlState.getScoringLevel()) {
-        case LEVEL_1:
-          return reefScoreLevel1;
-        case LEVEL_2:
-          return reefScoreLevel2;
-        case LEVEL_3:
-          return reefScoreLevel3;
-        case LEVEL_4:
-          return reefScoreLevel4;
-        default:
-          return null;
-      }
+    }
+
+    // Handle algae waste separately.
+    if (RobotControlState.isAlgaeWaste()) {
+      return getAlgaeWasteScoringCommand();
+    }
+
+    // Climb mode check.
+    if (RobotControlState.isClimbEnabled()) {
+      return null; // or return climbUp if that's desired
+    }
+
+    // Default scoring command.
+    return getCoralReefCommand();
+  }
+
+  private Command getAlgaeReefPositionCommand() {
+    switch (RobotControlState.getScoringLevel()) {
+      case LEVEL_1:
+        return reefAlgeaLevel1;
+      case LEVEL_2:
+        return reefAlgeaLevel2;
+      default:
+        return null;
+    }
+  }
+
+  private Command getAlgaeWasteScoringCommand() {
+    switch (RobotControlState.getScoringLevel()) {
+      case LEVEL_1:
+        return reefAlgeaLevel1Waste;
+      case LEVEL_2:
+        return reefAlgeaLevel2Waste;
+      default:
+        return null;
+    }
+  }
+
+  private Command getCoralReefCommand() {
+    switch (RobotControlState.getScoringLevel()) {
+      case LEVEL_1:
+        return reefScoreLevel1;
+      case LEVEL_2:
+        return reefScoreLevel2;
+      case LEVEL_3:
+        return reefScoreLevel3;
+      case LEVEL_4:
+        return reefScoreLevel4;
+      default:
+        return null;
     }
   }
 
@@ -214,16 +251,13 @@ public class RobotContainer {
         .onTrue(new InstantCommand(() -> RobotControlState.setScoringLevel(ScoringLevel.LEVEL_4)));
 
     operatorController.x()
-        .onTrue(new InstantCommand(() -> RobotControlState.setSide(Side.LEFT)));
-
-    operatorController.b()
-        .onTrue(new InstantCommand(() -> RobotControlState.setSide(Side.RIGHT)));
-
-    operatorController.y()
         .onTrue(new InstantCommand(() -> RobotControlState.setProcessor()));
 
+    operatorController.b()
+        .onTrue(new InstantCommand(() -> RobotControlState.setBarge()));
+
     operatorController.a()
-        .onTrue(new InstantCommand(() -> RobotControlState.setAlgae()));
+        .onTrue(new InstantCommand(() -> RobotControlState.setAlgaeWaste()));
   }
 
   private void configureLEDTriggers() {
