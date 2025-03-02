@@ -49,8 +49,10 @@ public final class Constants {
     public static final int INTAKE_MOTOR = 10;
     public static final int ARM_MOTOR = 11;
     public static final int ELEVATOR_MOTOR = 12;
-    public static final int CLIMBER_MOTOR = 13;
     public static final int WRIST_MOTOR = 14;
+    public static final int ELEVATOR_MOTOR_2 = 15;
+    public static final int CLIMBER_MOTOR = 17;
+
   }
 
   public static class MotorSetPoint {
@@ -76,20 +78,7 @@ public final class Constants {
     public static final int WRIST_ALLOWED_CLOSED_LOOP_ERROR = 1;
 
     public static final int WRIST_DRIVE_POSITION = 0;
-    public static final int WRIST_CLIMB_POSITION = 0;
-
-    public static final int WRIST_REEF_LEVEL_1 = 0;
-    public static final int WRIST_REEF_LEVEL_2 = 0;
-    public static final int WRIST_REEF_LEVEL_3 = 0;
-    public static final int WRIST_REEF_LEVEL_4 = 0;
-    public static final int WRIST_ALGEA_LEVEL_1 = 0;
-    public static final int WRIST_ALGEA_LEVEL_2 = 0;
-    public static final int WRIST_ALGEA_LEVEL_3 = 0;
-    public static final int WRIST_ALGEA_LEVEL_4 = 0;
-    public static final int WRIST_INTAKE_STATION = 0;
-    public static final int WRIST_BARGE = 0;
-    public static final int WRIST_PROCESSOR = 0;
-    public static final int WRIST_FLOOR_PICKUP = 0;
+    public static final int WRIST_SCORE_POSITION = 0;
 
     // Arm values
     public static final int ARM_POSITION_CONVERTION_FACTOR = 1;
@@ -98,7 +87,7 @@ public final class Constants {
     public static final int ARM_MAX_ACCELERATION = 6000;
     public static final int ARM_ALLOWED_CLOSED_LOOP_ERROR = 1;
 
-    public static final int ARM_DRIVE_POSITION = 0;
+    public static final int ARM_DRIVE_POSITION = 90;
     public static final int ARM_CLIMB_POSITION = 0;
 
     public static final int ARM_REEF_LEVEL_1 = 0;
@@ -109,7 +98,7 @@ public final class Constants {
     public static final int ARM_ALGEA_LEVEL_2 = 0;
     public static final int ARM_ALGEA_LEVEL_3 = 0;
     public static final int ARM_ALGEA_LEVEL_4 = 0;
-    public static final int ARM_INTAKE_STATION = 0;
+    public static final int ARM_INTAKE_STATION = 65;
     public static final int ARM_BARGE = 0;
     public static final int ARM_PROCESSOR = 0;
 
@@ -123,11 +112,11 @@ public final class Constants {
     public static final int CLIMBER_DRIVE_POSITION = 0;
     public static final int CLIMBER_CLIMBING_POSITION = 0;
 
-    // Elevator values
+    // Elevator 
     public static final int ELEVATOR_POSITION_CONVERSION_FACTOR = 1;
     public static final int ELEVATOR_VELOCITY_CONVERSION_FACTOR = 1;
-    public static final int ELEVATOR_MAX_ACCELERATION = 6000;
-    public static final int ELEVATOR_MAX_VELOCITY = 6000;
+    public static final int ELEVATOR_MAX_ACCELERATION = 3000;
+    public static final int ELEVATOR_MAX_VELOCITY = 3500;
     public static final int ELEVATOR_CLOSED_LOOP = 1;
 
     public static final int ELEVATOR_DRIVE_POSITION = 0;
@@ -143,6 +132,7 @@ public final class Constants {
     public static final int ELEVATOR_ALGEA_LEVEL_4 = 0;
     public static final int ELEVATOR_INTAKE_STATION = 0;
     public static final int ELEVATOR_BARGE = 0;
+    public static final double ELEVATOR_MAX_HEIGHT = 38.5;
   }
 
   public static class RobotSpecifications {

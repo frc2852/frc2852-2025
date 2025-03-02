@@ -37,6 +37,8 @@ public class Arm extends SubsystemBase {
   private double targetPosition;
   private double manualPosition = 90;
 
+  private boolean hasInitializedPosition = false;
+
   public Arm() {
     motor = new SparkFlex(CanbusId.ARM_MOTOR, MotorType.kBrushless);
     controller = motor.getClosedLoopController();
@@ -72,9 +74,6 @@ public class Arm extends SubsystemBase {
         .d(D)
         .outputRange(-OUTPUT_RANGE, OUTPUT_RANGE);
 
-    // Initialize the relative encoder using the absolute encoder value.
-    encoder.setPosition(absEncoder.getPosition());
-
     motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     if (DriverStation.isTest()) {
@@ -98,6 +97,12 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
+    if (!hasInitializedPosition) {
+      // Initialize the relative encoder using the absolute encoder value.
+      encoder.setPosition(absEncoder.getPosition());
+      hasInitializedPosition = true;
+    }
+
     if (DriverStation.isTest()) {
       SmartDashboard.putNumber("ArmAbsPosition", absEncoder.getPosition());
       SmartDashboard.putNumber("ArmPosition", encoder.getPosition());

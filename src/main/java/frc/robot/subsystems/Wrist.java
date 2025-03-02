@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -23,46 +22,35 @@ public class Wrist extends SubsystemBase {
   private final SparkFlexConfig motorConfig;
   private final SparkClosedLoopController controller;
 
-  private final AbsoluteEncoder absEncoder;
   private final RelativeEncoder encoder;
 
   private final double P = 0.1;
   private final double I = 0;
   private final double D = 0;
-  private final double OUTPUT_RANGE = 0.7;
-
-  private final double GEAR_REDUCTION = 267.86;
-  private final double RELATIVE_ENCODER_CONVERSION = 360.0 / GEAR_REDUCTION;
+  private final double OUTPUT_RANGE = 1;
 
   private double targetPosition;
-  private double manualPosition = 90;
+  private double manualPosition = 0;
 
   public Wrist() {
     motor = new SparkFlex(CanbusId.WRIST_MOTOR, MotorType.kBrushless);
     controller = motor.getClosedLoopController();
 
     // Configure encoders
-    absEncoder = motor.getAbsoluteEncoder();
     encoder = motor.getEncoder();
+    encoder.setPosition(0);
 
-    // Set conversion factor for the relative encoder so that getPosition() returns
-    // degrees.
-    // (This conversion factor converts motor rotations to wrist degrees.)
+    // Set encoder position
     motorConfig = new SparkFlexConfig();
-    motorConfig.encoder.positionConversionFactor(RELATIVE_ENCODER_CONVERSION);
 
     // Configure motor properties
     motorConfig.idleMode(IdleMode.kBrake);
     motorConfig.inverted(false);
-    motorConfig.smartCurrentLimit(40);
+    // motorConfig.smartCurrentLimit(40);
 
-    // Configure absolute encoder conversion factor.
-    // The absolute encoder returns degrees already (2 rotations = 360° with factor
-    // 170.2).
-    motorConfig.absoluteEncoder
-        .positionConversionFactor(170.2)
-        .velocityConversionFactor(1)
-        .inverted(true);
+    motorConfig.encoder
+      .positionConversionFactor(1)
+      .velocityConversionFactor(1);
 
     // Configure closed loop PID using the relative encoder (now in degrees).
     motorConfig.closedLoop
@@ -71,9 +59,6 @@ public class Wrist extends SubsystemBase {
         .i(I)
         .d(D)
         .outputRange(-OUTPUT_RANGE, OUTPUT_RANGE);
-
-    // Initialize the relative encoder using the absolute encoder value.
-    encoder.setPosition(absEncoder.getPosition());
 
     motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -88,18 +73,23 @@ public class Wrist extends SubsystemBase {
    * @param position The target wrist angle in degrees.
    */
   public void goToPosition(double position) {
+    if(position > 5){
+      position = 5;
+    } else if (position < 0){
+      position = 0;
+    }
+
     targetPosition = position;
     controller.setReference(targetPosition, ControlType.kPosition);
   }
 
   public boolean isAtPosition() {
-    return Math.abs(encoder.getPosition() - targetPosition) <= 2;
+    return Math.abs(encoder.getPosition() - targetPosition) <= 1;
   }
 
   @Override
   public void periodic() {
     if (DriverStation.isTest()) {
-      SmartDashboard.putNumber("WristAbsPosition", absEncoder.getPosition());
       SmartDashboard.putNumber("WristPosition", encoder.getPosition());
 
       SmartDashboard.putNumber("WristCurrent", motor.getOutputCurrent());

@@ -15,6 +15,6 @@ public class MechClimbPosition extends ParallelCommandGroup {
   public MechClimbPosition(Elevator elevator, Arm arm, Wrist wrist) {
     new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_CLIMB_POSITION), elevator);
     new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_CLIMB_POSITION), arm);
-    new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_CLIMB_POSITION), wrist);
+    new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_SCORE_POSITION), wrist);
   }
 }

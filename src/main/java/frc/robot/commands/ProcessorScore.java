@@ -24,7 +24,7 @@ import frc.robot.subsystems.Wrist;
 public class ProcessorScore extends SequentialCommandGroup {
   public ProcessorScore(Elevator elevator, Arm arm, Wrist wrist, Intake intake) {
     addCommands(
-        new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_PROCESSOR), wrist),
+        new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_SCORE_POSITION), wrist),
         new WaitUntilCommand(() -> wrist.isAtPosition()),
         new InstantCommand(() -> intake.reverseAlgae()),
         new WaitCommand(2),

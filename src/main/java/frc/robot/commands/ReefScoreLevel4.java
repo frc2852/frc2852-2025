@@ -27,7 +27,7 @@ public class ReefScoreLevel4 extends SequentialCommandGroup {
     addCommands(
         new ParallelCommandGroup(
             new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_REEF_LEVEL_4), elevator),
-            new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_REEF_LEVEL_4), wrist)),
+            new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_SCORE_POSITION), wrist)),
         new WaitUntilCommand(() -> elevator.isAtPosition() && wrist.isAtPosition()),
         new IntakeScoreCoral(intake),
         new MechDrivePosition(elevator, arm, wrist));

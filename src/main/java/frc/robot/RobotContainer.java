@@ -5,11 +5,8 @@ import frc.robot.Constants.Pattern;
 import frc.robot.Constants.ScoringLevel;
 import frc.robot.Constants.Side;
 import frc.robot.commands.BargeScore;
-import frc.robot.commands.ClimberDrivePosition;
-import frc.robot.commands.ClimberUp;
 import frc.robot.commands.CoralFloorPickup;
 import frc.robot.commands.IntakeStationPickup;
-import frc.robot.commands.MechClimbPosition;
 import frc.robot.commands.ProcessorScore;
 import frc.robot.commands.ReefAlgeaLevel1;
 import frc.robot.commands.ReefAlgeaLevel2;
@@ -22,7 +19,6 @@ import frc.robot.commands.intake.IntakeCoral;
 import frc.robot.commands.intake.IntakeScoreAlgae;
 import frc.robot.commands.intake.IntakeScoreCoral;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LED;
@@ -58,11 +54,11 @@ public class RobotContainer {
 
   // Subsystem
   private final Swerve drivebase = new Swerve(new File(Filesystem.getDeployDirectory(), "swerve/pinky"));
-  private final Climb climb = new Climb();
-  private final Elevator elevator = new Elevator();
-  private final Intake intake = new Intake();
-  private final LED led = new LED();
-  private final Arm arm = new Arm();
+  // private final Climb climb = new Climb();
+  private final Elevator elevator = new Elevator(); // done
+  private final Intake intake = new Intake(); // done
+  private final LED led = new LED(); // done
+  private final Arm arm = new Arm(); // done
   private final Wrist wrist = new Wrist();
 
   // Debug only
@@ -86,8 +82,9 @@ public class RobotContainer {
 
   private final ProcessorScore processorScore = new ProcessorScore(elevator, arm, wrist, intake);
 
-  private final ClimberDrivePosition climbDrivePosition = new ClimberDrivePosition(climb);
-  private final ClimberUp climbUp = new ClimberUp(climb);
+  // private final ClimberDrivePosition climbDrivePosition = new
+  // ClimberDrivePosition(climb);
+  // private final ClimberUp climbUp = new ClimberUp(climb);
 
   // Auto only
   private final CoralFloorPickup coralFloorPickup = new CoralFloorPickup(elevator, arm, wrist, intake);
@@ -111,6 +108,7 @@ public class RobotContainer {
     // Start data logger
     DataLogManager.start();
     DriverStation.startDataLog(DataLogManager.getLog());
+    DriverStation.silenceJoystickConnectionWarning(true);
 
     // Port forwarding
     PortForwarder.add(5800, "barge-photon.local", 5800);
@@ -118,7 +116,7 @@ public class RobotContainer {
     PortForwarder.add(5800, "reef-photon.local", 5800);
 
     // Set default led color during initialization
-    led.setPattern(Pattern.OCEAN_RAINBOW);
+    led.setPattern(Pattern.OFF);
 
     configureBindings();
   }
@@ -148,11 +146,11 @@ public class RobotContainer {
         }));
 
     driverController.a().onTrue(getSelectedCommand());
-    driverController.y().onTrue(climbDrivePosition);
+    // driverController.y().onTrue(climbDrivePosition);
 
     driverController.leftBumper().and(driverController.rightBumper())
         .onTrue(new ParallelCommandGroup(
-            new MechClimbPosition(elevator, arm, wrist),
+            // new MechClimbPosition(elevator, arm, wrist),
             new InstantCommand(() -> RobotControlState.toggleClimb())));
   }
 
@@ -165,7 +163,7 @@ public class RobotContainer {
     } else if (RobotControlState.isProcessorScore()) {
       return processorScore;
     } else if (RobotControlState.isClimbEnabled()) {
-      return climbUp;
+      return null; // climbUp;
     } else if (RobotControlState.isAlgaePickup()) {
       switch (RobotControlState.getScoringLevel()) {
         case LEVEL_1:
