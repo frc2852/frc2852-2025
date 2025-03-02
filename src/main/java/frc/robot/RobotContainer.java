@@ -5,7 +5,6 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.Pattern;
 import frc.robot.Constants.ScoringLevel;
 import frc.robot.commands.BargeScore;
-import frc.robot.commands.ClimberDrivePosition;
 import frc.robot.commands.ClimberGrabPosition;
 import frc.robot.commands.ClimberUp;
 import frc.robot.commands.CoralFloorPickup;
