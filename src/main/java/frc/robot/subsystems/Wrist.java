@@ -62,9 +62,9 @@ public class Wrist extends SubsystemBase {
 
     motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    if (DriverStation.isTest()) {
-      SmartDashboard.putNumber("WristManualPosition", manualPosition);
-    }
+    // if (DriverStation.isTest()) {
+    //   SmartDashboard.putNumber("WristManualPosition", manualPosition);
+    // }
   }
 
   /**
@@ -89,15 +89,15 @@ public class Wrist extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (DriverStation.isTest()) {
-      SmartDashboard.putNumber("WristPosition", encoder.getPosition());
+    // if (DriverStation.isTest()) {
+    //   SmartDashboard.putNumber("WristPosition", encoder.getPosition());
 
-      SmartDashboard.putNumber("WristCurrent", motor.getOutputCurrent());
-      SmartDashboard.putNumber("WristTemperature", motor.getMotorTemperature());
-      SmartDashboard.putBoolean("WristAtPosition", isAtPosition());
+    //   SmartDashboard.putNumber("WristCurrent", motor.getOutputCurrent());
+    //   SmartDashboard.putNumber("WristTemperature", motor.getMotorTemperature());
+    //   SmartDashboard.putBoolean("WristAtPosition", isAtPosition());
 
-      manualPosition = SmartDashboard.getNumber("WristManualPosition", manualPosition);
-      goToPosition(manualPosition);
-    }
+    //   manualPosition = SmartDashboard.getNumber("WristManualPosition", manualPosition);
+    //   goToPosition(manualPosition);
+    // }
   }
 }

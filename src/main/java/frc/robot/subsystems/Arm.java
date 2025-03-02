@@ -76,9 +76,9 @@ public class Arm extends SubsystemBase {
 
     motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    if (DriverStation.isTest()) {
-      SmartDashboard.putNumber("ArmManualPosition", manualPosition);
-    }
+    // if (DriverStation.isTest()) {
+    //   SmartDashboard.putNumber("ArmManualPosition", manualPosition);
+    // }
   }
 
   /**
@@ -103,18 +103,18 @@ public class Arm extends SubsystemBase {
       hasInitializedPosition = true;
     }
 
-    SmartDashboard.putNumber("ArmPosition", encoder.getPosition());
-    SmartDashboard.putNumber("ArmTargetPosition", targetPosition);
-    SmartDashboard.putBoolean("ArmAtPosition", isAtPosition());
+    // SmartDashboard.putNumber("ArmPosition", encoder.getPosition());
+    // SmartDashboard.putNumber("ArmTargetPosition", targetPosition);
+    // SmartDashboard.putBoolean("ArmAtPosition", isAtPosition());
 
-    if (DriverStation.isTest()) {
-      SmartDashboard.putNumber("ArmAbsPosition", absEncoder.getPosition());
+    // if (DriverStation.isTest()) {
+    //   SmartDashboard.putNumber("ArmAbsPosition", absEncoder.getPosition());
 
-      SmartDashboard.putNumber("ArmCurrent", motor.getOutputCurrent());
-      SmartDashboard.putNumber("ArmTemperature", motor.getMotorTemperature());
+    //   SmartDashboard.putNumber("ArmCurrent", motor.getOutputCurrent());
+    //   SmartDashboard.putNumber("ArmTemperature", motor.getMotorTemperature());
 
-      manualPosition = SmartDashboard.getNumber("ArmManualPosition", manualPosition);
-      goToPosition(manualPosition);
-    }
+    //   manualPosition = SmartDashboard.getNumber("ArmManualPosition", manualPosition);
+    //   goToPosition(manualPosition);
+    // }
   }
 }

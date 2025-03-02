@@ -109,7 +109,7 @@ public final class Constants {
     public static final int CLIMBER_ALLOWED_CLOSED_LOOP_ERROR = 1;
 
     public static final double CLIMBER_GRAB_POSITION = 5;
-    public static final double CLIMBER_DRIVE_POSITION = 25;
+    public static final double CLIMBER_DRIVE_POSITION = 15;
     public static final double CLIMBER_CLIMB_POSITION = 30;
 
     // Elevator 

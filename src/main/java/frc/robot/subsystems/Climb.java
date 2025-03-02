@@ -69,9 +69,9 @@ public class Climb extends SubsystemBase {
 
     goToPosition(MotorSetPoint.CLIMBER_DRIVE_POSITION);
 
-    if (DriverStation.isTest()) {
-      SmartDashboard.putNumber("ClimbManualPosition", manualPosition);
-    }
+    // if (DriverStation.isTest()) {
+    //   SmartDashboard.putNumber("ClimbManualPosition", manualPosition);
+    // }
   }
 
   public double getTargetPosition() {
@@ -99,16 +99,16 @@ public class Climb extends SubsystemBase {
       hasInitialized = true;
     }
 
-    if (DriverStation.isTest()) {
-      SmartDashboard.putNumber("ClimbAbsPosition", absEncoder.getPosition());
-      SmartDashboard.putNumber("ClimbPosition", encoder.getPosition());
+    // if (DriverStation.isTest()) {
+    //   SmartDashboard.putNumber("ClimbAbsPosition", absEncoder.getPosition());
+    //   SmartDashboard.putNumber("ClimbPosition", encoder.getPosition());
 
-      SmartDashboard.putNumber("ClimbCurrent", motor.getOutputCurrent());
-      SmartDashboard.putNumber("ClimbTemperature", motor.getMotorTemperature());
-      SmartDashboard.putBoolean("ClimbAtPosition", isAtPosition());
+    //   SmartDashboard.putNumber("ClimbCurrent", motor.getOutputCurrent());
+    //   SmartDashboard.putNumber("ClimbTemperature", motor.getMotorTemperature());
+    //   SmartDashboard.putBoolean("ClimbAtPosition", isAtPosition());
 
-      manualPosition = SmartDashboard.getNumber("ClimbManualPosition", manualPosition);
-      goToPosition(manualPosition);
-    }
+    //   manualPosition = SmartDashboard.getNumber("ClimbManualPosition", manualPosition);
+    //   goToPosition(manualPosition);
+    // }
   }
 }
