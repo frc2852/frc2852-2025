@@ -103,12 +103,12 @@ public class RobotContainer {
 
   // Drive commands
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-      () -> driverController.getLeftY() * 1,
-      () -> driverController.getLeftX() * 1)
+      () -> driverController.getLeftY() * -1,
+      () -> driverController.getLeftX() * -1)
       .withControllerRotationAxis(() -> driverController.getRightX() * -1)
       .deadband(OperatorConstants.DEADBAND)
       .scaleTranslation(0.8)
-      .allianceRelativeControl(true);
+      .allianceRelativeControl(false);
 
   Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
 
@@ -123,6 +123,7 @@ public class RobotContainer {
     DriverStation.silenceJoystickConnectionWarning(true);
 
     // Port forwarding
+    PortForwarder.add(5800, "photonvision.local", 5800);
     PortForwarder.add(5800, "barge-photon.local", 5800);
     PortForwarder.add(5800, "pickup-station-photon.local", 5800);
     PortForwarder.add(5800, "reef-photon.local", 5800);
@@ -149,37 +150,40 @@ public class RobotContainer {
           .onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
     }
 
+    driverController.a().whileTrue(drivebase.sysIdAngleMotorCommand());
+    driverController.b().whileTrue(drivebase.sysIdDriveMotorCommand());
+
+    // driverController.leftBumper().and(driverController.rightBumper())
+    // .onTrue(new ParallelCommandGroup(
+    // // new MechClimbPosition(elevator, arm, wrist),
+    // new InstantCommand(() -> RobotControlState.toggleClimb())));
+
+    // driverController.b().onTrue(new InstantCommand(() -> {
+    // if (aButtonCommand != null && aButtonCommand.isScheduled()) {
+    // aButtonCommand.cancel();
+    // drivePosition.schedule();
+    // }
+    // }));
+
     // driverController.b().onTrue(
-    //     new InstantCommand(() -> {
-    //       Command newCommand = drivebase.driveToPose(RobotControlState.getZonePose());
-    //       if (newCommand != null) {
-    //         newCommand.schedule();
-    //       }
-    //     }));
+    // new InstantCommand(() -> {
+    // Command newCommand = drivebase.driveToPose(RobotControlState.getZonePose());
+    // if (newCommand != null) {
+    // newCommand.schedule();
+    // }
+    // }));
 
-    driverController.leftBumper().and(driverController.rightBumper())
-        .onTrue(new ParallelCommandGroup(
-            // new MechClimbPosition(elevator, arm, wrist),
-            new InstantCommand(() -> RobotControlState.toggleClimb())));
-
-    driverController.b().onTrue(new InstantCommand(() -> {
-      if (aButtonCommand != null && aButtonCommand.isScheduled()) {
-        aButtonCommand.cancel();
-        drivePosition.schedule();
-      }
-    }));
-
-    driverController.a().onTrue(new InstantCommand(() -> {
-      // Cancel the previous command if it's still running
-      if (aButtonCommand != null && aButtonCommand.isScheduled()) {
-        aButtonCommand.cancel();
-      }
-      // Retrieve and schedule the new command
-      aButtonCommand = getSelectedCommand();
-      if (aButtonCommand != null) {
-        aButtonCommand.schedule();
-      }
-    }));
+    // driverController.a().onTrue(new InstantCommand(() -> {
+    // // Cancel the previous command if it's still running
+    // if (aButtonCommand != null && aButtonCommand.isScheduled()) {
+    // aButtonCommand.cancel();
+    // }
+    // // Retrieve and schedule the new command
+    // aButtonCommand = getSelectedCommand();
+    // if (aButtonCommand != null) {
+    // aButtonCommand.schedule();
+    // }
+    // }));
   }
 
   public Command getSelectedCommand() {

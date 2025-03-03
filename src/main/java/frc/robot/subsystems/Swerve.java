@@ -79,18 +79,18 @@ public class Swerve extends SubsystemBase {
     // Angle conversion factor is 360 / (GEAR RATIO * ENCODER RESOLUTION)
     // In this case the gear ratio is 12.8 motor revolutions per wheel rotation.
     // The encoder resolution per motor revolution is 1 per motor revolution.
-    double angleConversionFactor = SwerveMath.calculateDegreesPerSteeringRotation(21.4285714286);
+    // double angleConversionFactor = SwerveMath.calculateDegreesPerSteeringRotation(21.4285714286);
     // Motor conversion factor is (PI * WHEEL DIAMETER IN METERS) / (GEAR RATIO *
     // ENCODER RESOLUTION).
     // In this case the wheel diameter is 4 inches, which must be converted to
     // meters to get meters/second.
     // The gear ratio is 6.75 motor revolutions per wheel rotation.
     // The encoder resolution per motor revolution is 1 per motor revolution.
-    double driveConversionFactor = SwerveMath.calculateMetersPerRotation(Units.inchesToMeters(4), 6.75);
-    System.out.println("\"conversionFactors\": {");
-    System.out.println("\t\"angle\": {\"factor\": " + angleConversionFactor + " },");
-    System.out.println("\t\"drive\": {\"factor\": " + driveConversionFactor + " }");
-    System.out.println("}");
+    // double driveConversionFactor = SwerveMath.calculateMetersPerRotation(Units.inchesToMeters(4), 6.75);
+    // System.out.println("\"conversionFactors\": {");
+    // System.out.println("\t\"angle\": {\"factor\": " + angleConversionFactor + " },");
+    // System.out.println("\t\"drive\": {\"factor\": " + driveConversionFactor + " }");
+    // System.out.println("}");
 
     // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary
     // objects being created.
@@ -131,6 +131,8 @@ public class Swerve extends SubsystemBase {
       swerveDrive.stopOdometryThread();
     }
     setupPathPlanner();
+
+    // replaceSwerveModuleFeedforward(0.38566,163.49,12.704);
   }
 
   /**
@@ -168,9 +170,9 @@ public class Swerve extends SubsystemBase {
     RobotControlState.periodic();
 
     // TODO: Remove
-    SmartDashboard.putNumber("RobotX", this.getSwerveDrive().getPose().getX());
-    SmartDashboard.putNumber("RobotY", this.getSwerveDrive().getPose().getY());
-    SmartDashboard.putNumber("RobotAngle", this.getSwerveDrive().getPose().getRotation().getDegrees());
+    // SmartDashboard.putNumber("RobotX", this.getSwerveDrive().getPose().getX());
+    // SmartDashboard.putNumber("RobotY", this.getSwerveDrive().getPose().getY());
+    // SmartDashboard.putNumber("RobotAngle", this.getSwerveDrive().getPose().getRotation().getDegrees());
   }
 
   @Override
