@@ -15,10 +15,15 @@ import frc.robot.commands.ReefAlgeaLevel1;
 import frc.robot.commands.ReefAlgeaLevel1Waste;
 import frc.robot.commands.ReefAlgeaLevel2;
 import frc.robot.commands.ReefAlgeaLevel2Waste;
+import frc.robot.commands.ReefScore;
 import frc.robot.commands.ReefScoreLevel1;
+import frc.robot.commands.ReefScoreLevel1Manual;
 import frc.robot.commands.ReefScoreLevel2;
+import frc.robot.commands.ReefScoreLevel2Manual;
 import frc.robot.commands.ReefScoreLevel3;
+import frc.robot.commands.ReefScoreLevel3Manual;
 import frc.robot.commands.ReefScoreLevel4;
+import frc.robot.commands.ReefScoreLevel4Manual;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Elevator;
@@ -77,10 +82,16 @@ public class RobotContainer {
   private final ReefScoreLevel3 reefScoreLevel3 = new ReefScoreLevel3(elevator, arm, wrist, intake);
   private final ReefScoreLevel4 reefScoreLevel4 = new ReefScoreLevel4(elevator, arm, wrist, intake);
 
+  private final ReefScoreLevel1Manual reefScoreLevel1Manual = new ReefScoreLevel1Manual(elevator, arm, wrist, intake);
+  private final ReefScoreLevel2Manual reefScoreLevel2Manual = new ReefScoreLevel2Manual(elevator, arm, wrist, intake);
+  private final ReefScoreLevel3Manual reefScoreLevel3Manual = new ReefScoreLevel3Manual(elevator, arm, wrist, intake);
+  private final ReefScoreLevel4Manual reefScoreLevel4Manual = new ReefScoreLevel4Manual(elevator, arm, wrist, intake);
+  private final ReefScore reefScore = new ReefScore(elevator, arm, wrist, intake);
+
   private final ProcessorScore processorScore = new ProcessorScore(elevator, arm, wrist, intake);
   private final DrivePosition drivePosition = new DrivePosition(elevator, arm, wrist, intake);
 
-  private final ClimberGrabPosition climberGrabPosition = new ClimberGrabPosition(climb);
+  private final ClimberGrabPosition climberGrabPosition = new ClimberGrabPosition(elevator, arm, wrist, climb);
   private final ClimberUp climberUp = new ClimberUp(climb);
 
   // Auto only
@@ -176,6 +187,7 @@ public class RobotContainer {
 
   public Command getSelectedCommand() {
     boolean hasAlgae = intake.hasAlgae();
+    boolean hasCoral = intake.hasCoral();
     boolean hasGamePiece = intake.hasGamePiece();
 
     // Climb mode check.
@@ -204,6 +216,10 @@ public class RobotContainer {
     // Handle algae waste separately.
     if (RobotControlState.isAlgaeWaste()) {
       return getAlgaeWasteScoringCommand();
+    }
+
+    if(hasCoral){
+      return reefScore;
     }
 
     // Default scoring command.
@@ -235,13 +251,13 @@ public class RobotContainer {
   private Command getCoralReefCommand() {
     switch (RobotControlState.getScoringLevel()) {
       case LEVEL_1:
-        return reefScoreLevel1;
+        return reefScoreLevel1Manual;
       case LEVEL_2:
-        return reefScoreLevel2;
+        return reefScoreLevel2Manual;
       case LEVEL_3:
-        return reefScoreLevel3;
+        return reefScoreLevel3Manual;
       case LEVEL_4:
-        return reefScoreLevel4;
+        return reefScoreLevel4Manual;
       default:
         return null;
     }
