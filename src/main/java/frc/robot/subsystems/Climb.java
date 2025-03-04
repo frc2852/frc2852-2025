@@ -100,11 +100,7 @@ public class Climb extends SubsystemBase {
     }
 
     // if (DriverStation.isTest()) {
-    //   SmartDashboard.putNumber("ClimbAbsPosition", absEncoder.getPosition());
     //   SmartDashboard.putNumber("ClimbPosition", encoder.getPosition());
-
-    //   SmartDashboard.putNumber("ClimbCurrent", motor.getOutputCurrent());
-    //   SmartDashboard.putNumber("ClimbTemperature", motor.getMotorTemperature());
     //   SmartDashboard.putBoolean("ClimbAtPosition", isAtPosition());
 
     //   manualPosition = SmartDashboard.getNumber("ClimbManualPosition", manualPosition);

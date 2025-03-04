@@ -90,14 +90,8 @@ public class Elevator extends SubsystemBase {
     motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     motorFollow.configure(motorFollowConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    // Publish initial values to SmartDashboard if in test mode.
     // if (DriverStation.isTest()) {
-    //   SmartDashboard.putNumber("ElevatorP", P);
-    //   SmartDashboard.putNumber("ElevatorI", I);
-    //   SmartDashboard.putNumber("ElevatorD", D);
-    //   SmartDashboard.putNumber("ElevatorMaxVelocity", maxVelocity);
-    //   SmartDashboard.putNumber("ElevatorMaxAcceleration", maxAcceleration);
-    //   SmartDashboard.putNumber("ElevatorManualPosition", manualPosition);
+    // SmartDashboard.putNumber("ElevatorManualPosition", manualPosition);
     // }
   }
 
@@ -107,7 +101,7 @@ public class Elevator extends SubsystemBase {
    * @param position The target Elevator angle in degrees.
    */
   public void goToPosition(double position) {
-    if(position > 37.5) {
+    if (position > 37.5) {
       position = 37.5;
     } else if (position <= 0) {
       position = 0;
@@ -122,50 +116,12 @@ public class Elevator extends SubsystemBase {
 
   @Override
   public void periodic() {
-
+    // if (DriverStation.isTest()) {
     // SmartDashboard.putBoolean("ElevatorAtPosition", isAtPosition());
     // SmartDashboard.putNumber("ElevatorPosition", encoder.getPosition());
     // SmartDashboard.putNumber("ElevatorTargetPosition", targetPosition);
-
-    // if (DriverStation.isTest()) {
-    //   double newP = SmartDashboard.getNumber("ElevatorP", P);
-    //   double newI = SmartDashboard.getNumber("ElevatorI", I);
-    //   double newD = SmartDashboard.getNumber("ElevatorD", D);
-    //   double newMaxVel = SmartDashboard.getNumber("ElevatorMaxVelocity", maxVelocity);
-    //   double newMaxAccel = SmartDashboard.getNumber("ElevatorMaxAcceleration", maxAcceleration);
-    //   manualPosition = SmartDashboard.getNumber("ElevatorManualPosition", manualPosition);
-
-    //   // If any value has changed, update the closed-loop configuration.
-    //   if (newP != P || newI != I || newD != D ||
-    //       newMaxVel != maxVelocity || newMaxAccel != maxAcceleration) {
-    //     P = newP;
-    //     I = newI;
-    //     D = newD;
-    //     maxVelocity = newMaxVel;
-    //     maxAcceleration = newMaxAccel;
-
-    //     // Update PID and motion parameters.
-    //     motorConfig.closedLoop
-    //         .p(P)
-    //         .i(I)
-    //         .d(D)
-    //         .outputRange(-outputRange, outputRange);
-
-    //     motorConfig.closedLoop.maxMotion
-    //         .maxVelocity(maxVelocity)
-    //         .maxAcceleration(maxAcceleration);
-
-    //     // Reconfigure the motor with the new settings.
-    //     motor.configure(motorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-    //   }
-
-    //   SmartDashboard.putNumber("ElevatorMotor", motor.getAppliedOutput());
-    //   SmartDashboard.putNumber("ElevatorFollowMotor", motorFollow.getAppliedOutput());
-    //   SmartDashboard.putNumber("ElevatorFollowPosition", encoderFollow.getPosition());
-    //   SmartDashboard.putNumber("ElevatorCurrent", motor.getOutputCurrent());
-    //   SmartDashboard.putNumber("ElevatorTemperature", motor.getMotorTemperature());
-
-    //   goToPosition(manualPosition);
+    // manualPosition = SmartDashboard.getNumber("ElevatorManualPosition", manualPosition);
+    // goToPosition(manualPosition);
     // }
   }
 }

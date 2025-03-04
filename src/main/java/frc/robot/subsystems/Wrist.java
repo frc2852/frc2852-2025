@@ -91,9 +91,6 @@ public class Wrist extends SubsystemBase {
   public void periodic() {
     // if (DriverStation.isTest()) {
     //   SmartDashboard.putNumber("WristPosition", encoder.getPosition());
-
-    //   SmartDashboard.putNumber("WristCurrent", motor.getOutputCurrent());
-    //   SmartDashboard.putNumber("WristTemperature", motor.getMotorTemperature());
     //   SmartDashboard.putBoolean("WristAtPosition", isAtPosition());
 
     //   manualPosition = SmartDashboard.getNumber("WristManualPosition", manualPosition);

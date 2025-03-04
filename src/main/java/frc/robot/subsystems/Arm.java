@@ -108,11 +108,6 @@ public class Arm extends SubsystemBase {
     // SmartDashboard.putBoolean("ArmAtPosition", isAtPosition());
 
     // if (DriverStation.isTest()) {
-    //   SmartDashboard.putNumber("ArmAbsPosition", absEncoder.getPosition());
-
-    //   SmartDashboard.putNumber("ArmCurrent", motor.getOutputCurrent());
-    //   SmartDashboard.putNumber("ArmTemperature", motor.getMotorTemperature());
-
     //   manualPosition = SmartDashboard.getNumber("ArmManualPosition", manualPosition);
     //   goToPosition(manualPosition);
     // }
