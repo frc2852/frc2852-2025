@@ -98,6 +98,7 @@ public final class Constants {
     public static final int ARM_ALGEA_LEVEL_1 = 130;
     public static final int ARM_ALGEA_LEVEL_2 = 130;
     public static final int ARM_INTAKE_STATION = 65;
+    public static final int ARM_FLOOR_PICKUP = 30;
     public static final int ARM_BARGE = 110;
     public static final int ARM_PROCESSOR = 150;
 

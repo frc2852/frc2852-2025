@@ -19,10 +19,6 @@ import frc.robot.commands.ReefScoreLevel1;
 import frc.robot.commands.ReefScoreLevel2;
 import frc.robot.commands.ReefScoreLevel3;
 import frc.robot.commands.ReefScoreLevel4;
-import frc.robot.commands.intake.IntakeAlgae;
-import frc.robot.commands.intake.IntakeCoral;
-import frc.robot.commands.intake.IntakeScoreAlgae;
-import frc.robot.commands.intake.IntakeScoreCoral;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Elevator;
@@ -61,18 +57,11 @@ public class RobotContainer {
   // Subsystem
   private final Swerve drivebase = new Swerve(new File(Filesystem.getDeployDirectory(), "swerve/pinky"));
   private final Climb climb = new Climb();
-  private final Elevator elevator = new Elevator(); // done
-  private final Intake intake = new Intake(); // done
-  private final LED led = new LED(); // done
-  private final Arm arm = new Arm(); // done
+  private final Elevator elevator = new Elevator();
+  private final Intake intake = new Intake();
+  private final LED led = new LED();
+  private final Arm arm = new Arm();
   private final Wrist wrist = new Wrist();
-
-  // Debug only
-  private final IntakeAlgae intakeAlgae = new IntakeAlgae(intake);
-  private final IntakeCoral intakeCoral = new IntakeCoral(intake);
-  private final IntakeScoreAlgae intakeScoreAlgae = new IntakeScoreAlgae(intake);
-  private final IntakeScoreCoral intakeScoreCoral = new IntakeScoreCoral(intake);
-  // End Debug
 
   // Commands
   private final BargeScore bargeScore = new BargeScore(elevator, arm, wrist, intake);
@@ -91,7 +80,6 @@ public class RobotContainer {
   private final ProcessorScore processorScore = new ProcessorScore(elevator, arm, wrist, intake);
   private final DrivePosition drivePosition = new DrivePosition(elevator, arm, wrist, intake);
 
-  // private final ClimberDrivePosition climbDrivePosition = new
   private final ClimberGrabPosition climberGrabPosition = new ClimberGrabPosition(climb);
   private final ClimberUp climberUp = new ClimberUp(climb);
 
@@ -150,40 +138,40 @@ public class RobotContainer {
           .onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
     }
 
-    driverController.a().whileTrue(drivebase.sysIdAngleMotorCommand());
-    driverController.b().whileTrue(drivebase.sysIdDriveMotorCommand());
+    // driverController.a().whileTrue(drivebase.sysIdAngleMotorCommand());
+    // driverController.b().whileTrue(drivebase.sysIdDriveMotorCommand());
 
-    // driverController.leftBumper().and(driverController.rightBumper())
-    // .onTrue(new ParallelCommandGroup(
-    // // new MechClimbPosition(elevator, arm, wrist),
-    // new InstantCommand(() -> RobotControlState.toggleClimb())));
+    driverController.leftBumper().and(driverController.rightBumper())
+        .onTrue(new ParallelCommandGroup(
+            // new MechClimbPosition(elevator, arm, wrist),
+            new InstantCommand(() -> RobotControlState.toggleClimb())));
 
-    // driverController.b().onTrue(new InstantCommand(() -> {
-    // if (aButtonCommand != null && aButtonCommand.isScheduled()) {
-    // aButtonCommand.cancel();
-    // drivePosition.schedule();
-    // }
-    // }));
+    driverController.b().onTrue(new InstantCommand(() -> {
+      if (aButtonCommand != null && aButtonCommand.isScheduled()) {
+        aButtonCommand.cancel();
+        drivePosition.schedule();
+      }
+    }));
 
-    // driverController.b().onTrue(
-    // new InstantCommand(() -> {
-    // Command newCommand = drivebase.driveToPose(RobotControlState.getZonePose());
-    // if (newCommand != null) {
-    // newCommand.schedule();
-    // }
-    // }));
+    driverController.b().onTrue(
+        new InstantCommand(() -> {
+          Command newCommand = drivebase.driveToPose(RobotControlState.getZonePose());
+          if (newCommand != null) {
+            newCommand.schedule();
+          }
+        }));
 
-    // driverController.a().onTrue(new InstantCommand(() -> {
-    // // Cancel the previous command if it's still running
-    // if (aButtonCommand != null && aButtonCommand.isScheduled()) {
-    // aButtonCommand.cancel();
-    // }
-    // // Retrieve and schedule the new command
-    // aButtonCommand = getSelectedCommand();
-    // if (aButtonCommand != null) {
-    // aButtonCommand.schedule();
-    // }
-    // }));
+    driverController.a().onTrue(new InstantCommand(() -> {
+      // Cancel the previous command if it's still running
+      if (aButtonCommand != null && aButtonCommand.isScheduled()) {
+        aButtonCommand.cancel();
+      }
+      // Retrieve and schedule the new command
+      aButtonCommand = getSelectedCommand();
+      if (aButtonCommand != null) {
+        aButtonCommand.schedule();
+      }
+    }));
   }
 
   public Command getSelectedCommand() {
@@ -296,10 +284,7 @@ public class RobotContainer {
   private void configurePathPlanner() {
 
     // Register commands
-    NamedCommands.registerCommand("intakeAlgae", intakeAlgae);
-    NamedCommands.registerCommand("intakeCoral", intakeCoral);
-    NamedCommands.registerCommand("intakeScoreAlgae", intakeScoreAlgae);
-    NamedCommands.registerCommand("intakeScoreCoral", intakeScoreCoral);
+    NamedCommands.registerCommand("drivePosition", drivePosition);
     NamedCommands.registerCommand("bargeScore", bargeScore);
 
     NamedCommands.registerCommand("coralFloorPickup", coralFloorPickup);

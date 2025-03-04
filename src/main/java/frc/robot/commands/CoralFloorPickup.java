@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.MotorSetPoint;
-import frc.robot.commands.intake.IntakeCoral;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
@@ -20,8 +19,10 @@ public class CoralFloorPickup extends SequentialCommandGroup {
             // Should already be here
             new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_DRIVE_POSITION), elevator),
             new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_SCORE_POSITION), wrist),
-            new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_DRIVE_POSITION), arm)),
+            new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_FLOOR_PICKUP), arm)),
         new WaitUntilCommand(() -> elevator.isAtPosition() && wrist.isAtPosition() && arm.isAtPosition()),
-        new IntakeCoral(intake));
+        new InstantCommand(() -> intake.intakeCoral()),
+        new WaitUntilCommand(() -> intake.hasCoral()),
+        new InstantCommand(() -> intake.hold()));
   }
 }
