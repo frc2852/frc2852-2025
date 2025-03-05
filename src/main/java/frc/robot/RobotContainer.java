@@ -62,7 +62,7 @@ public class RobotContainer {
       OperatorConstants.OPERATOR_CONTROLLER);
 
   // Subsystem
-  private final Swerve drivebase = new Swerve(new File(Filesystem.getDeployDirectory(), "swerve/pinky"));
+  private final Swerve drivebase = new Swerve(new File(Filesystem.getDeployDirectory(), "swerve/snappy"));
   private final Climb climb = new Climb();
   private final Elevator elevator = new Elevator();
   private final Intake intake = new Intake();
