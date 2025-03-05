@@ -24,10 +24,10 @@ public class Wrist extends SubsystemBase {
 
   private final RelativeEncoder encoder;
 
-  private final double P = 0.1;
+  private final double P = 0.5;
   private final double I = 0;
   private final double D = 0;
-  private final double OUTPUT_RANGE = 1;
+  private final double OUTPUT_RANGE = 0.5;
 
   private double targetPosition;
   private double manualPosition = 0;

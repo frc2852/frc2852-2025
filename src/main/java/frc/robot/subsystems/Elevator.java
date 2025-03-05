@@ -11,6 +11,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -90,9 +91,7 @@ public class Elevator extends SubsystemBase {
     motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     motorFollow.configure(motorFollowConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    // if (DriverStation.isTest()) {
-    // SmartDashboard.putNumber("ElevatorManualPosition", manualPosition);
-    // }
+    SmartDashboard.putNumber("ElevatorManualPosition", manualPosition);
   }
 
   /**
@@ -114,14 +113,11 @@ public class Elevator extends SubsystemBase {
     return Math.abs(encoder.getPosition() - targetPosition) <= 2;
   }
 
+  public boolean isAtDrivePosition() {
+    return targetPosition == MotorSetPoint.ELEVATOR_DRIVE_POSITION;
+  }
+
   @Override
   public void periodic() {
-    // if (DriverStation.isTest()) {
-    // SmartDashboard.putBoolean("ElevatorAtPosition", isAtPosition());
-    // SmartDashboard.putNumber("ElevatorPosition", encoder.getPosition());
-    // SmartDashboard.putNumber("ElevatorTargetPosition", targetPosition);
-    // manualPosition = SmartDashboard.getNumber("ElevatorManualPosition", manualPosition);
-    // goToPosition(manualPosition);
-    // }
   }
 }

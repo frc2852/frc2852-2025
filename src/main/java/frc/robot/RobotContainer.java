@@ -15,15 +15,17 @@ import frc.robot.commands.ReefAlgeaLevel1;
 import frc.robot.commands.ReefAlgeaLevel1Waste;
 import frc.robot.commands.ReefAlgeaLevel2;
 import frc.robot.commands.ReefAlgeaLevel2Waste;
-import frc.robot.commands.ReefScore;
+import frc.robot.commands.ReefScoreAlignment;
 import frc.robot.commands.ReefScoreLevel1;
-import frc.robot.commands.ReefScoreLevel1Manual;
 import frc.robot.commands.ReefScoreLevel2;
 import frc.robot.commands.ReefScoreLevel2Manual;
+import frc.robot.commands.ReefScoreLevel2ManualScore;
 import frc.robot.commands.ReefScoreLevel3;
 import frc.robot.commands.ReefScoreLevel3Manual;
+import frc.robot.commands.ReefScoreLevel3ManualScore;
 import frc.robot.commands.ReefScoreLevel4;
 import frc.robot.commands.ReefScoreLevel4Manual;
+import frc.robot.commands.ReefScoreLevel4ManualScore;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Elevator;
@@ -82,11 +84,22 @@ public class RobotContainer {
   private final ReefScoreLevel3 reefScoreLevel3 = new ReefScoreLevel3(elevator, arm, wrist, intake);
   private final ReefScoreLevel4 reefScoreLevel4 = new ReefScoreLevel4(elevator, arm, wrist, intake);
 
-  private final ReefScoreLevel1Manual reefScoreLevel1Manual = new ReefScoreLevel1Manual(elevator, arm, wrist, intake);
   private final ReefScoreLevel2Manual reefScoreLevel2Manual = new ReefScoreLevel2Manual(elevator, arm, wrist, intake);
   private final ReefScoreLevel3Manual reefScoreLevel3Manual = new ReefScoreLevel3Manual(elevator, arm, wrist, intake);
   private final ReefScoreLevel4Manual reefScoreLevel4Manual = new ReefScoreLevel4Manual(elevator, arm, wrist, intake);
-  private final ReefScore reefScore = new ReefScore(elevator, arm, wrist, intake);
+
+  private final ReefScoreAlignment reefScoreAlignment = new ReefScoreAlignment(elevator, arm, wrist, intake);
+
+  // private final ReefScoreLevel1ManualScore reefScoreLevel1ManualScore = new
+  // ReefScoreLevel1ManualScore(elevator, arm, wrist, intake);
+  private final ReefScoreLevel2ManualScore reefScoreLevel2ManualScore = new ReefScoreLevel2ManualScore(elevator, arm,
+      wrist, intake);
+  private final ReefScoreLevel3ManualScore reefScoreLevel3ManualScore = new ReefScoreLevel3ManualScore(elevator, arm,
+      wrist, intake);
+  private final ReefScoreLevel4ManualScore reefScoreLevel4ManualScore = new ReefScoreLevel4ManualScore(elevator, arm,
+      wrist, intake);
+  // private final ReefScore reefScore = new ReefScore(elevator, arm, wrist,
+  // intake);
 
   private final ProcessorScore processorScore = new ProcessorScore(elevator, arm, wrist, intake);
   private final DrivePosition drivePosition = new DrivePosition(elevator, arm, wrist, intake);
@@ -122,13 +135,13 @@ public class RobotContainer {
     DriverStation.silenceJoystickConnectionWarning(true);
 
     // Port forwarding
-    PortForwarder.add(5800, "photonvision.local", 5800);
-    PortForwarder.add(5800, "barge-photon.local", 5800);
-    PortForwarder.add(5800, "pickup-station-photon.local", 5800);
-    PortForwarder.add(5800, "reef-photon.local", 5800);
+    // PortForwarder.add(5800, "photonvision.local", 5800);
+    // PortForwarder.add(5800, "barge-photon.local", 5800);
+    // PortForwarder.add(5800, "pickup-station-photon.local", 5800);
+    // PortForwarder.add(5800, "reef-photon.local", 5800);
 
     // Set default led color during initialization
-    led.setPattern(Pattern.OFF);
+    led.setPattern(Pattern.LAVA_RAINBOW);
 
     configureBindings();
   }
@@ -152,10 +165,14 @@ public class RobotContainer {
     // driverController.a().whileTrue(drivebase.sysIdAngleMotorCommand());
     // driverController.b().whileTrue(drivebase.sysIdDriveMotorCommand());
 
+    driverController.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+
     driverController.leftBumper().and(driverController.rightBumper())
         .onTrue(new ParallelCommandGroup(
             // new MechClimbPosition(elevator, arm, wrist),
             new InstantCommand(() -> RobotControlState.toggleClimb())));
+
+    driverController.x().onTrue(Commands.runOnce(intake::reverseCoral));
 
     driverController.b().onTrue(new InstantCommand(() -> {
       if (aButtonCommand != null && aButtonCommand.isScheduled()) {
@@ -164,13 +181,13 @@ public class RobotContainer {
       }
     }));
 
-    driverController.b().onTrue(
-        new InstantCommand(() -> {
-          Command newCommand = drivebase.driveToPose(RobotControlState.getZonePose());
-          if (newCommand != null) {
-            newCommand.schedule();
-          }
-        }));
+    // driverController.b().onTrue(
+    // new InstantCommand(() -> {
+    // Command newCommand = drivebase.driveToPose(RobotControlState.getZonePose());
+    // if (newCommand != null) {
+    // newCommand.schedule();
+    // }
+    // }));
 
     driverController.a().onTrue(new InstantCommand(() -> {
       // Cancel the previous command if it's still running
@@ -186,10 +203,6 @@ public class RobotContainer {
   }
 
   public Command getSelectedCommand() {
-    boolean hasAlgae = intake.hasAlgae();
-    boolean hasCoral = intake.hasCoral();
-    boolean hasGamePiece = intake.hasGamePiece();
-
     // Climb mode check.
     if (RobotControlState.isClimbEnabled()) {
       if (climb.getTargetPosition() == MotorSetPoint.CLIMBER_GRAB_POSITION) {
@@ -200,13 +213,13 @@ public class RobotContainer {
     }
 
     // Early exit: if nothing is picked up and we're not in algae mode.
-    if (!hasGamePiece && !RobotControlState.isAlgaeMode()) {
+    if (!intake.hasGamePiece() && !RobotControlState.isAlgaeMode()) {
       return intakeStationPickup;
     }
 
     // Barge and Processor scoring share similar behavior when !hasAlgae.
     if (RobotControlState.isBargeScore() || RobotControlState.isProcessorScore()) {
-      if (hasAlgae) {
+      if (intake.hasAlgae()) {
         return RobotControlState.isBargeScore() ? bargeScore : processorScore;
       } else {
         return getAlgaeReefPositionCommand();
@@ -218,11 +231,7 @@ public class RobotContainer {
       return getAlgaeWasteScoringCommand();
     }
 
-    if(hasCoral){
-      return reefScore;
-    }
-
-    // Default scoring command.
+    // Coral scoring
     return getCoralReefCommand();
   }
 
@@ -249,17 +258,35 @@ public class RobotContainer {
   }
 
   private Command getCoralReefCommand() {
-    switch (RobotControlState.getScoringLevel()) {
-      case LEVEL_1:
-        return reefScoreLevel1Manual;
-      case LEVEL_2:
-        return reefScoreLevel2Manual;
-      case LEVEL_3:
-        return reefScoreLevel3Manual;
-      case LEVEL_4:
-        return reefScoreLevel4Manual;
-      default:
-        return null;
+    // We're at drive position, go to the reef elevator postion
+    if (elevator.isAtDrivePosition()) {
+      switch (RobotControlState.getScoringLevel()) {
+        case LEVEL_1:
+          return reefScoreLevel1;
+        case LEVEL_2:
+          return reefScoreLevel2Manual;
+        case LEVEL_3:
+          return reefScoreLevel3Manual;
+        case LEVEL_4:
+          return reefScoreLevel4Manual;
+        default:
+          return null;
+      }
+    } else {
+      if (arm.isAtScoringPosition()) {
+        return reefScoreAlignment;
+      } else {
+        switch (RobotControlState.getScoringLevel()) {
+          case LEVEL_2:
+            return reefScoreLevel2ManualScore;
+          case LEVEL_3:
+            return reefScoreLevel3ManualScore;
+          case LEVEL_4:
+            return reefScoreLevel4ManualScore;
+          default:
+            return null;
+        }
+      }
     }
   }
 
@@ -325,8 +352,8 @@ public class RobotContainer {
     return autoChooser.getSelected();
   }
 
-  public void setDriveMode() {
-
+  public void ledsOff() {
+    led.setPattern(Pattern.OFF);
   }
 
   public void setMotorBrake(boolean brake) {

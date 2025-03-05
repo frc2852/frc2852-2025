@@ -18,9 +18,9 @@ public class DrivePosition extends SequentialCommandGroup {
   public DrivePosition(Elevator elevator, Arm arm, Wrist wrist, Intake intake) {
     addCommands(
         new ParallelCommandGroup(
+            new InstantCommand(() -> intake.stop(), intake),
             new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_DRIVE_POSITION), elevator),
             new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_DRIVE_POSITION), arm),
-            new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_DRIVE_POSITION), wrist),
-            new InstantCommand(() -> intake.stop(), intake)));
+            new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_DRIVE_POSITION), wrist)));
   }
 }

@@ -15,24 +15,18 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Wrist;
 
-public class ReefScoreLevel1 extends SequentialCommandGroup {
-  public ReefScoreLevel1(Elevator elevator, Arm arm, Wrist wrist, Intake intake) {
+public class ReefScoreLevel3ManualScore extends SequentialCommandGroup {
+  public ReefScoreLevel3ManualScore(Elevator elevator, Arm arm, Wrist wrist, Intake intake) {
     addCommands(
-        new ParallelCommandGroup(
-            new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_REEF_LEVEL_1), elevator),
-            new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_REEF_LEVEL_1)),
-            new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_SCORE_POSITION), wrist)),
-        new WaitUntilCommand(() -> elevator.isAtPosition() && wrist.isAtPosition() && arm.isAtPosition()),
-        new InstantCommand(() -> intake.reverseCoral(), intake),
-        new WaitCommand(1),
-        new WaitUntilCommand(() -> !intake.hasGamePiece()),
-        new InstantCommand(() -> intake.stop(), intake),
-        new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_DRIVE_POSITION), arm),
+        new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_REEF_LEVEL_3_MANUAL)),
         new WaitUntilCommand(() -> arm.isAtPosition()),
+        new InstantCommand(() -> intake.reverseCoral(), intake),
+        new WaitUntilCommand(() -> !intake.hasGamePiece()),
+        new WaitCommand(1),
         new ParallelCommandGroup(
+            new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_DRIVE_POSITION), arm),
             new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_DRIVE_POSITION), elevator),
-            
-            new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_DRIVE_POSITION), wrist)));
+            new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_DRIVE_POSITION), wrist),
+            new InstantCommand(() -> intake.stop(), intake)));
   }
 }
-

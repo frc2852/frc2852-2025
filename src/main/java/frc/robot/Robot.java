@@ -93,6 +93,7 @@ public class Robot extends TimedRobot {
     RobotControlState.setAlliance();
 
     robotContainer.setMotorBrake(true);
+    robotContainer.ledsOff();
     autonomousCommand = robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -112,6 +113,8 @@ public class Robot extends TimedRobot {
       RobotControlState.setAlliance();
     }
 
+    robotContainer.ledsOff();
+    
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -121,7 +124,6 @@ public class Robot extends TimedRobot {
     } else {
       CommandScheduler.getInstance().cancelAll();
     }
-    robotContainer.setDriveMode();
   }
 
   /** This function is called periodically during operator control. */
@@ -133,7 +135,6 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
-    robotContainer.setDriveMode();
   }
 
   /** This function is called periodically during test mode. */

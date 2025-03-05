@@ -13,13 +13,18 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Wrist;
 
-public class ReefScoreLevel3Manual extends SequentialCommandGroup {
-  public ReefScoreLevel3Manual(Elevator elevator, Arm arm, Wrist wrist, Intake intake) {
+public class ReefScoreAlignment extends SequentialCommandGroup {
+  /*
+   * Move Elevator
+   * Set wrist position
+   * Validate we are correct position
+   * Score the coral (reverse intake)
+   * Set elevator and wrist back to drive position
+   */
+  public ReefScoreAlignment(Elevator elevator, Arm arm, Wrist wrist, Intake intake) {
     addCommands(
-      new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_REEF_LEVEL_3), elevator),
-      new WaitUntilCommand(() -> elevator.isAtPosition()),
-      new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_REEF_WAIT)),
-      new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_SCORE_POSITION), wrist),
-      new WaitUntilCommand(() -> arm.isAtPosition()));
+        new InstantCommand(() -> intake.hold(), intake),
+        new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_REEF_WAIT), arm),
+        new WaitUntilCommand(() -> elevator.isAtPosition() && arm.isAtPosition()));
   }
 }

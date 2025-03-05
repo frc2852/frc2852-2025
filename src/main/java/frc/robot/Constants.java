@@ -91,16 +91,28 @@ public final class Constants {
     public static final int ARM_DRIVE_POSITION = 90;
     public static final int ARM_CLIMB_POSITION = 0;
 
-    public static final int ARM_REEF_LEVEL_1 = 130;
-    public static final int ARM_REEF_LEVEL_2 = 130;
-    public static final int ARM_REEF_LEVEL_3 = 130;
-    public static final int ARM_REEF_LEVEL_4 = 130;
-    public static final int ARM_ALGEA_LEVEL_1 = 130;
-    public static final int ARM_ALGEA_LEVEL_2 = 130;
-    public static final int ARM_INTAKE_STATION = 65;
-    public static final int ARM_FLOOR_PICKUP = 30;
-    public static final int ARM_BARGE = 110;
-    public static final int ARM_PROCESSOR = 150;
+    public static final int ARM_REEF_WAIT = 70;
+    public static final int ARM_REEF_LEVEL_1 = 60;
+    public static final int ARM_REEF_LEVEL_1_MANUAL = 50;
+
+    public static final int ARM_REEF_LEVEL_2 = 50;
+    public static final int ARM_REEF_LEVEL_2_MANUAL = 20;
+
+    public static final int ARM_REEF_LEVEL_3 = 60;
+    public static final int ARM_REEF_LEVEL_3_MANUAL = 20;
+
+    public static final int ARM_REEF_LEVEL_4 = 50;
+    public static final int ARM_REEF_LEVEL_4_MANUAL = 20;
+
+    public static final int ARM_ALGEA_LEVEL_1 = 50;
+    public static final int ARM_ALGEA_LEVEL_2 = 50;
+    public static final int ARM_INTAKE_STATION = 108;
+
+    public static final int ARM_WASTE = 130;
+
+    public static final int ARM_FLOOR_PICKUP = 150;
+    public static final int ARM_BARGE = 70;
+    public static final int ARM_PROCESSOR = 30;
 
     // Climber values
     public static final int CLIMBER_POSITION_CONVERTION_FACTOR = 90;
@@ -123,12 +135,13 @@ public final class Constants {
     public static final int ELEVATOR_DRIVE_POSITION = 0;
     public static final int ELEVATOR_CLIMB_POSITION = 0;
 
-    public static final double ELEVATOR_REEF_LEVEL_1 = 15;
-    public static final double ELEVATOR_REEF_LEVEL_2 = 25;
-    public static final double ELEVATOR_REEF_LEVEL_3 = 30;
-    public static final double ELEVATOR_REEF_LEVEL_4 = 37.5;
-    public static final double ELEVATOR_ALGEA_LEVEL_1 = 15;
-    public static final double ELEVATOR_ALGEA_LEVEL_2 = 30;
+    public static final double ELEVATOR_REEF_LEVEL_1 = 0;
+    public static final double ELEVATOR_REEF_LEVEL_2 = 9;
+    public static final double ELEVATOR_REEF_LEVEL_2_PASS = 15;
+    public static final double ELEVATOR_REEF_LEVEL_3 = 20;
+    public static final double ELEVATOR_REEF_LEVEL_4 = 36;
+    public static final double ELEVATOR_ALGEA_LEVEL_1 = 6;
+    public static final double ELEVATOR_ALGEA_LEVEL_2 = 15;
     public static final double ELEVATOR_INTAKE_STATION = 0;
     public static final double ELEVATOR_BARGE = 38;
     public static final double ELEVATOR_MAX_HEIGHT = 38.5;

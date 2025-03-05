@@ -14,6 +14,7 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CanbusId;
@@ -42,6 +43,7 @@ public class Intake extends SubsystemBase {
     motorConfig = new SparkFlexConfig();
     motorConfig.idleMode(IdleMode.kBrake);
     motorConfig.inverted(true);
+    motorConfig.smartCurrentLimit(40, 80);
 
     // Configure encoder conversion factors
     motorConfig.encoder
@@ -102,6 +104,7 @@ public class Intake extends SubsystemBase {
    * Stops the intake.
    */
   public void hold() {
+    DriverStation.reportWarning("Intake hold", false);
     targetSpeed = MotorSetPoint.INTAKE_VELOCITY_HOLD;
     controller.setReference(targetSpeed, ControlType.kMAXMotionVelocityControl);
   }
@@ -110,6 +113,7 @@ public class Intake extends SubsystemBase {
    * Stops the intake.
    */
   public void stop() {
+    DriverStation.reportWarning("Intake stopped", false);
     targetSpeed = MotorSetPoint.STOP_INTAKE;
     controller.setReference(targetSpeed, ControlType.kMAXMotionVelocityControl);
   }
@@ -130,5 +134,7 @@ public class Intake extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putBoolean("Coral", hasCoral());
     SmartDashboard.putBoolean("Algae", hasAlgae());
+    SmartDashboard.putNumber("IntakeCurrent", motor.getOutputCurrent());
+    SmartDashboard.putNumber("IntakeTemperature", motor.getMotorTemperature());
   }
 }

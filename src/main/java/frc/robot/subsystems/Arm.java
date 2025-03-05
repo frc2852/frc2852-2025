@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CanbusId;
+import frc.robot.Constants.MotorSetPoint;
 
 public class Arm extends SubsystemBase {
 
@@ -75,10 +76,6 @@ public class Arm extends SubsystemBase {
         .outputRange(-OUTPUT_RANGE, OUTPUT_RANGE);
 
     motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-    // if (DriverStation.isTest()) {
-    //   SmartDashboard.putNumber("ArmManualPosition", manualPosition);
-    // }
   }
 
   /**
@@ -95,6 +92,13 @@ public class Arm extends SubsystemBase {
     return Math.abs(encoder.getPosition() - targetPosition) <= 2;
   }
 
+  public boolean isAtScoringPosition() {
+    return targetPosition == MotorSetPoint.ARM_REEF_LEVEL_1_MANUAL
+        || targetPosition == MotorSetPoint.ARM_REEF_LEVEL_2_MANUAL
+        || targetPosition == MotorSetPoint.ARM_REEF_LEVEL_3_MANUAL
+        || targetPosition == MotorSetPoint.ARM_REEF_LEVEL_4_MANUAL;
+  }
+
   @Override
   public void periodic() {
     if (!hasInitializedPosition && absEncoder.getPosition() > 5) {
@@ -102,14 +106,5 @@ public class Arm extends SubsystemBase {
       encoder.setPosition(absEncoder.getPosition());
       hasInitializedPosition = true;
     }
-
-    // SmartDashboard.putNumber("ArmPosition", encoder.getPosition());
-    // SmartDashboard.putNumber("ArmTargetPosition", targetPosition);
-    // SmartDashboard.putBoolean("ArmAtPosition", isAtPosition());
-
-    // if (DriverStation.isTest()) {
-    //   manualPosition = SmartDashboard.getNumber("ArmManualPosition", manualPosition);
-    //   goToPosition(manualPosition);
-    // }
   }
 }
