@@ -103,6 +103,7 @@ public final class Constants {
 
     public static final int ARM_REEF_LEVEL_4 = 50;
     public static final int ARM_REEF_LEVEL_4_MANUAL = 20;
+    public static final int ARM_REEF_WAIT_LEVEL4 = 55;
 
     public static final int ARM_ALGEA_LEVEL_1 = 50;
     public static final int ARM_ALGEA_LEVEL_2 = 50;
