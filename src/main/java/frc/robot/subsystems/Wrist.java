@@ -10,9 +10,6 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
-
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CanbusId;
 
@@ -30,7 +27,6 @@ public class Wrist extends SubsystemBase {
   private final double OUTPUT_RANGE = 0.5;
 
   private double targetPosition;
-  private double manualPosition = 0;
 
   public Wrist() {
     motor = new SparkFlex(CanbusId.WRIST_MOTOR, MotorType.kBrushless);
@@ -61,10 +57,6 @@ public class Wrist extends SubsystemBase {
         .outputRange(-OUTPUT_RANGE, OUTPUT_RANGE);
 
     motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-    // if (DriverStation.isTest()) {
-    //   SmartDashboard.putNumber("WristManualPosition", manualPosition);
-    // }
   }
 
   /**
@@ -85,16 +77,5 @@ public class Wrist extends SubsystemBase {
 
   public boolean isAtPosition() {
     return Math.abs(encoder.getPosition() - targetPosition) <= 1;
-  }
-
-  @Override
-  public void periodic() {
-    // if (DriverStation.isTest()) {
-    //   SmartDashboard.putNumber("WristPosition", encoder.getPosition());
-    //   SmartDashboard.putBoolean("WristAtPosition", isAtPosition());
-
-    //   manualPosition = SmartDashboard.getNumber("WristManualPosition", manualPosition);
-    //   goToPosition(manualPosition);
-    // }
   }
 }

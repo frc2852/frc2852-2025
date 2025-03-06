@@ -12,8 +12,6 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CanbusId;
 import frc.robot.Constants.MotorSetPoint;
@@ -39,7 +37,6 @@ public class Elevator extends SubsystemBase {
   private double maxAcceleration = MotorSetPoint.ELEVATOR_MAX_ACCELERATION;
 
   private double targetPosition;
-  private double manualPosition = 0;
 
   public Elevator() {
     // Configure motor
@@ -90,8 +87,6 @@ public class Elevator extends SubsystemBase {
     // Apply configuration.
     motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     motorFollow.configure(motorFollowConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-    SmartDashboard.putNumber("ElevatorManualPosition", manualPosition);
   }
 
   /**
@@ -115,9 +110,5 @@ public class Elevator extends SubsystemBase {
 
   public boolean isAtDrivePosition() {
     return targetPosition == MotorSetPoint.ELEVATOR_DRIVE_POSITION;
-  }
-
-  @Override
-  public void periodic() {
   }
 }

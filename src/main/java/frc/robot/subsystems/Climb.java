@@ -4,18 +4,14 @@ import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
-
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
 import com.revrobotics.spark.config.SparkFlexConfig;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CanbusId;
 import frc.robot.Constants.MotorSetPoint;
@@ -34,8 +30,6 @@ public class Climb extends SubsystemBase {
   private final double D = 0;
 
   private double targetPosition;
-  private double manualPosition = 0;
-
   private boolean hasInitialized = false;
 
   public Climb() {
@@ -68,10 +62,6 @@ public class Climb extends SubsystemBase {
     motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     goToPosition(MotorSetPoint.CLIMBER_DRIVE_POSITION);
-
-    // if (DriverStation.isTest()) {
-    //   SmartDashboard.putNumber("ClimbManualPosition", manualPosition);
-    // }
   }
 
   public double getTargetPosition() {
@@ -98,13 +88,5 @@ public class Climb extends SubsystemBase {
       encoder.setPosition(absEncoder.getPosition());
       hasInitialized = true;
     }
-
-    // if (DriverStation.isTest()) {
-    //   SmartDashboard.putNumber("ClimbPosition", encoder.getPosition());
-    //   SmartDashboard.putBoolean("ClimbAtPosition", isAtPosition());
-
-    //   manualPosition = SmartDashboard.getNumber("ClimbManualPosition", manualPosition);
-    //   goToPosition(manualPosition);
-    // }
   }
 }

@@ -129,12 +129,4 @@ public class Intake extends SubsystemBase {
   public boolean hasAlgae() {
     return !algeaBeamBreak.get();
   }
-
-  @Override
-  public void periodic() {
-    SmartDashboard.putBoolean("Coral", hasCoral());
-    SmartDashboard.putBoolean("Algae", hasAlgae());
-    SmartDashboard.putNumber("IntakeCurrent", motor.getOutputCurrent());
-    SmartDashboard.putNumber("IntakeTemperature", motor.getMotorTemperature());
-  }
 }

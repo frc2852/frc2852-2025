@@ -32,7 +32,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants.RobotSpecifications;
-import frc.robot.RobotControlState;
 import frc.robot.subsystems.Vision.Cameras;
 import java.io.File;
 import java.io.IOException;
@@ -78,24 +77,28 @@ public class Swerve extends SubsystemBase {
     // Angle conversion factor is 360 / (GEAR RATIO * ENCODER RESOLUTION)
     // In this case the gear ratio is 12.8 motor revolutions per wheel rotation.
     // The encoder resolution per motor revolution is 1 per motor revolution.
-    // double angleConversionFactor = SwerveMath.calculateDegreesPerSteeringRotation(21.4285714286);
+    // double angleConversionFactor =
+    // SwerveMath.calculateDegreesPerSteeringRotation(21.4285714286);
     // Motor conversion factor is (PI * WHEEL DIAMETER IN METERS) / (GEAR RATIO *
     // ENCODER RESOLUTION).
     // In this case the wheel diameter is 4 inches, which must be converted to
     // meters to get meters/second.
     // The gear ratio is 6.75 motor revolutions per wheel rotation.
     // The encoder resolution per motor revolution is 1 per motor revolution.
-    // double driveConversionFactor = SwerveMath.calculateMetersPerRotation(Units.inchesToMeters(4), 6.75);
+    // double driveConversionFactor =
+    // SwerveMath.calculateMetersPerRotation(Units.inchesToMeters(4), 6.75);
     // System.out.println("\"conversionFactors\": {");
-    // System.out.println("\t\"angle\": {\"factor\": " + angleConversionFactor + " },");
-    // System.out.println("\t\"drive\": {\"factor\": " + driveConversionFactor + " }");
+    // System.out.println("\t\"angle\": {\"factor\": " + angleConversionFactor + "
+    // },");
+    // System.out.println("\t\"drive\": {\"factor\": " + driveConversionFactor + "
+    // }");
     // System.out.println("}");
 
     // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary
     // objects being created.
 
-    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
-    
+    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.NONE;
+
     try {
       swerveDrive = new SwerveParser(directory).createSwerveDrive(RobotSpecifications.MAX_SPEED,
           new Pose2d(new Translation2d(Meter.of(1),
@@ -131,9 +134,8 @@ public class Swerve extends SubsystemBase {
       // updates better.
       swerveDrive.stopOdometryThread();
     }
-    setupPathPlanner();
 
-    // replaceSwerveModuleFeedforward(0.38566,163.49,12.704);
+    setupPathPlanner();
   }
 
   /**
@@ -167,13 +169,8 @@ public class Swerve extends SubsystemBase {
       vision.updatePoseEstimation(swerveDrive);
     }
 
-    RobotControlState.updateZone(this.getSwerveDrive().getPose());
-    RobotControlState.periodic();
-
-    // TODO: Remove
-    // SmartDashboard.putNumber("RobotX", this.getSwerveDrive().getPose().getX());
-    // SmartDashboard.putNumber("RobotY", this.getSwerveDrive().getPose().getY());
-    // SmartDashboard.putNumber("RobotAngle", this.getSwerveDrive().getPose().getRotation().getDegrees());
+    // RobotControlState.updateZone(this.getSwerveDrive().getPose());
+    // RobotControlState.periodic();
   }
 
   @Override
@@ -340,7 +337,6 @@ public class Swerve extends SubsystemBase {
               newSetpoint.feedforwards().linearForces());
           prevSetpoint.set(newSetpoint);
           previousTime.set(newTime);
-
         });
   }
 
@@ -361,7 +357,6 @@ public class Swerve extends SubsystemBase {
       DriverStation.reportError(e.toString(), true);
     }
     return Commands.none();
-
   }
 
   /**
