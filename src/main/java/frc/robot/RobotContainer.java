@@ -10,6 +10,7 @@ import frc.robot.commands.ClimberUp;
 import frc.robot.commands.CoralFloorPickup;
 import frc.robot.commands.DrivePosition;
 import frc.robot.commands.IntakeStationPickup;
+import frc.robot.commands.MechClimbPosition;
 import frc.robot.commands.ProcessorScore;
 import frc.robot.commands.ReefAlgeaLevel1;
 import frc.robot.commands.ReefAlgeaLevel1Waste;
@@ -106,7 +107,7 @@ public class RobotContainer {
 
   private final ClimberGrabPosition climberGrabPosition = new ClimberGrabPosition(elevator, arm, wrist, climb);
   private final ClimberUp climberUp = new ClimberUp(climb);
-
+  private final MechClimbPosition mechClimbPosition = new MechClimbPosition(elevator, arm, wrist, intake);
   // Auto only
   private final CoralFloorPickup coralFloorPickup = new CoralFloorPickup(elevator, arm, wrist, intake);
 
@@ -169,7 +170,7 @@ public class RobotContainer {
 
     driverController.leftBumper().and(driverController.rightBumper())
         .onTrue(new ParallelCommandGroup(
-            // new MechClimbPosition(elevator, arm, wrist),
+            mechClimbPosition,
             new InstantCommand(() -> RobotControlState.toggleClimb())));
 
     driverController.x().onTrue(Commands.runOnce(intake::reverseCoral));

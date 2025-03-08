@@ -89,7 +89,7 @@ public final class Constants {
     public static final int ARM_ALLOWED_CLOSED_LOOP_ERROR = 1;
 
     public static final int ARM_DRIVE_POSITION = 90;
-    public static final int ARM_CLIMB_POSITION = 0;
+    public static final int ARM_CLIMB_POSITION = 10;
 
     public static final int ARM_REEF_WAIT = 70;
     public static final int ARM_REEF_LEVEL_1 = 60;
@@ -133,7 +133,7 @@ public final class Constants {
     public static final int ELEVATOR_CLOSED_LOOP = 1;
 
     public static final int ELEVATOR_DRIVE_POSITION = 0;
-    public static final int ELEVATOR_CLIMB_POSITION = 0;
+    public static final int ELEVATOR_CLIMB_POSITION = 2;
 
     public static final double ELEVATOR_REEF_LEVEL_1 = 0;
     public static final double ELEVATOR_REEF_LEVEL_2 = 9;
