@@ -15,6 +15,18 @@
           "data": {
             "name": "reefScoreLevel4"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "HBackup"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "drivePosition"
+          }
         }
       ]
     }

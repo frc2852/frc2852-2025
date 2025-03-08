@@ -12,8 +12,6 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CanbusId;
 import frc.robot.Constants.MotorSetPoint;
@@ -36,8 +34,6 @@ public class Arm extends SubsystemBase {
   private final double RELATIVE_ENCODER_CONVERSION = 360.0 / GEAR_REDUCTION;
 
   private double targetPosition;
-  private double manualPosition = 90;
-
   private boolean hasInitializedPosition = false;
 
   public Arm() {
