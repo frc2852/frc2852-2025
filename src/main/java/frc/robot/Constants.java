@@ -143,7 +143,7 @@ public final class Constants {
     public static final double ELEVATOR_REEF_LEVEL_4 = 36;
     public static final double ELEVATOR_ALGEA_LEVEL_1 = 6;
     public static final double ELEVATOR_ALGEA_LEVEL_2 = 15;
-    public static final double ELEVATOR_INTAKE_STATION = 0;
+    public static final double ELEVATOR_INTAKE_STATION = 9;
     public static final double ELEVATOR_BARGE = 38;
     public static final double ELEVATOR_MAX_HEIGHT = 38.5;
   }
