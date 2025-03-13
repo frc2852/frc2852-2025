@@ -59,11 +59,11 @@ public final class Constants {
     // Intake Values
     public static final int INTAKE_POSITION_CONVERTION_FACTOR = 1;
     public static final int INTAKE_VELOCITY_CONVERTION_FACTOR = 1;
-    public static final int INTAKE_MAX_VELOCITY = 6000;
-    public static final int INTAKE_MAX_ACCELERATION = 6000;
+    public static final int INTAKE_MAX_VELOCITY = 6500;
+    public static final int INTAKE_MAX_ACCELERATION = 6500;
     public static final int INTAKE_ALLOWED_CLOSED_LOOP_ERROR = 1;
 
-    public static final int INTAKE_VELOCITY_ALGAE = 4500;
+    public static final int INTAKE_VELOCITY_ALGAE = 6000;
     public static final int INTAKE_VELOCITY_CORAL = 4500;
     public static final int INTAKE_VELOCITY_HOLD = 1000;
     public static final int INTAKE_VELOCITY_REVERSE_CORAL = -6000;
@@ -79,7 +79,7 @@ public final class Constants {
     public static final int WRIST_ALLOWED_CLOSED_LOOP_ERROR = 1;
 
     public static final int WRIST_DRIVE_POSITION = 0;
-    public static final int WRIST_SCORE_POSITION = 5;
+    public static final int WRIST_SCORE_POSITION = -5;
 
     // Arm values
     public static final int ARM_POSITION_CONVERTION_FACTOR = 1;
@@ -107,7 +107,7 @@ public final class Constants {
 
     public static final int ARM_ALGEA_LEVEL_1 = 50;
     public static final int ARM_ALGEA_LEVEL_2 = 50;
-    public static final int ARM_INTAKE_STATION = 108;
+    public static final int ARM_INTAKE_STATION = 140;
 
     public static final int ARM_WASTE = 130;
 
@@ -122,9 +122,9 @@ public final class Constants {
     public static final int CLIMBER_MAX_ACCELERATION = 6000;
     public static final int CLIMBER_ALLOWED_CLOSED_LOOP_ERROR = 1;
 
-    public static final double CLIMBER_GRAB_POSITION = 5;
-    public static final double CLIMBER_DRIVE_POSITION = 15;
-    public static final double CLIMBER_CLIMB_POSITION = 30;
+    public static final double CLIMBER_GRAB_POSITION = -14;
+    public static final double CLIMBER_DRIVE_POSITION = -2.14;
+    public static final double CLIMBER_CLIMB_POSITION = 20;
 
     // Elevator 
     public static final int ELEVATOR_POSITION_CONVERSION_FACTOR = 1;
@@ -143,7 +143,7 @@ public final class Constants {
     public static final double ELEVATOR_REEF_LEVEL_4 = 36;
     public static final double ELEVATOR_ALGEA_LEVEL_1 = 6;
     public static final double ELEVATOR_ALGEA_LEVEL_2 = 15;
-    public static final double ELEVATOR_INTAKE_STATION = 9;
+    public static final double ELEVATOR_INTAKE_STATION = 11;
     public static final double ELEVATOR_BARGE = 38;
     public static final double ELEVATOR_MAX_HEIGHT = 38.5;
   }

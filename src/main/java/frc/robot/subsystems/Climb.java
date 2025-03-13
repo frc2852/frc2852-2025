@@ -12,20 +12,24 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CanbusId;
 import frc.robot.Constants.MotorSetPoint;
 
 public class Climb extends SubsystemBase {
+  
 
   private final SparkFlex motor;
   private final SparkFlexConfig motorConfig;
   private final SparkClosedLoopController controller;
 
-  private final AbsoluteEncoder absEncoder;
+  //private final AbsoluteEncoder absEncoder;
   private final RelativeEncoder encoder;
 
-  private final double P = 0.1;
+  private final double P = 2;
+  
   private final double I = 0;
   private final double D = 0;
 
@@ -33,12 +37,14 @@ public class Climb extends SubsystemBase {
   private boolean hasInitialized = false;
 
   public Climb() {
+    
     motor = new SparkFlex(CanbusId.CLIMBER_MOTOR, MotorType.kBrushless);
     controller = motor.getClosedLoopController();
 
     // Configure encoders
-    absEncoder = motor.getAbsoluteEncoder();
+    //absEncoder = motor.getAbsoluteEncoder();
     encoder = motor.getEncoder();
+    encoder.setPosition(0);
 
     // Configure motor properties
     motorConfig = new SparkFlexConfig();
@@ -69,11 +75,6 @@ public class Climb extends SubsystemBase {
   }
 
   public void goToPosition(double position) {
-    if(position <= 5){
-      position = 5;
-    } else if (position >= 30){
-      position = 30;
-    }
     targetPosition = position;
     controller.setReference(targetPosition, ControlType.kPosition);
   }
@@ -84,9 +85,12 @@ public class Climb extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if(!hasInitialized && absEncoder.getPosition() > 1) {
-      encoder.setPosition(absEncoder.getPosition());
-      hasInitialized = true;
-    }
+    // if(!hasInitialized && absEncoder.getPosition() > 1) {
+    //   encoder.setPosition(absEncoder.getPosition());
+    //   hasInitialized = true;
+    // }
+    SmartDashboard.putNumber("climb encoder", encoder.getPosition()); 
+    
+
   }
 }

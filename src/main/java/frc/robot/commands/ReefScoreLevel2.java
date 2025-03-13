@@ -20,7 +20,7 @@ public class ReefScoreLevel2 extends SequentialCommandGroup {
             new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_SCORE_POSITION), wrist)),
         new WaitUntilCommand(() -> elevator.isAtPosition() && wrist.isAtPosition() && arm.isAtPosition()),
         new InstantCommand(() -> intake.reverseCoral(), intake),
-        new WaitCommand(0.5),
+        new WaitCommand(.5),// .5 seconds change to one
         new InstantCommand(() -> intake.stop(), intake),
         new ParallelCommandGroup(
             new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_DRIVE_POSITION), elevator),

@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.MotorSetPoint;
 import frc.robot.subsystems.Arm;
@@ -21,6 +22,7 @@ public class ReefScoreLevel2ManualScore extends SequentialCommandGroup {
         new WaitUntilCommand(() -> arm.isAtPosition()),
         new InstantCommand(() -> intake.reverseCoral(), intake),
         new WaitUntilCommand(() -> !intake.hasGamePiece()),
+        new WaitCommand(1),
         new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_DRIVE_POSITION), wrist),
         new WaitUntilCommand(() -> wrist.isAtPosition()),
         new ParallelCommandGroup(

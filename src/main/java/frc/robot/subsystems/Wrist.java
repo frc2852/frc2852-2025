@@ -67,8 +67,8 @@ public class Wrist extends SubsystemBase {
   public void goToPosition(double position) {
     if(position > 5){
       position = 5;
-    } else if (position < 0){
-      position = 0;
+    } else if (position < -10){
+      position = -10;
     }
 
     targetPosition = position;

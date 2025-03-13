@@ -41,6 +41,8 @@ import java.io.File;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
@@ -134,6 +136,10 @@ public class RobotContainer {
     DriverStation.startDataLog(DataLogManager.getLog());
     DriverStation.silenceJoystickConnectionWarning(true);
 
+    UsbCamera camera = CameraServer.startAutomaticCapture();
+    camera.setResolution(320, 480);
+    camera.setFPS(30);
+    
     // Port forwarding
     // PortForwarder.add(5800, "photonvision.local", 5800);
     // PortForwarder.add(5800, "barge-photon.local", 5800);
