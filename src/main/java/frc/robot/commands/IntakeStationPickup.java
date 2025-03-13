@@ -7,7 +7,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.MotorSetPoint;
 import frc.robot.subsystems.Arm;
@@ -15,17 +14,26 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Wrist;
 
-public class ReefScoreLevel3 extends SequentialCommandGroup {
-  public ReefScoreLevel3(Elevator elevator, Arm arm, Wrist wrist, Intake intake) {
+/**
+ * CoralPickupPosition
+ * Workflow:
+ * 
+ * Move Elevator
+ * Set wrist position
+ * Validate we are correct position
+ * Intake the Coral (intake)
+ * Set elevator and wrist back to drive position
+ */
+public class IntakeStationPickup extends SequentialCommandGroup {
+  public IntakeStationPickup(Elevator elevator, Arm arm, Wrist wrist, Intake intake) {
     addCommands(
         new ParallelCommandGroup(
-            new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_REEF_LEVEL_3), elevator),
-            new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_REEF_LEVEL_3)),
-            new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_SCORE_POSITION), wrist)),
-        new WaitUntilCommand(() -> elevator.isAtPosition() && wrist.isAtPosition() && arm.isAtPosition()),
-        new InstantCommand(() -> intake.reverseCoral(), intake),
-        new WaitCommand(0.5),
-        new InstantCommand(() -> intake.stop(), intake),
+            new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_INTAKE_STATION), elevator),
+            new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_INTAKE_STATION), arm)),
+        new WaitUntilCommand(() -> elevator.isAtPosition() && arm.isAtPosition()),
+        new InstantCommand(() -> intake.intakeCoral()),
+        new WaitUntilCommand(() -> intake.hasGamePiece()),
+        new InstantCommand(() -> intake.hold()),
         new ParallelCommandGroup(
             new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_DRIVE_POSITION), elevator),
             new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_DRIVE_POSITION), arm),

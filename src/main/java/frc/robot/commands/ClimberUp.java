@@ -3,16 +3,16 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
+
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants.MotorSetPoint;
 import frc.robot.subsystems.Climb;
 
-public class ClimbUp extends SequentialCommandGroup {
- 
-  public ClimbUp(Climb climb) {
+public class ClimberUp extends SequentialCommandGroup {
+
+  public ClimberUp(Climb climb) {
     addCommands(
-      new InstantCommand(()-> climb.climberUp(),climb));
-    
+        new InstantCommand(() -> climb.goToPosition(MotorSetPoint.CLIMBER_CLIMB_POSITION), climb));
   }
 }
-

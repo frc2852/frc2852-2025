@@ -15,20 +15,19 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Wrist;
 
-public class ReefScoreLevel3 extends SequentialCommandGroup {
-  public ReefScoreLevel3(Elevator elevator, Arm arm, Wrist wrist, Intake intake) {
+public class ReefScoreLevel2ManualScore extends SequentialCommandGroup {
+  public ReefScoreLevel2ManualScore(Elevator elevator, Arm arm, Wrist wrist, Intake intake) {
     addCommands(
-        new ParallelCommandGroup(
-            new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_REEF_LEVEL_3), elevator),
-            new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_REEF_LEVEL_3)),
-            new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_SCORE_POSITION), wrist)),
-        new WaitUntilCommand(() -> elevator.isAtPosition() && wrist.isAtPosition() && arm.isAtPosition()),
+        new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_REEF_LEVEL_2_MANUAL)),
+        new WaitUntilCommand(() -> arm.isAtPosition()),
         new InstantCommand(() -> intake.reverseCoral(), intake),
-        new WaitCommand(0.5),
-        new InstantCommand(() -> intake.stop(), intake),
+        new WaitUntilCommand(() -> !intake.hasGamePiece()),
+        new WaitCommand(1),
+        new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_DRIVE_POSITION), wrist),
+        new WaitUntilCommand(() -> wrist.isAtPosition()),
         new ParallelCommandGroup(
-            new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_DRIVE_POSITION), elevator),
             new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_DRIVE_POSITION), arm),
-            new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_DRIVE_POSITION), wrist)));
+            new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_DRIVE_POSITION), elevator),
+            new InstantCommand(() -> intake.stop(), intake)));
   }
 }

@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.Constants.MotorSetPoint;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Wrist;
@@ -21,15 +23,18 @@ import frc.robot.subsystems.Wrist;
  * Set elevator and wrist back to drive position
  */
 public class ProcessorScore extends SequentialCommandGroup {
-    public ProcessorScore(Wrist wrist, Intake intake, Elevator elevator) {
-        addCommands(
-                new InstantCommand(() -> wrist.goToProcessor(), wrist),
-                new WaitUntilCommand(() -> wrist.isAtPosition()),
-                new InstantCommand(() -> intake.reverseIntake()),
-                new WaitCommand(2),
-                new InstantCommand(() -> intake.stopIntake()),
-                new ParallelCommandGroup(
-                        new InstantCommand(() -> elevator.goToBottom()),
-                        new InstantCommand(() -> wrist.goToBottom())));
-    }
+  public ProcessorScore(Elevator elevator, Arm arm, Wrist wrist, Intake intake) {
+    addCommands(
+        new ParallelCommandGroup(
+            new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_DRIVE_POSITION), wrist),
+            new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_PROCESSOR), arm)),
+        new WaitUntilCommand(() -> wrist.isAtPosition()&& arm.isAtPosition()),
+        new InstantCommand(() -> intake.reverseAlgae(), intake),
+        new WaitCommand(0.5),
+        new WaitUntilCommand(() -> !intake.hasGamePiece()),
+        new InstantCommand(() -> intake.stop(), intake),
+        new ParallelCommandGroup(
+            new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_DRIVE_POSITION), arm),
+            new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_DRIVE_POSITION), wrist)));
+  }
 }

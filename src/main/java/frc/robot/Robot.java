@@ -4,7 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -16,9 +18,11 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * this project, you must also update the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
-  private Command m_autonomousCommand;
 
-  private final RobotContainer m_robotContainer;
+  private Command autonomousCommand;
+  private Timer disabledTimer;
+
+  private final RobotContainer robotContainer;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -26,17 +30,27 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   public Robot() {
+
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
+    robotContainer = new RobotContainer();
+
+    // Create a timer to disable motor brake a few seconds after disable. This will
+    // let the robot stop
+    // immediately when disabled, but then also let it be pushed more
+    disabledTimer = new Timer();
+
+    // Ignored when connected to FMS
+    if (isSimulation()) {
+      DriverStation.silenceJoystickConnectionWarning(true);
+    }
   }
 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items
    * like diagnostics
    * that you want ran during disabled, autonomous, teleoperated and test.
-   *
    * <p>
    * This runs after the mode specific periodic functions, but before LiveWindow
    * and
@@ -57,10 +71,17 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
+    robotContainer.setMotorBrake(true);
+    disabledTimer.reset();
+    disabledTimer.start();
   }
 
   @Override
   public void disabledPeriodic() {
+    if (disabledTimer.hasElapsed(Constants.RobotSpecifications.WHEEL_LOCK_TIME)) {
+      robotContainer.setMotorBrake(false);
+      disabledTimer.stop();
+    }
   }
 
   /**
@@ -69,11 +90,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    RobotControlState.setAlliance();
+
+    robotContainer.setMotorBrake(true);
+    robotContainer.ledsOff();
+    autonomousCommand = robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+    if (autonomousCommand != null) {
+      autonomousCommand.schedule();
     }
   }
 
@@ -84,12 +109,20 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    if (!DriverStation.isFMSAttached()) {
+      RobotControlState.setAlliance();
+    }
+
+    robotContainer.ledsOff();
+    
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    if (autonomousCommand != null) {
+      autonomousCommand.cancel();
+    } else {
+      CommandScheduler.getInstance().cancelAll();
     }
   }
 

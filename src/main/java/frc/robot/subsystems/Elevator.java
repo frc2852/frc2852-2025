@@ -1,10 +1,10 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -12,156 +12,103 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CanbusId;
 import frc.robot.Constants.MotorSetPoint;
 
 public class Elevator extends SubsystemBase {
 
-    private final SparkFlex motor;
-    private final SparkClosedLoopController controller;
-    private final RelativeEncoder encoder;
-    private final SparkFlexConfig config;
+  private final SparkFlex motor;
+  private final SparkFlexConfig motorConfig;
+  private final SparkClosedLoopController controller;
 
-    private double targetPosition;
-    private double p;
-    private double i;
-    private double d;
-    private double manualPosition;
+  private final SparkFlex motorFollow;
+  private final SparkFlexConfig motorFollowConfig;
 
-    public Elevator() {
-        // configure motor
-        motor = new SparkFlex(CanbusId.ELEVATOR_MOTOR, MotorType.kBrushless);
-        controller = motor.getClosedLoopController();
+  private final RelativeEncoder encoder;
+  private final RelativeEncoder encoderFollow;
 
-        // Configure encoder
-        encoder = motor.getEncoder();
-        encoder.setPosition(MotorSetPoint.ELEVATOR_POSITION);
+  private double P = 0.1;
+  private double I = 0.0;
+  private double D = 0.001;
+  private final double outputRange = 1.0;
 
-        // Configure motor properties
-        config = new SparkFlexConfig();
-        config.idleMode(IdleMode.kBrake);
-        config.inverted(false);
+  private double maxVelocity = MotorSetPoint.ELEVATOR_MAX_VELOCITY;
+  private double maxAcceleration = MotorSetPoint.ELEVATOR_MAX_ACCELERATION;
 
-        // Configure encoder conversion factors
-        config.encoder
-                .positionConversionFactor(MotorSetPoint.ELEVATOR_POSITION_CONVERSION_FACTOR)
-                .velocityConversionFactor(MotorSetPoint.ELEVATOR_VELOCITY_CONVERSION_FACTOR);
+  private double targetPosition;
 
-        config.closedLoop.maxMotion
-                .maxVelocity(MotorSetPoint.ELEVATOR_MAX_VELOCITY)
-                .maxAcceleration(MotorSetPoint.ELEVATOR_MAX_ACCELERATION)
-                .allowedClosedLoopError(MotorSetPoint.ELEVATOR_CLOSED_LOOP);
+  public Elevator() {
+    // Configure motor
+    motor = new SparkFlex(CanbusId.ELEVATOR_MOTOR, MotorType.kBrushless);
+    motorFollow = new SparkFlex(CanbusId.ELEVATOR_MOTOR_2, MotorType.kBrushless);
 
-        motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    // Closed loop controller
+    controller = motor.getClosedLoopController();
 
-        SmartDashboard.putNumber("Elevator/P", p);
-        SmartDashboard.putNumber("Elevator/I", i);
-        SmartDashboard.putNumber("Elevator/D", d);
-        SmartDashboard.putNumber("Elevator/ManualPosition", manualPosition);
+    // Configure encoder
+    encoder = motor.getEncoder();
+    encoder.setPosition(0);
+    encoderFollow = motorFollow.getEncoder();
+    encoderFollow.setPosition(0);
+
+    // Configure motor properties
+    motorConfig = new SparkFlexConfig();
+    motorFollowConfig = new SparkFlexConfig();
+
+    // Configure motor properties
+    motorConfig.idleMode(IdleMode.kBrake);
+    motorConfig.inverted(false);
+    motorConfig.smartCurrentLimit(80);
+
+    motorFollowConfig.idleMode(IdleMode.kBrake);
+    motorFollowConfig.follow(motor, true);
+    motorFollowConfig.smartCurrentLimit(80);
+
+    // Configure encoder conversion factors
+    motorConfig.encoder
+        .positionConversionFactor(MotorSetPoint.ELEVATOR_POSITION_CONVERSION_FACTOR)
+        .velocityConversionFactor(MotorSetPoint.ELEVATOR_VELOCITY_CONVERSION_FACTOR);
+
+    // Configure closed-loop PID and output
+    motorConfig.closedLoop
+        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+        .p(P)
+        .i(I)
+        .d(D)
+        .outputRange(-outputRange, outputRange);
+
+    // Configure motion profile limits
+    motorConfig.closedLoop.maxMotion
+        .maxVelocity(maxVelocity)
+        .maxAcceleration(maxAcceleration)
+        .allowedClosedLoopError(MotorSetPoint.ELEVATOR_CLOSED_LOOP);
+
+    // Apply configuration.
+    motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    motorFollow.configure(motorFollowConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+  }
+
+  /**
+   * Command the Elevator to go to a specific position.
+   *
+   * @param position The target Elevator angle in degrees.
+   */
+  public void goToPosition(double position) {
+    if (position > 37.5) {
+      position = 37.5;
+    } else if (position <= 0) {
+      position = 0;
     }
+    targetPosition = position;
+    controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, 0.59);
+  }
 
-    public void goToBottom() {
-        controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
-    }
+  public boolean isAtPosition() {
+    return Math.abs(encoder.getPosition() - targetPosition) <= 2;
+  }
 
-    public void gotToReefLevel1() {
-        targetPosition = MotorSetPoint.ELEVATOR_REEF_LEVEL_1;
-        controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
-    }
-
-    public void gotToReefLevel2() {
-        targetPosition = MotorSetPoint.ELEVATOR_REEF_LEVEL_2;
-        controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
-    }
-
-    public void gotToReefLevel3() {
-        targetPosition = MotorSetPoint.ELEVATOR_REEF_LEVEL_3;
-        controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
-    }
-
-    public void gotToReefLevel4() {
-        targetPosition = MotorSetPoint.ELEVATOR_REEF_LEVEL_4;
-        controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
-    }
-
-    public void goToAlgae1() {
-        targetPosition = MotorSetPoint.ELEVATOR_ALGEA_LEVEL_1;
-        controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
-    }
-
-    public void goToBarge() {
-        targetPosition = MotorSetPoint.ELEVATOR_BARGE;
-        controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
-    }
-
-    public void goToHPStation() {
-        targetPosition = MotorSetPoint.ELEVATOR_HP;
-        controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
-    }
-
-    public void goToAlgae2() {
-        targetPosition = MotorSetPoint.ELEVATOR_REEF_LEVEL_2;
-        controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
-    }
-
-    public void goToAlgae3() {
-        targetPosition = MotorSetPoint.ELEVATOR_ALGEA_LEVEL_3;
-        controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
-
-    }
-
-    public void goToAlgae4() {
-        targetPosition = MotorSetPoint.ELEVATOR_ALGEA_LEVEL_4;
-        controller.setReference(targetPosition, ControlType.kMAXMotionPositionControl);
-
-    }
-
-    public boolean isAtPosition() {
-        return Math.abs(encoder.getPosition() - targetPosition) <= 2; // MARGIN OF ERROR
-    }
-
-    @Override
-    public void periodic() {
-        // This method will be called once per scheduler run
-
-        if (DriverStation.isTest()) {
-            // Read PID coefficients from SmartDashboard
-            double newP = SmartDashboard.getNumber("Elevator/P", p);
-            double newI = SmartDashboard.getNumber("Elevator/I", i);
-            double newD = SmartDashboard.getNumber("Elevator/D", d);
-
-            // Update PID values if they have changed
-            if (newP != p || newI != i || newD != d) {
-                p = newP;
-                i = newI;
-                d = newD;
-
-                // Update closed loop PID settings
-                config.closedLoop
-                        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                        .p(p)
-                        .i(i)
-                        .d(d)
-                        .outputRange(-1, 1);
-
-                // Reapply the updated configuration
-                motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-            }
-
-            // Read manual position from SmartDashboard
-            double newManualPosition = SmartDashboard.getNumber("Elevator/ManualPosition", manualPosition);
-            // If the manual position has been changed, update the setpoint
-            if (newManualPosition != manualPosition) {
-                manualPosition = newManualPosition;
-                targetPosition = manualPosition;
-                controller.setReference(
-                        targetPosition,
-                        ControlType.kMAXMotionPositionControl,
-                        ClosedLoopSlot.kSlot0);
-            }
-        }
-    }
+  public boolean isAtDrivePosition() {
+    return targetPosition == MotorSetPoint.ELEVATOR_DRIVE_POSITION;
+  }
 }
