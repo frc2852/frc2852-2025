@@ -122,6 +122,6 @@ public class Intake extends SubsystemBase {
   }
 
   @Override public void periodic(){
-    SmartDashboard.putBoolean("coral beam break",hasGamePiece());
+    SmartDashboard.putBoolean("Game Piece Beam Break",hasGamePiece());
 }
 }
