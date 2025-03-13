@@ -26,8 +26,7 @@ public class Intake extends SubsystemBase {
   private final SparkFlexConfig motorConfig;
   private final SparkClosedLoopController controller;
 
-  private DigitalInput coralBeamBreak = new DigitalInput(1);
-  private DigitalInput algeaBeamBreak = new DigitalInput(0);//changed for new intake
+  private DigitalInput beamBreak = new DigitalInput(1);
 
   private double targetSpeed;
 
@@ -119,19 +118,10 @@ public class Intake extends SubsystemBase {
   }
 
   public boolean hasGamePiece() {
-    return hasAlgae() || hasCoral();
+    return !beamBreak.get();
   }
 
-  public boolean hasCoral() {
-
-    return !coralBeamBreak.get();
-  }
-
-  public boolean hasAlgae() {
-    return !algeaBeamBreak.get();
-  }
   @Override public void periodic(){
-    SmartDashboard.putBoolean("coral beam break",hasCoral());
-    SmartDashboard.putBoolean("algae Beam break",hasAlgae());
+    SmartDashboard.putBoolean("coral beam break",hasGamePiece());
 }
 }

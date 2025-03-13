@@ -23,7 +23,7 @@ public class ReefAlgeaLevel2Waste extends SequentialCommandGroup {
             new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_DRIVE_POSITION), wrist)),
         new WaitUntilCommand(() -> elevator.isAtPosition() && wrist.isAtPosition() && arm.isAtPosition()),
         new InstantCommand(() -> intake.intakeAlgae(), intake),
-        new WaitUntilCommand(() -> intake.hasAlgae()),
+        new WaitUntilCommand(() -> intake.hasGamePiece()),
         new InstantCommand(() -> intake.hold(), intake),
         new ParallelCommandGroup(
             new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_DRIVE_POSITION), elevator),
@@ -31,7 +31,7 @@ public class ReefAlgeaLevel2Waste extends SequentialCommandGroup {
             new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_DRIVE_POSITION), wrist)),
         new WaitUntilCommand(() -> elevator.isAtPosition() && wrist.isAtPosition() && arm.isAtPosition()),
         new InstantCommand(() -> intake.reverseAlgae(), intake),
-        new WaitUntilCommand(() -> !intake.hasAlgae()),
+        new WaitUntilCommand(() -> !intake.hasGamePiece()),
         new InstantCommand(() -> intake.stop(), intake),
         new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_DRIVE_POSITION), arm),
         new WaitUntilCommand(() -> arm.isAtPosition()));

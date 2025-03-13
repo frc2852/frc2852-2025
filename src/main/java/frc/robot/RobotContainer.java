@@ -220,9 +220,9 @@ public class RobotContainer {
       return intakeStationPickup;
     }
 
-    // Barge and Processor scoring share similar behavior when !hasAlgae.
+    // Barge and Processor scoring share similar behavior when !hasGamePiece.
     if (RobotControlState.isBargeScore() || RobotControlState.isProcessorScore()) {
-      if (intake.hasAlgae()) {
+      if (intake.hasGamePiece()) {
         return RobotControlState.isBargeScore() ? bargeScore : processorScore;
       } else {
         return getAlgaeReefPositionCommand();

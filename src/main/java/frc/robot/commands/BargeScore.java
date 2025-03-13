@@ -26,7 +26,7 @@ public class BargeScore extends SequentialCommandGroup {
         new WaitUntilCommand(() -> elevator.isAtPosition() && wrist.isAtPosition()&& arm.isAtPosition()),
         new InstantCommand(() -> intake.reverseAlgae(), intake),
         new WaitCommand(0.5),
-        new WaitUntilCommand(() -> !intake.hasAlgae()),
+        new WaitUntilCommand(() -> !intake.hasGamePiece()),
         new InstantCommand(() -> intake.stop(), intake),
         new ParallelCommandGroup(
             new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_DRIVE_POSITION), elevator),
