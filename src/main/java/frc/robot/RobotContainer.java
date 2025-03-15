@@ -183,8 +183,8 @@ public class RobotContainer {
     driverController.b().onTrue(new InstantCommand(() -> {
       if (aButtonCommand != null && aButtonCommand.isScheduled()) {
         aButtonCommand.cancel();
-        drivePosition.schedule();
       }
+      drivePosition.schedule();
     }));
 
     // driverController.b().onTrue(
