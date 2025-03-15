@@ -5,6 +5,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.Pattern;
 import frc.robot.Constants.ScoringLevel;
 import frc.robot.commands.BargeScore;
+import frc.robot.commands.ClimberDrivePosition;
 import frc.robot.commands.ClimberGrabPosition;
 import frc.robot.commands.ClimberUp;
 import frc.robot.commands.CoralFloorPickup;
@@ -65,7 +66,7 @@ public class RobotContainer {
 
   // Subsystem
   private final Swerve drivebase = new Swerve(new File(Filesystem.getDeployDirectory(), "swerve/snappy"));
-  private final Climb climb = new Climb();
+ // private final Climb climb = new Climb();
   private final Elevator elevator = new Elevator();
   private final Intake intake = new Intake();
   private final LED led = new LED();
@@ -106,8 +107,10 @@ public class RobotContainer {
   private final ProcessorScore processorScore = new ProcessorScore(elevator, arm, wrist, intake);
   private final DrivePosition drivePosition = new DrivePosition(elevator, arm, wrist, intake);
 
-  private final ClimberGrabPosition climberGrabPosition = new ClimberGrabPosition(elevator, arm, wrist, climb);
+  /*private final ClimberGrabPosition climberGrabPosition = new ClimberGrabPosition(elevator, arm, wrist, climb);
   private final ClimberUp climberUp = new ClimberUp(climb);
+  private final ClimberDrivePosition climberDrivePosition = new ClimberDrivePosition(climb);*/
+  
   private final MechClimbPosition mechClimbPosition = new MechClimbPosition(elevator, arm, wrist, intake);
   // Auto only
   private final CoralFloorPickup coralFloorPickup = new CoralFloorPickup(elevator, arm, wrist, intake);
@@ -208,11 +211,12 @@ public class RobotContainer {
   public Command getSelectedCommand() {
     // Climb mode check.
     if (RobotControlState.isClimbEnabled()) {
-      if (climb.getTargetPosition() == MotorSetPoint.CLIMBER_GRAB_POSITION) {
+      /*if (climb.getTargetPosition() == MotorSetPoint.CLIMBER_GRAB_POSITION) {
         return climberUp;
       } else {
         return climberGrabPosition;
-      }
+      }*/
+       return null;
     }
 
     // Early exit: if nothing is picked up and we're not in algae mode.
@@ -252,9 +256,9 @@ public class RobotContainer {
   private Command getAlgaeWasteScoringCommand() {
     switch (RobotControlState.getScoringLevel()) {
       case LEVEL_1:
-        return reefAlgeaLevel1Waste;
+        return reefAlgeaLevel1;
       case LEVEL_2:
-        return reefAlgeaLevel2Waste;
+        return reefAlgeaLevel2;
       default:
         return null;
     }

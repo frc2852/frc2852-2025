@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -25,6 +26,7 @@ public class Intake extends SubsystemBase {
   private final SparkFlex motor;
   private final SparkFlexConfig motorConfig;
   private final SparkClosedLoopController controller;
+  private final RelativeEncoder encoder;
 
   private DigitalInput beamBreak = new DigitalInput(1);
 
@@ -37,6 +39,7 @@ public class Intake extends SubsystemBase {
   public Intake() {
     motor = new SparkFlex(CanbusId.INTAKE_MOTOR, MotorType.kBrushless);
     controller = motor.getClosedLoopController();
+    encoder = motor.getEncoder();
 
     // Configure motor properties
     motorConfig = new SparkFlexConfig();
@@ -123,5 +126,6 @@ public class Intake extends SubsystemBase {
 
   @Override public void periodic(){
     SmartDashboard.putBoolean("Game Piece Beam Break",hasGamePiece());
+    SmartDashboard.putNumber("IntakeSpeed", encoder.getVelocity());
 }
 }

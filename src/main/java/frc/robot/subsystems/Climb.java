@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -12,7 +11,6 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CanbusId;
@@ -25,16 +23,16 @@ public class Climb extends SubsystemBase {
   private final SparkFlexConfig motorConfig;
   private final SparkClosedLoopController controller;
 
-  //private final AbsoluteEncoder absEncoder;
-  private final RelativeEncoder encoder;
+  private final AbsoluteEncoder absEncoder;
 
-  private final double P = 2;
+  private final double P = 0.3;
   
   private final double I = 0;
   private final double D = 0;
 
   private double targetPosition;
-  private boolean hasInitialized = false;
+
+  private double manualPosition = 9.5;
 
   public Climb() {
     
@@ -42,14 +40,13 @@ public class Climb extends SubsystemBase {
     controller = motor.getClosedLoopController();
 
     // Configure encoders
-    //absEncoder = motor.getAbsoluteEncoder();
-    encoder = motor.getEncoder();
-    encoder.setPosition(0);
+    absEncoder = motor.getAbsoluteEncoder();
 
     // Configure motor properties
     motorConfig = new SparkFlexConfig();
     motorConfig.idleMode(IdleMode.kBrake);
-    motorConfig.inverted(true);
+    motorConfig.inverted(false);
+    // motorConfig.smartCurrentLimit(10);
 
     // Configure encoder conversion factors
     motorConfig.absoluteEncoder
@@ -59,7 +56,7 @@ public class Climb extends SubsystemBase {
 
     // Configure PID
     motorConfig.closedLoop
-        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+        .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
         .p(P)
         .i(I)
         .d(D)
@@ -68,6 +65,7 @@ public class Climb extends SubsystemBase {
     motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     goToPosition(MotorSetPoint.CLIMBER_DRIVE_POSITION);
+    SmartDashboard.putNumber("ManualPosition", manualPosition);
   }
 
   public double getTargetPosition() {
@@ -80,7 +78,7 @@ public class Climb extends SubsystemBase {
   }
 
   public boolean isAtPosition() {
-    return Math.abs(encoder.getPosition() - targetPosition) <= 0.2;
+    return Math.abs(absEncoder.getPosition() - targetPosition) <= 0.2;
   }
 
   @Override
@@ -89,8 +87,13 @@ public class Climb extends SubsystemBase {
     //   encoder.setPosition(absEncoder.getPosition());
     //   hasInitialized = true;
     // }
-    SmartDashboard.putNumber("climb encoder", encoder.getPosition()); 
+    SmartDashboard.putNumber("ClimbAbsEncoder", absEncoder.getPosition()); 
     
 
+
+    // manualPosition = SmartDashboard.getNumber("ManualPosition", manualPosition);
+    // if(manualPosition != targetPosition){
+    //   goToPosition(manualPosition);
+    // }
   }
 }

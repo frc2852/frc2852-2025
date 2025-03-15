@@ -105,8 +105,8 @@ public final class Constants {
     public static final int ARM_REEF_LEVEL_4_MANUAL = 20;
     public static final int ARM_REEF_WAIT_LEVEL4 = 55;
 
-    public static final int ARM_ALGEA_LEVEL_1 = 50;
-    public static final int ARM_ALGEA_LEVEL_2 = 50;
+    public static final int ARM_ALGEA_LEVEL_1 = 25;
+    public static final int ARM_ALGEA_LEVEL_2 = 25;
     public static final int ARM_INTAKE_STATION = 140;
 
     public static final int ARM_WASTE = 130;
@@ -122,9 +122,9 @@ public final class Constants {
     public static final int CLIMBER_MAX_ACCELERATION = 6000;
     public static final int CLIMBER_ALLOWED_CLOSED_LOOP_ERROR = 1;
 
-    public static final double CLIMBER_GRAB_POSITION = -14;
-    public static final double CLIMBER_DRIVE_POSITION = -2.14;
-    public static final double CLIMBER_CLIMB_POSITION = 20;
+    public static final double CLIMBER_GRAB_POSITION = 17;
+    public static final double CLIMBER_DRIVE_POSITION = 9.5;
+    public static final double CLIMBER_CLIMB_POSITION = 1;
 
     // Elevator 
     public static final int ELEVATOR_POSITION_CONVERSION_FACTOR = 1;
