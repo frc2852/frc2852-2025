@@ -7,7 +7,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.MotorSetPoint;
 import frc.robot.subsystems.Arm;
@@ -21,10 +20,10 @@ public class ReefScoreLevel4 extends SequentialCommandGroup {
       new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_REEF_LEVEL_4), elevator),
       new WaitUntilCommand(() -> elevator.isAtPosition()),
       new ParallelCommandGroup(
-        new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_REEF_WAIT_LEVEL4)),
+        new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_REEF_WAIT_LEVEL4), arm),
         new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_SCORE_POSITION), wrist)),
       new WaitUntilCommand(() -> arm.isAtPosition() && wrist.isAtPosition()),
-      new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_REEF_LEVEL_4_MANUAL)),
+      new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_REEF_LEVEL_4_MANUAL), arm),
       new WaitUntilCommand(() -> arm.isAtPosition()),
       new InstantCommand(() -> intake.reverseCoral(), intake));
   }

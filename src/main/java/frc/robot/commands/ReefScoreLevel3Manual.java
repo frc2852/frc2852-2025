@@ -18,7 +18,7 @@ public class ReefScoreLevel3Manual extends SequentialCommandGroup {
     addCommands(
       new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_REEF_LEVEL_3), elevator),
       new WaitUntilCommand(() -> elevator.isAtPosition()),
-      new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_REEF_WAIT)),
+      new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_REEF_WAIT), arm),
       new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_SCORE_POSITION), wrist),
       new WaitUntilCommand(() -> arm.isAtPosition()));
   }

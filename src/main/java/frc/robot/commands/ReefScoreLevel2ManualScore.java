@@ -18,7 +18,7 @@ import frc.robot.subsystems.Wrist;
 public class ReefScoreLevel2ManualScore extends SequentialCommandGroup {
   public ReefScoreLevel2ManualScore(Elevator elevator, Arm arm, Wrist wrist, Intake intake) {
     addCommands(
-        new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_REEF_LEVEL_2_MANUAL)),
+        new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_REEF_LEVEL_2_MANUAL), arm),
         new WaitUntilCommand(() -> arm.isAtPosition()),
         new InstantCommand(() -> intake.reverseCoral(), intake),
         new WaitUntilCommand(() -> !intake.hasGamePiece()),

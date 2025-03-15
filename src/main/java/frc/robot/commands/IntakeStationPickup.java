@@ -31,9 +31,9 @@ public class IntakeStationPickup extends SequentialCommandGroup {
             new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_INTAKE_STATION), elevator),
             new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_INTAKE_STATION), arm)),
         new WaitUntilCommand(() -> elevator.isAtPosition() && arm.isAtPosition()),
-        new InstantCommand(() -> intake.intakeCoral()),
+        new InstantCommand(() -> intake.intakeCoral(), intake),
         new WaitUntilCommand(() -> intake.hasGamePiece()),
-        new InstantCommand(() -> intake.hold()),
+        new InstantCommand(() -> intake.hold(), intake),
         new ParallelCommandGroup(
             new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_DRIVE_POSITION), elevator),
             new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_DRIVE_POSITION), arm),

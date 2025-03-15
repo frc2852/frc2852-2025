@@ -21,8 +21,8 @@ public class CoralFloorPickup extends SequentialCommandGroup {
             new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_SCORE_POSITION), wrist),
             new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_FLOOR_PICKUP), arm)),
         new WaitUntilCommand(() -> elevator.isAtPosition() && wrist.isAtPosition() && arm.isAtPosition()),
-        new InstantCommand(() -> intake.intakeCoral()),
+        new InstantCommand(() -> intake.intakeCoral(), intake),
         new WaitUntilCommand(() -> intake.hasGamePiece()),
-        new InstantCommand(() -> intake.hold()));
+        new InstantCommand(() -> intake.hold(), intake));
   }
 }

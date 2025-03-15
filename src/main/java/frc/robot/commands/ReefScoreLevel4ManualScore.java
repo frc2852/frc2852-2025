@@ -24,7 +24,7 @@ public class ReefScoreLevel4ManualScore extends SequentialCommandGroup {
    */
   public ReefScoreLevel4ManualScore(Elevator elevator, Arm arm, Wrist wrist, Intake intake) {
     addCommands(
-        new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_REEF_LEVEL_4_MANUAL)),
+        new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_REEF_LEVEL_4_MANUAL), arm),
         new WaitUntilCommand(() -> arm.isAtPosition()),
         new WaitUntilCommand(() -> !intake.hasGamePiece()),
         new InstantCommand(() -> intake.stop(), intake),
