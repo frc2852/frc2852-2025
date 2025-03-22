@@ -29,7 +29,6 @@ import frc.robot.commands.ReefScoreLevel4;
 import frc.robot.commands.ReefScoreLevel4Manual;
 import frc.robot.commands.ReefScoreLevel4ManualScore;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LED;

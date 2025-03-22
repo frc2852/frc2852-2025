@@ -137,12 +137,12 @@ public final class Constants {
     public static final int ELEVATOR_CLIMB_POSITION = 2;
 
     public static final double ELEVATOR_REEF_LEVEL_1 = 0;
-    public static final double ELEVATOR_REEF_LEVEL_2 = 9;
+    public static final double ELEVATOR_REEF_LEVEL_2 = 10;
     public static final double ELEVATOR_REEF_LEVEL_2_PASS = 15;
     public static final double ELEVATOR_REEF_LEVEL_3 = 20;
     public static final double ELEVATOR_REEF_LEVEL_4 = 36;
-    public static final double ELEVATOR_ALGEA_LEVEL_1 = 6;
-    public static final double ELEVATOR_ALGEA_LEVEL_2 = 15;
+    public static final double ELEVATOR_ALGEA_LEVEL_1 = 15;
+    public static final double ELEVATOR_ALGEA_LEVEL_2 = 25;
     public static final double ELEVATOR_INTAKE_STATION = 11;
     public static final double ELEVATOR_BARGE = 38;
     public static final double ELEVATOR_MAX_HEIGHT = 38.5;
