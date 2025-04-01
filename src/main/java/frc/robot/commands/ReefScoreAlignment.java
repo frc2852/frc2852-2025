@@ -23,7 +23,7 @@ public class ReefScoreAlignment extends SequentialCommandGroup {
    */
   public ReefScoreAlignment(Elevator elevator, Arm arm, Wrist wrist, Intake intake) {
     addCommands(
-        new InstantCommand(() -> intake.hold(), intake),
+        new InstantCommand(() -> intake.stop(), intake),
         new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_REEF_WAIT), arm),
         new WaitUntilCommand(() -> elevator.isAtPosition() && arm.isAtPosition()));
   }

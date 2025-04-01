@@ -7,7 +7,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.MotorSetPoint;
 import frc.robot.subsystems.Arm;
@@ -26,14 +25,15 @@ public class ProcessorScore extends SequentialCommandGroup {
   public ProcessorScore(Elevator elevator, Arm arm, Wrist wrist, Intake intake) {
     addCommands(
         new ParallelCommandGroup(
+            new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_REEF_LEVEL_1), elevator),
             new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_DRIVE_POSITION), wrist),
             new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_PROCESSOR), arm)),
-        new WaitUntilCommand(() -> wrist.isAtPosition()&& arm.isAtPosition()),
-        new InstantCommand(() -> intake.reverseAlgae(), intake),
-        new WaitCommand(0.5),
-        new WaitUntilCommand(() -> !intake.hasGamePiece()),
-        new InstantCommand(() -> intake.stop(), intake),
+        new WaitUntilCommand(() -> elevator.isAtPosition() && wrist.isAtPosition() && arm.isAtPosition()),
+        new InstantCommand(() -> intake.intakeAlgae(), intake),
+        new WaitUntilCommand(() -> intake.hasGamePiece()),
+        new InstantCommand(() -> intake.hold(), intake),
         new ParallelCommandGroup(
+            new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_DRIVE_POSITION), elevator),
             new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_DRIVE_POSITION), arm),
             new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_DRIVE_POSITION), wrist)));
   }

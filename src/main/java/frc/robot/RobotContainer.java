@@ -1,13 +1,9 @@
 package frc.robot;
 
-import frc.robot.Constants.MotorSetPoint;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.Pattern;
 import frc.robot.Constants.ScoringLevel;
 import frc.robot.commands.BargeScore;
-import frc.robot.commands.ClimberDrivePosition;
-import frc.robot.commands.ClimberGrabPosition;
-import frc.robot.commands.ClimberUp;
 import frc.robot.commands.CoralFloorPickup;
 import frc.robot.commands.DrivePosition;
 import frc.robot.commands.IntakeStationPickup;
@@ -53,7 +49,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -65,7 +60,6 @@ public class RobotContainer {
 
   // Subsystem
   private final Swerve drivebase = new Swerve(new File(Filesystem.getDeployDirectory(), "swerve/snappy"));
- // private final Climb climb = new Climb();
   private final Elevator elevator = new Elevator();
   private final Intake intake = new Intake();
   private final LED led = new LED();
@@ -92,25 +86,18 @@ public class RobotContainer {
 
   private final ReefScoreAlignment reefScoreAlignment = new ReefScoreAlignment(elevator, arm, wrist, intake);
 
-  // private final ReefScoreLevel1ManualScore reefScoreLevel1ManualScore = new
-  // ReefScoreLevel1ManualScore(elevator, arm, wrist, intake);
   private final ReefScoreLevel2ManualScore reefScoreLevel2ManualScore = new ReefScoreLevel2ManualScore(elevator, arm,
       wrist, intake);
   private final ReefScoreLevel3ManualScore reefScoreLevel3ManualScore = new ReefScoreLevel3ManualScore(elevator, arm,
       wrist, intake);
   private final ReefScoreLevel4ManualScore reefScoreLevel4ManualScore = new ReefScoreLevel4ManualScore(elevator, arm,
       wrist, intake);
-  // private final ReefScore reefScore = new ReefScore(elevator, arm, wrist,
-  // intake);
 
   private final ProcessorScore processorScore = new ProcessorScore(elevator, arm, wrist, intake);
   private final DrivePosition drivePosition = new DrivePosition(elevator, arm, wrist, intake);
 
-  /*private final ClimberGrabPosition climberGrabPosition = new ClimberGrabPosition(elevator, arm, wrist, climb);
-  private final ClimberUp climberUp = new ClimberUp(climb);
-  private final ClimberDrivePosition climberDrivePosition = new ClimberDrivePosition(climb);*/
-  
   private final MechClimbPosition mechClimbPosition = new MechClimbPosition(elevator, arm, wrist, intake);
+
   // Auto only
   private final CoralFloorPickup coralFloorPickup = new CoralFloorPickup(elevator, arm, wrist, intake);
 
@@ -141,12 +128,6 @@ public class RobotContainer {
     UsbCamera camera = CameraServer.startAutomaticCapture();
     camera.setResolution(320, 480);
     camera.setFPS(30);
-    
-    // Port forwarding
-    // PortForwarder.add(5800, "photonvision.local", 5800);
-    // PortForwarder.add(5800, "barge-photon.local", 5800);
-    // PortForwarder.add(5800, "pickup-station-photon.local", 5800);
-    // PortForwarder.add(5800, "reef-photon.local", 5800);
 
     // Set default led color during initialization
     led.setPattern(Pattern.LAVA_RAINBOW);
@@ -165,17 +146,7 @@ public class RobotContainer {
     // Drive commands
     drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
 
-    if (Robot.isSimulation()) {
-      driverController.start()
-          .onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
-    }
-
     driverController.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-
-    driverController.leftBumper().and(driverController.rightBumper())
-        .onTrue(new ParallelCommandGroup(
-            mechClimbPosition,
-            new InstantCommand(() -> RobotControlState.toggleClimb())));
 
     driverController.x().onTrue(Commands.runOnce(intake::reverseCoral));
 
@@ -185,14 +156,6 @@ public class RobotContainer {
       }
       drivePosition.schedule();
     }));
-
-    // driverController.b().onTrue(
-    // new InstantCommand(() -> {
-    // Command newCommand = drivebase.driveToPose(RobotControlState.getZonePose());
-    // if (newCommand != null) {
-    // newCommand.schedule();
-    // }
-    // }));
 
     driverController.a().onTrue(new InstantCommand(() -> {
       // Cancel the previous command if it's still running
@@ -208,16 +171,6 @@ public class RobotContainer {
   }
 
   public Command getSelectedCommand() {
-    // Climb mode check.
-    if (RobotControlState.isClimbEnabled()) {
-      /*if (climb.getTargetPosition() == MotorSetPoint.CLIMBER_GRAB_POSITION) {
-        return climberUp;
-      } else {
-        return climberGrabPosition;
-      }*/
-       return null;
-    }
-
     // Early exit: if nothing is picked up and we're not in algae mode.
     if (!intake.hasGamePiece() && !RobotControlState.isAlgaeMode()) {
       return intakeStationPickup;

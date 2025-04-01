@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.MotorSetPoint;
 import frc.robot.subsystems.Arm;
@@ -27,6 +28,7 @@ public class ReefScoreLevel4ManualScore extends SequentialCommandGroup {
         new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_REEF_LEVEL_4_MANUAL), arm),
         new WaitUntilCommand(() -> arm.isAtPosition()),
         new WaitUntilCommand(() -> !intake.hasGamePiece()),
+        new WaitCommand(.5),
         new InstantCommand(() -> intake.stop(), intake),
         new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_DRIVE_POSITION), arm),
         new WaitUntilCommand(() -> arm.isAtPosition()),

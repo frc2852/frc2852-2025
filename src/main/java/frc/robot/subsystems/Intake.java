@@ -45,7 +45,10 @@ public class Intake extends SubsystemBase {
     motorConfig = new SparkFlexConfig();
     motorConfig.idleMode(IdleMode.kBrake);
     motorConfig.inverted(true);
-    motorConfig.smartCurrentLimit(40, 80);
+
+    // Leave free limit at 80A
+    // The stall limit should never be 80, you're going to burn out the motor
+    motorConfig.smartCurrentLimit(60, 80);
 
     // Configure encoder conversion factors
     motorConfig.encoder
