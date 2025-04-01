@@ -7,12 +7,9 @@ import frc.robot.commands.BargeScore;
 import frc.robot.commands.CoralFloorPickup;
 import frc.robot.commands.DrivePosition;
 import frc.robot.commands.IntakeStationPickup;
-import frc.robot.commands.MechClimbPosition;
 import frc.robot.commands.ProcessorScore;
 import frc.robot.commands.ReefAlgeaLevel1;
-import frc.robot.commands.ReefAlgeaLevel1Waste;
 import frc.robot.commands.ReefAlgeaLevel2;
-import frc.robot.commands.ReefAlgeaLevel2Waste;
 import frc.robot.commands.ReefScoreAlignment;
 import frc.robot.commands.ReefScoreLevel1;
 import frc.robot.commands.ReefScoreLevel2;
@@ -39,8 +36,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -72,9 +67,7 @@ public class RobotContainer {
 
   private final ReefAlgeaLevel1 reefAlgeaLevel1 = new ReefAlgeaLevel1(elevator, arm, wrist, intake);
   private final ReefAlgeaLevel2 reefAlgeaLevel2 = new ReefAlgeaLevel2(elevator, arm, wrist, intake);
-  private final ReefAlgeaLevel1Waste reefAlgeaLevel1Waste = new ReefAlgeaLevel1Waste(elevator, arm, wrist, intake);
-  private final ReefAlgeaLevel2Waste reefAlgeaLevel2Waste = new ReefAlgeaLevel2Waste(elevator, arm, wrist, intake);
-
+  
   private final ReefScoreLevel1 reefScoreLevel1 = new ReefScoreLevel1(elevator, arm, wrist, intake);
   private final ReefScoreLevel2 reefScoreLevel2 = new ReefScoreLevel2(elevator, arm, wrist, intake);
   private final ReefScoreLevel3 reefScoreLevel3 = new ReefScoreLevel3(elevator, arm, wrist, intake);
@@ -95,8 +88,6 @@ public class RobotContainer {
 
   private final ProcessorScore processorScore = new ProcessorScore(elevator, arm, wrist, intake);
   private final DrivePosition drivePosition = new DrivePosition(elevator, arm, wrist, intake);
-
-  private final MechClimbPosition mechClimbPosition = new MechClimbPosition(elevator, arm, wrist, intake);
 
   // Auto only
   private final CoralFloorPickup coralFloorPickup = new CoralFloorPickup(elevator, arm, wrist, intake);

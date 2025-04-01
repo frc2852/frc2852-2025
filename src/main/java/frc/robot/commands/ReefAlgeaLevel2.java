@@ -22,6 +22,6 @@ public class ReefAlgeaLevel2 extends SequentialCommandGroup {
             new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_ALGEA_LEVEL_2), arm),
             new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_SCORE_POSITION), wrist)),
         new WaitUntilCommand(() -> elevator.isAtPosition() && wrist.isAtPosition() && arm.isAtPosition()),
-        new InstantCommand(() -> intake.reverseAlgae(), intake));
+        new InstantCommand(() -> intake.intakeAlgae(), intake));
   }
 }
