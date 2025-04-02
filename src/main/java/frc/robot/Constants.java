@@ -63,10 +63,18 @@ public final class Constants {
     public static final int INTAKE_MAX_ACCELERATION = 6500;
     public static final int INTAKE_ALLOWED_CLOSED_LOOP_ERROR = 1;
 
+<<<<<<< Updated upstream
     public static final int INTAKE_VELOCITY_ALGAE = 6500;
     public static final int INTAKE_VELOCITY_CORAL = 6000;
     public static final int INTAKE_VELOCITY_HOLD = 1500;
     public static final int INTAKE_VELOCITY_REVERSE_CORAL = -6500;
+=======
+    public static final int INTAKE_VELOCITY_ALGAE = 6000;
+    public static final int INTAKE_VELOCITY_CORAL = 3000;
+    public static final int INTAKE_VELOCITY_HOLD = 0;
+    public static final int INTAKE_VELOCITY_ALGAE_HOLD = 1000;
+    public static final int INTAKE_VELOCITY_REVERSE_CORAL = -3000;
+>>>>>>> Stashed changes
     public static final int INTAKE_VELOCITY_REVERSE_ALGAE = -6000;
 
     public static final int STOP_INTAKE = 0;

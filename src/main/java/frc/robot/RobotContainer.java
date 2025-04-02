@@ -27,6 +27,8 @@ import frc.robot.commands.ReefScoreLevel3ManualScore;
 import frc.robot.commands.ReefScoreLevel4;
 import frc.robot.commands.ReefScoreLevel4Manual;
 import frc.robot.commands.ReefScoreLevel4ManualScore;
+import frc.robot.commands.SlowAlgaeClearLevel1;
+import frc.robot.commands.SlowAlgaeClearLevel2;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Elevator;
@@ -78,9 +80,16 @@ public class RobotContainer {
 
   private final ReefAlgeaLevel1 reefAlgeaLevel1 = new ReefAlgeaLevel1(elevator, arm, wrist, intake);
   private final ReefAlgeaLevel2 reefAlgeaLevel2 = new ReefAlgeaLevel2(elevator, arm, wrist, intake);
+<<<<<<< Updated upstream
   private final ReefAlgeaLevel1Waste reefAlgeaLevel1Waste = new ReefAlgeaLevel1Waste(elevator, arm, wrist, intake);
   private final ReefAlgeaLevel2Waste reefAlgeaLevel2Waste = new ReefAlgeaLevel2Waste(elevator, arm, wrist, intake);
 
+=======
+
+  private final SlowAlgaeClearLevel1 slowAlgaeCLearLevel1 = new SlowAlgaeClearLevel1(elevator, arm, wrist, intake);
+  private final SlowAlgaeClearLevel2 slowAlgaeCLearLevel2 = new SlowAlgaeClearLevel2(elevator, arm, wrist, intake);
+  
+>>>>>>> Stashed changes
   private final ReefScoreLevel1 reefScoreLevel1 = new ReefScoreLevel1(elevator, arm, wrist, intake);
   private final ReefScoreLevel2 reefScoreLevel2 = new ReefScoreLevel2(elevator, arm, wrist, intake);
   private final ReefScoreLevel3 reefScoreLevel3 = new ReefScoreLevel3(elevator, arm, wrist, intake);
@@ -234,6 +243,11 @@ public class RobotContainer {
       return getAlgaeWasteScoringCommand();
     }
 
+    if (RobotControlState.isAlgaePickUp()) {
+      return getAlgaeWasteScoringCommand();
+    }
+
+
     // Coral scoring
     return getCoralReefCommand();
   }
@@ -255,6 +269,17 @@ public class RobotContainer {
         return reefAlgeaLevel1Waste;
       case LEVEL_2:
         return reefAlgeaLevel2Waste;
+      default:
+        return null;
+    }
+  }
+
+  private Command getAlgaePickUpCommand() {
+    switch (RobotControlState.getScoringLevel()) {
+      case LEVEL_1:
+        return reefAlgeaLevel1;
+      case LEVEL_2:
+        return reefAlgeaLevel2;
       default:
         return null;
     }

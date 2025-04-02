@@ -7,7 +7,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.MotorSetPoint;
 import frc.robot.subsystems.Arm;
@@ -15,33 +14,20 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Wrist;
 
-/**
- * Move elevator to processor position
- * Set wrist position
- * Validate
- * Reverse intake
- * Set elevator and wrist back to drive position
- */
-public class ProcessorScore extends SequentialCommandGroup {
-  public ProcessorScore(Elevator elevator, Arm arm, Wrist wrist, Intake intake) {
+public class SlowAlgaeClearLevel2 extends SequentialCommandGroup {
+
+  public SlowAlgaeClearLevel2(Elevator elevator, Arm arm, Wrist wrist, Intake intake) {
     addCommands(
         new ParallelCommandGroup(
-<<<<<<< Updated upstream
-=======
-            new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_DRIVE_POSITION), elevator),
->>>>>>> Stashed changes
+            new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_ALGEA_LEVEL_2), elevator),
             new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_DRIVE_POSITION), wrist),
-            new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_PROCESSOR), arm)),
-        new WaitUntilCommand(() -> wrist.isAtPosition()&& arm.isAtPosition()),
-        new InstantCommand(() -> intake.reverseAlgae(), intake),
-<<<<<<< Updated upstream
-        new WaitCommand(0.5),
-        new WaitUntilCommand(() -> !intake.hasGamePiece()),
-        new InstantCommand(() -> intake.stop(), intake),
-=======
-        new WaitCommand(.5),
->>>>>>> Stashed changes
+            new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_ALGEA_LEVEL_2), arm)),
+        new WaitUntilCommand(() -> elevator.isAtPosition() && wrist.isAtPosition() && arm.isAtPosition()),
+        new InstantCommand(() -> intake.intakeAlgae(), intake),
+        new WaitUntilCommand(() -> intake.hasGamePiece()),
+        new InstantCommand(() -> intake.AlgaeHold(), intake),
         new ParallelCommandGroup(
+            new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_DRIVE_POSITION), elevator),
             new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_DRIVE_POSITION), arm),
             new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_DRIVE_POSITION), wrist)));
   }

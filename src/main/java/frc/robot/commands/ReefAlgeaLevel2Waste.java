@@ -17,6 +17,7 @@ import frc.robot.subsystems.Wrist;
 public class ReefAlgeaLevel2Waste extends SequentialCommandGroup {
   public ReefAlgeaLevel2Waste(Elevator elevator, Arm arm, Wrist wrist, Intake intake) {
     addCommands(
+<<<<<<< Updated upstream
         new ParallelCommandGroup(
             new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_ALGEA_LEVEL_2), elevator),
             new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_ALGEA_LEVEL_2)),
@@ -35,5 +36,13 @@ public class ReefAlgeaLevel2Waste extends SequentialCommandGroup {
         new InstantCommand(() -> intake.stop(), intake),
         new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_DRIVE_POSITION), arm),
         new WaitUntilCommand(() -> arm.isAtPosition()));
+=======
+      new ParallelCommandGroup(
+        new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_ALGEA_LEVEL_2), elevator),
+        new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_ALGEA_LEVEL_2), arm),
+        new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_DRIVE_POSITION), wrist)),
+    new WaitUntilCommand(() -> elevator.isAtPosition() && wrist.isAtPosition() && arm.isAtPosition()),
+    new InstantCommand(() -> intake.intakeAlgae(), intake));
+>>>>>>> Stashed changes
   }
 }
