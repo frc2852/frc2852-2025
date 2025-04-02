@@ -21,8 +21,8 @@ import frc.robot.commands.ReefScoreLevel3ManualScore;
 import frc.robot.commands.ReefScoreLevel4;
 import frc.robot.commands.ReefScoreLevel4Manual;
 import frc.robot.commands.ReefScoreLevel4ManualScore;
-import frc.robot.commands.SlowAlgaeClearLevel1;
-import frc.robot.commands.SlowAlgaeClearLevel2;
+import frc.robot.commands.SlowAlgaePickUpLevel1;
+import frc.robot.commands.SlowAlgaePickUpLevel2;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
@@ -70,8 +70,8 @@ public class RobotContainer {
   private final ReefAlgeaLevel1 reefAlgeaLevel1 = new ReefAlgeaLevel1(elevator, arm, wrist, intake);
   private final ReefAlgeaLevel2 reefAlgeaLevel2 = new ReefAlgeaLevel2(elevator, arm, wrist, intake);
 
-  private final SlowAlgaeClearLevel1 slowAlgaeCLearLevel1 = new SlowAlgaeClearLevel1(elevator, arm, wrist, intake);
-  private final SlowAlgaeClearLevel2 slowAlgaeCLearLevel2 = new SlowAlgaeClearLevel2(elevator, arm, wrist, intake);
+  private final SlowAlgaePickUpLevel1 slowAlgaeCLearLevel1 = new SlowAlgaePickUpLevel1(elevator, arm, wrist, intake);
+  private final SlowAlgaePickUpLevel2 slowAlgaeCLearLevel2 = new SlowAlgaePickUpLevel2(elevator, arm, wrist, intake);
 
   private final ReefScoreLevel1 reefScoreLevel1 = new ReefScoreLevel1(elevator, arm, wrist, intake);
   private final ReefScoreLevel2 reefScoreLevel2 = new ReefScoreLevel2(elevator, arm, wrist, intake);

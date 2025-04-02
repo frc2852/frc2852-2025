@@ -14,9 +14,9 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Wrist;
 
-public class SlowAlgaeClearLevel2 extends SequentialCommandGroup {
+public class SlowAlgaePickUpLevel2 extends SequentialCommandGroup {
 
-  public SlowAlgaeClearLevel2(Elevator elevator, Arm arm, Wrist wrist, Intake intake) {
+  public SlowAlgaePickUpLevel2(Elevator elevator, Arm arm, Wrist wrist, Intake intake) {
     addCommands(
         new ParallelCommandGroup(
             new InstantCommand(() -> elevator.goToPosition(MotorSetPoint.ELEVATOR_ALGEA_LEVEL_2), elevator),
