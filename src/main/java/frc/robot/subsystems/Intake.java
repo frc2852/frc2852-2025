@@ -114,6 +114,12 @@ public class Intake extends SubsystemBase {
     controller.setReference(targetSpeed, ControlType.kMAXMotionVelocityControl);
   }
 
+  public void AlgaeHold() {
+    DriverStation.reportWarning("Intake hold", false);
+    targetSpeed = MotorSetPoint.INTAKE_VELOCITY_ALGAE_HOLD;
+    controller.setReference(targetSpeed, ControlType.kMAXMotionVelocityControl);
+  }
+
   /**
    * Stops the intake.
    */

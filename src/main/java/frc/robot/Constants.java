@@ -65,7 +65,8 @@ public final class Constants {
 
     public static final int INTAKE_VELOCITY_ALGAE = 6000;
     public static final int INTAKE_VELOCITY_CORAL = 3000;
-    public static final int INTAKE_VELOCITY_HOLD = 2000;
+    public static final int INTAKE_VELOCITY_HOLD = 0000;
+    public static final int INTAKE_VELOCITY_ALGAE_HOLD = 1000;
     public static final int INTAKE_VELOCITY_REVERSE_CORAL = -3000;
     public static final int INTAKE_VELOCITY_REVERSE_ALGAE = -6000;
 

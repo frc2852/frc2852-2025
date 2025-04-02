@@ -24,6 +24,7 @@ public class RobotControlState {
   private static boolean climbEnabled = false;
   private static Translation2d allianceReef = null;
 
+ private static boolean algaePickUp = false;
   private static boolean algaeWaste = false;
   private static boolean processorScore = false;
   private static boolean bargeScore = false;
@@ -67,6 +68,14 @@ public class RobotControlState {
     side = newSide;
   }
 
+  public static void setAlgeaPickUp() {
+    bargeScore = false;
+    processorScore = false;
+    algaeWaste = false;
+
+    algaePickUp=true;
+  }
+
   public static void setAlgaeWaste() {
     bargeScore = false;
     processorScore = false;
@@ -76,6 +85,10 @@ public class RobotControlState {
 
   public static boolean isAlgaeWaste() {
     return algaeWaste;
+  }
+
+  public static boolean isAlgaePickUp() {
+    return algaePickUp;
   }
 
   public static void setProcessor() {
@@ -101,7 +114,7 @@ public class RobotControlState {
   }
 
   public static boolean isAlgaeMode(){
-    return bargeScore || algaeWaste || processorScore;
+    return bargeScore || algaeWaste || processorScore || algaePickUp;
   }
 
   /**
