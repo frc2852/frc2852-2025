@@ -30,7 +30,6 @@ public class ProcessorScore extends SequentialCommandGroup {
             new InstantCommand(() -> wrist.goToPosition(MotorSetPoint.WRIST_DRIVE_POSITION), wrist),
             new InstantCommand(() -> arm.goToPosition(MotorSetPoint.ARM_PROCESSOR), arm)),
         new WaitUntilCommand(() -> elevator.isAtPosition() && wrist.isAtPosition() && arm.isAtPosition()),
-        new InstantCommand(() -> intake.reverseAlgae(), intake),
         new WaitUntilCommand(() -> !intake.hasGamePiece()),
         new WaitCommand(0.5),
         new ParallelCommandGroup(

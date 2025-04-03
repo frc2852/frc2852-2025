@@ -33,6 +33,12 @@
           "data": {
             "name": "drivePosition"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "zero"
+          }
         }
       ]
     }

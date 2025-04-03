@@ -66,9 +66,9 @@ public final class Constants {
     public static final int INTAKE_VELOCITY_ALGAE = 6000;
     public static final int INTAKE_VELOCITY_CORAL = 3000;
     public static final int INTAKE_VELOCITY_HOLD = 0000;
-    public static final int INTAKE_VELOCITY_ALGAE_HOLD = 1000;
+    public static final int INTAKE_VELOCITY_ALGAE_HOLD = 1500;
     public static final int INTAKE_VELOCITY_REVERSE_CORAL = -3000;
-    public static final int INTAKE_VELOCITY_REVERSE_ALGAE = -6000;
+    public static final int INTAKE_VELOCITY_REVERSE_ALGAE = -7000;
 
     public static final int STOP_INTAKE = 0;
 
@@ -145,7 +145,7 @@ public final class Constants {
     public static final double ELEVATOR_ALGEA_LEVEL_1 = 14;
     public static final double ELEVATOR_ALGEA_LEVEL_2 = 21.5;
     public static final double ELEVATOR_INTAKE_STATION = 11;
-    public static final double ELEVATOR_BARGE = 38;
+    public static final double ELEVATOR_BARGE = 37.5;
     public static final double ELEVATOR_MAX_HEIGHT = 38.5;
   }
 

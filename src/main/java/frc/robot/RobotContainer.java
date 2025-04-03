@@ -23,6 +23,7 @@ import frc.robot.commands.ReefScoreLevel4Manual;
 import frc.robot.commands.ReefScoreLevel4ManualScore;
 import frc.robot.commands.SlowAlgaePickUpLevel1;
 import frc.robot.commands.SlowAlgaePickUpLevel2;
+import frc.robot.commands.Zero;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
@@ -83,6 +84,7 @@ public class RobotContainer {
   private final ReefScoreLevel4Manual reefScoreLevel4Manual = new ReefScoreLevel4Manual(elevator, arm, wrist, intake);
 
   private final ReefScoreAlignment reefScoreAlignment = new ReefScoreAlignment(elevator, arm, wrist, intake);
+  private final Zero zero = new Zero(drivebase);
 
   private final ReefScoreLevel2ManualScore reefScoreLevel2ManualScore = new ReefScoreLevel2ManualScore(elevator, arm,
       wrist, intake);
@@ -315,6 +317,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("reefScoreLevel2", reefScoreLevel2);
     NamedCommands.registerCommand("reefScoreLevel3", reefScoreLevel3);
     NamedCommands.registerCommand("reefScoreLevel4", reefScoreLevel4);
+    NamedCommands.registerCommand("zero", zero);
 
     // Build an auto chooser
     autoChooser = AutoBuilder.buildAutoChooser("Example");
