@@ -66,7 +66,7 @@ public final class Constants {
     public static final int INTAKE_VELOCITY_ALGAE = 6000;
     public static final int INTAKE_VELOCITY_CORAL = 5300;
     public static final int INTAKE_VELOCITY_HOLD = 0000;
-    public static final int INTAKE_VELOCITY_ALGAE_HOLD = 1000;
+    public static final int INTAKE_VELOCITY_ALGAE_HOLD = 1700;
     public static final int INTAKE_VELOCITY_REVERSE_CORAL = -3000;
     public static final int INTAKE_VELOCITY_REVERSE_ALGAE = -6500;
 
@@ -115,7 +115,7 @@ public final class Constants {
     public static final int ARM_FLOOR_PICKUP = 150;
     public static final int ARM_BARGE = 67;
     public static final int ARM_BARGE_CATAPULT = 75;
-    public static final int ARM_PROCESSOR = 28;
+    public static final int ARM_PROCESSOR = 27;
 
     // Climber values
     public static final int CLIMBER_POSITION_CONVERTION_FACTOR = 90;

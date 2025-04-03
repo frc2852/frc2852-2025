@@ -17,47 +17,9 @@
           }
         },
         {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "coralFloorPickup"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "ReefAToCoral2"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "drivePosition"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Coral2ToReefB"
-                }
-              }
-            ]
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "reefScoreLevel4"
+            "name": "zero"
           }
         }
       ]
