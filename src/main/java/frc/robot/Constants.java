@@ -114,7 +114,7 @@ public final class Constants {
 
     public static final int ARM_FLOOR_PICKUP = 150;
     public static final int ARM_BARGE = 70;
-    public static final int ARM_PROCESSOR = 30;
+    public static final int ARM_PROCESSOR = 28;
 
     // Climber values
     public static final int CLIMBER_POSITION_CONVERTION_FACTOR = 90;

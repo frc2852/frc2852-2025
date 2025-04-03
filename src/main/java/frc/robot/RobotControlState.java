@@ -52,6 +52,8 @@ public class RobotControlState {
     algaeWaste = false;
     processorScore = false;
     bargeScore = false;
+    algaePickUp=false;
+    
     scoringLevel = newScoringLevel;
   }
 
