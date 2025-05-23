@@ -45,7 +45,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.Commands; // For InstantCommand and RunCommand
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -131,6 +131,7 @@ public class RobotContainer {
     led.setPattern(Pattern.LAVA_RAINBOW);
 
     configureBindings();
+    configureTestModeBindings(); // Add this call
   }
 
   private void configureBindings() {
@@ -138,6 +139,44 @@ public class RobotContainer {
     configureOperatorBindings();
     configurePathPlanner();
     configureLEDTriggers();
+  }
+
+  private void configureTestModeBindings() {
+    // SysId Data Logging Control
+    SmartDashboard.putData("Elevator/SysId/Log Snapshot", Commands.runOnce(elevator::logSysIdData));
+
+    // Direct Voltage Control for SysId
+    SmartDashboard.putNumber("Elevator/SysId/SetVoltage_Volts", 0.0);
+    SmartDashboard.putData("Elevator/SysId/ApplyVoltage", Commands.runOnce(() -> {
+        double voltage = SmartDashboard.getNumber("Elevator/SysId/SetVoltage_Volts", 0.0);
+        elevator.setVoltage(voltage);
+    }));
+    SmartDashboard.putData("Elevator/SysId/StopMotor", Commands.runOnce(() -> elevator.setVoltage(0.0)));
+
+    // Quasistatic Test Trigger
+    SmartDashboard.putData("Elevator/SysId/QuasistaticForward", Commands.runOnce(() -> elevator.setVoltage(1.0)));
+    SmartDashboard.putData("Elevator/SysId/QuasistaticReverse", Commands.runOnce(() -> elevator.setVoltage(-1.0)));
+
+    // Dynamic Test Trigger
+    SmartDashboard.putData("Elevator/SysId/DynamicForward", Commands.runOnce(() -> elevator.setVoltage(4.0)));
+    SmartDashboard.putData("Elevator/SysId/DynamicReverse", Commands.runOnce(() -> elevator.setVoltage(-4.0)));
+
+    // Test Position Control
+    SmartDashboard.putNumber("Elevator/Test/SetPosition_Units", 0.0);
+    SmartDashboard.putData("Elevator/Test/GoToPosition", Commands.runOnce(() -> {
+        double position = SmartDashboard.getNumber("Elevator/Test/SetPosition_Units", 0.0);
+        elevator.goToPosition(position);
+    }));
+
+    // Display Elevator State
+    // logSysIdData() already puts position and velocity to SmartDashboard.
+    // If continuous update is desired independent of logSysIdData, a RunCommand can be used.
+    // For now, relying on logSysIdData or manual snapshot.
+    // Example of continuous update if needed:
+    SmartDashboard.putData("Elevator/Test/UpdateDisplay", Commands.run(() -> {
+        SmartDashboard.putNumber("Elevator/Test/CurrentPosition", elevator.getPosition());
+        SmartDashboard.putNumber("Elevator/Test/CurrentVelocity", elevator.getVelocity());
+    }).withName("UpdateElevatorDisplay"));
   }
 
   private void configureDriverBindings() {

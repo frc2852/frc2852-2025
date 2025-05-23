@@ -55,6 +55,13 @@ public final class Constants {
 
   }
 
+  public static final class ElevatorFeedforwardConstants {
+    public static final double kS = 0.1; // Volts
+    public static final double kG = 0.5; // Volts
+    public static final double kV = 0.02; // Volts * seconds / meter
+    public static final double kA = 0.01; // Volts * seconds^2 / meter
+  }
+
   public static class MotorSetPoint {
     // Intake Values
     public static final int INTAKE_POSITION_CONVERTION_FACTOR = 1;
