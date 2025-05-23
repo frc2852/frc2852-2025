@@ -24,6 +24,10 @@ import frc.robot.commands.ReefScoreLevel4ManualScore;
 import frc.robot.commands.SlowAlgaePickUpLevel1;
 import frc.robot.commands.SlowAlgaePickUpLevel2;
 import frc.robot.commands.Zero;
+import frc.robot.commands.ElevatorSysIdQuasistaticForward;
+import frc.robot.commands.ElevatorSysIdQuasistaticReverse;
+import frc.robot.commands.ElevatorSysIdDynamicForward;
+import frc.robot.commands.ElevatorSysIdDynamicReverse;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
@@ -142,25 +146,6 @@ public class RobotContainer {
   }
 
   private void configureTestModeBindings() {
-    // SysId Data Logging Control
-    SmartDashboard.putData("Elevator/SysId/Log Snapshot", Commands.runOnce(elevator::logSysIdData));
-
-    // Direct Voltage Control for SysId
-    SmartDashboard.putNumber("Elevator/SysId/SetVoltage_Volts", 0.0);
-    SmartDashboard.putData("Elevator/SysId/ApplyVoltage", Commands.runOnce(() -> {
-        double voltage = SmartDashboard.getNumber("Elevator/SysId/SetVoltage_Volts", 0.0);
-        elevator.setVoltage(voltage);
-    }));
-    SmartDashboard.putData("Elevator/SysId/StopMotor", Commands.runOnce(() -> elevator.setVoltage(0.0)));
-
-    // Quasistatic Test Trigger
-    SmartDashboard.putData("Elevator/SysId/QuasistaticForward", Commands.runOnce(() -> elevator.setVoltage(1.0)));
-    SmartDashboard.putData("Elevator/SysId/QuasistaticReverse", Commands.runOnce(() -> elevator.setVoltage(-1.0)));
-
-    // Dynamic Test Trigger
-    SmartDashboard.putData("Elevator/SysId/DynamicForward", Commands.runOnce(() -> elevator.setVoltage(4.0)));
-    SmartDashboard.putData("Elevator/SysId/DynamicReverse", Commands.runOnce(() -> elevator.setVoltage(-4.0)));
-
     // Test Position Control
     SmartDashboard.putNumber("Elevator/Test/SetPosition_Units", 0.0);
     SmartDashboard.putData("Elevator/Test/GoToPosition", Commands.runOnce(() -> {
@@ -326,6 +311,21 @@ public class RobotContainer {
 
     operatorController.a()
         .onTrue(new InstantCommand(() -> RobotControlState.setAlgaeWaste()));
+
+    // Elevator SysId Test Bindings (Ensure these buttons are not critical for other operations)
+    // Note: The original prompt for operatorController.y(), a(), x(), b() are already used above
+    // for RobotControlState. Re-using them here would create conflicts.
+    // For demonstration, I will map them to different buttons if available,
+    // or comment them out if no suitable buttons are free without further clarification.
+    // Assuming different buttons are desired or these are conditional (e.g., specific test mode enabled)
+    // For this exercise, I will use different buttons: leftBumper, rightBumper, back, start
+    // If these are not the intent, the button mapping needs to be clarified.
+
+    operatorController.leftBumper().onTrue(new ElevatorSysIdQuasistaticForward(elevator));
+    operatorController.rightBumper().onTrue(new ElevatorSysIdQuasistaticReverse(elevator));
+    // Using 'back' (select) and 'start' (options) buttons as examples for the dynamic tests
+    operatorController.back().onTrue(new ElevatorSysIdDynamicForward(elevator));
+    operatorController.start().onTrue(new ElevatorSysIdDynamicReverse(elevator));
   }
 
   private void configureLEDTriggers() {
